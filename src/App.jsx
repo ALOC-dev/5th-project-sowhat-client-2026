@@ -19,11 +19,13 @@ function MyPage(){
 function App(){
   
   return (
-  <Header />, 
-  <MyPage />,
-  <ArticleListPage />
+    <>
+      <Header />
+      <MyPage />
+      <ArticleListPage />
+  </>
   
-)
+);
 }
 
 export default App

@@ -26,21 +26,7 @@ const articles =[
   ]
 
 
-function Header(){
-  return (
-    <div className='header'>
-        <div className='logo'>So what</div>
-    </div>
-  )
-}
 
-function MyPage(){
-  return(
-    <div className= 'mypage'>
-        <div className= 'login'>여기서 로그인</div>
-    </div>
-  )
-}
 
 
 
@@ -65,8 +51,7 @@ function ArticleList({articles}){
 function ArticleListPage(){
   return (
     <div className= "page">
-      <Header />
-      <MyPage />
+      
       
       <div className= "main">
         <h1 className= "page-title">전체 기사 보기</h1>

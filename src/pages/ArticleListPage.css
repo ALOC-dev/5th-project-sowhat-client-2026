@@ -1,46 +1,17 @@
-
-
 .main {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 30px 20px;
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 30px 20px;
 }
 
 .page-title {
-  font-size: 28px;
-  margin-bottom: 24px;
-  color: #222;
+	font-size: 28px;
+	margin-bottom: 24px;
+	color: #222;
 }
 
 .article-list {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-}
-
-.article-card {
-  background-color: white;
-  border-radius: 16px;
-  height: 300px;
-  padding: 24px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
-}
-
-.article-title {
-  margin: 0 0 10px 0;
-  font-size: 22px;
-  color: #111;
-}
-
-.article-date {
-  margin: 0 0 14px 0;
-  font-size: 14px;
-  color: #777;
-}
-
-.article-content {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #333;
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
 }

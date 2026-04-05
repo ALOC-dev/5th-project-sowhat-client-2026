@@ -1,44 +1,42 @@
-body{
-    margin: 0;
-    background-color: white;
-    font-family: 'Nanum Square', 'Pretendard';
-    
-
+body {
+	margin: 0;
+	background-color: white;
+	font-family: "Nanum Square", "Pretendard";
 }
 
-*{
-    box-sizing: border-box;
+* {
+	box-sizing: border-box;
 }
 
-.page{
-    min-height:100vh;
-    padding: 1em;
+.page {
+	min-height: 100vh;
+	padding: 1em;
 }
 
-.header{
-    width:100%;
-    height: 70px;
-    background-color: whitesmoke;
-    border-bottom: 5px solid rgb(0, 0, 0);
-    display: flex;
-    align-items: center;
-    padding-left: 24px;
+.header {
+	width: 100%;
+	height: 70px;
+	background-color: whitesmoke;
+	border-bottom: 5px solid rgb(0, 0, 0);
+	display: flex;
+	align-items: center;
+	padding-left: 24px;
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #222;
+	font-size: 24px;
+	font-weight: bold;
+	color: #222;
 }
 
-.mypage{
-    display: flex;
-    justify-content: right;
+.mypage {
+	display: flex;
+	justify-content: right;
 }
 
-.login{
-   font-size: 18px;
-  font-weight: bold;
-  color: #151414; 
-  padding: 10px
+.login {
+	font-size: 18px;
+	font-weight: bold;
+	color: #151414;
+	padding: 10px;
 }

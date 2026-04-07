@@ -26,3 +26,4 @@ const MOCK_ARTICLES = [
 export function getArticles() {
 	return MOCK_ARTICLES;
 }
+

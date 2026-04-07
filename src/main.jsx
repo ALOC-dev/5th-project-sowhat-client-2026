@@ -1,10 +1,13 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 
-createRoot(document.getElementById("root")).render(
-	// <StrictMode>
-	<App />,
-	// </StrictMode>,
-	/* Strictmode 넣으면 페이지가 두번 로드되어 불편함! */
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 );

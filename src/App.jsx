@@ -1,4 +1,6 @@
+import { Routes, Route } from "react-router-dom";
 import ArticleListPage from "./pages/ArticleListPage";
+import ArticleDetailPage from "./pages/ArticleDetailPage";
 
 function Header() {
 	return (
@@ -21,7 +23,11 @@ export default function App() {
 		<>
 			<Header />
 			<MyPage />
-			<ArticleListPage />
+			<Routes>
+				<Route path="/" element={<ArticleListPage />}/>
+				<Route path="/articles/:article_id" element={<ArticleDetailPage/>}/>
+			</Routes>
+			
 		</>
 	);
 }

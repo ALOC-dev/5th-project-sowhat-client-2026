@@ -1,11 +1,20 @@
-import { Routes, Route } from "react-router-dom";
-import ArticleListPage from "./pages/ArticleListPage";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import ArticleDetailPage from "./pages/ArticleDetailPage";
+import ArticleListPage from "./pages/ArticleListPage";
 
 function Header() {
+	const navigate = useNavigate();
+
 	return (
 		<div className="header">
-			<div className="logo">So what</div>
+			<div
+				className="logo"
+				onClick={() => {
+					navigate(`/articles`);
+				}}
+			>
+				So what
+			</div>
 		</div>
 	);
 }
@@ -24,10 +33,12 @@ export default function App() {
 			<Header />
 			<MyPage />
 			<Routes>
-				<Route path="/" element={<ArticleListPage />}/>
-				<Route path="/articles/:article_id" element={<ArticleDetailPage/>}/>
+				<Route path="/articles" element={<ArticleListPage />} />
+				<Route
+					path="/articles/:article_id"
+					element={<ArticleDetailPage />}
+				/>
 			</Routes>
-			
 		</>
 	);
 }

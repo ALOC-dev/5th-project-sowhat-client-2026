@@ -19,19 +19,34 @@ function Header() {
 	);
 }
 
-function MyPage() {
-	return (
-		<div className="mypage">
+function Login() {
+	 const navigate = useNavigate();
+		return (
+		<div onClick={() => navigate("/login")} >
 			<div className="login">여기서 로그인</div>
 		</div>
 	);
 }
 
+function MyPage() {
+	 const navigate = useNavigate();
+	return (
+		<div onClick={() => navigate("/profile")} >
+			<div className="login">마이페이지</div>
+		</div>
+	);
+}
+
 export default function App() {
+	
 	return (
 		<>
+			
+      		
 			<Header />
 			<MyPage />
+			<Login />
+			
 			<Routes>
 				<Route path="/articles" element={<ArticleListPage />} />
 				<Route
@@ -42,3 +57,5 @@ export default function App() {
 		</>
 	);
 }
+
+

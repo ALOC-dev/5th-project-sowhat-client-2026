@@ -29,10 +29,7 @@ body {
 	color: #222;
 }
 
-.mypage {
-	display: flex;
-	justify-content: right;
-}
+
 
 .login {
 	font-size: 18px;

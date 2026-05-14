@@ -1,5 +1,5 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
-import * as styles from "./App.style"
+import styles from "./App.module.css"
 
 import LoginPage from "./pages/Login/LoginPage";
 import MainPage from "./pages/Main/MainPage";
@@ -11,33 +11,32 @@ function Header() {
 	const navigate = useNavigate();
 
 	return (
-		<div style={styles.headerStyle}>
-			<div
-				style = {styles.logoStyle}
-				onClick={() => {
-					navigate(`/`);
-				}}
-			>
-				So what
+		<header className={styles.header}>
+			<div className = {styles.logo} onClick={() => {navigate(`/`);}}>
+				So What
 			</div>
-		</div>
-	);
-}
 
-function Login() {
-	 const navigate = useNavigate();
-		return (
-		<div onClick={() => navigate("/login")} >
-			<div style = {styles.loginStyle}>여기서 로그인</div>
-		</div>
+			<nav className = {styles.nav}>
+				<button className = {styles.login} onClick={() => navigate("/login")} >
+					로그인
+				</button>
+				<button className = {styles.signup} onClick={() => navigate("/signup")} >
+					회원가입
+				</button>
+			</nav>
+		
+		</header>
 	);
+
+
+
 }
 
 function MyPage() {
 	 const navigate = useNavigate();
 	return (
 		<div onClick={() => navigate("/profile")} >
-			<div style = {styles.mypageStyle}>마이페이지</div>
+			<div className = {styles.mypage}>마이페이지</div>
 		</div>
 	);
 }
@@ -49,8 +48,9 @@ export default function App() {
 			
       		
 			<Header />
-			<MyPage />
-			<Login />
+			{/* <MyPage /> */}
+			
+			
 			
 			<Routes>
 				<Route path="/" element={<MainPage />} />

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { getArticles } from "../../api/articles";
 import ArticleCard from "../../ui/ArticleCard";
-import * as styles from "./ArticleListPage.style";
+import styles from "./ArticleListPage.module.css";
 
 export default function ArticleListPage() {
 	const articles = getArticles();
@@ -9,10 +9,10 @@ export default function ArticleListPage() {
 
 	return (
 		<div >
-			<div style={styles.mainStyle}>
-				<h1 style={styles.pageTitleStyle}>전체 기사 보기</h1>
+			<div className={styles.main}>
+				<h1 className={styles.pageTitle}>전체 기사 보기</h1>
 			</div>
-			<div style={styles.articleListStyle}>
+			<div className={styles.articleList}>
 				{articles.map((article) => (
 					<ArticleCard
 						key={article.article_id}

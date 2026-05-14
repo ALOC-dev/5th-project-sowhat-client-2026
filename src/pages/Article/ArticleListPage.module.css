@@ -1,0 +1,15 @@
+.main {
+  
+  width:  90%;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.pageTitle {
+  display: flex;
+}
+
+.articleList {
+  display: flex;
+  gap: 20px;
+}

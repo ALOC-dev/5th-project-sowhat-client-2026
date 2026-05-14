@@ -17,11 +17,11 @@ function Header() {
 			</div>
 
 			<nav className = {styles.nav}>
-				<button className = {styles.login} onClick={() => navigate("/login")} >
-					로그인
+				<button className = {styles.button} onClick={() => navigate("/login")} >
+					<h1 className={styles.login}>로그인</h1>
 				</button>
-				<button className = {styles.signup} onClick={() => navigate("/signup")} >
-					회원가입
+				<button className = {styles.button} onClick={() => navigate("/signup")} >
+					<h1 className = {styles.signup}>회원가입</h1>
 				</button>
 			</nav>
 		

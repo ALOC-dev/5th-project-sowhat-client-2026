@@ -21,6 +21,48 @@ const MOCK_ARTICLES = [
 		date: "2026-03-29",
 		content: "이것은 세 번째 기사 내용 일부입니다.",
 	},
+	{
+		article_id: 4,
+		image: "",
+		title: "세 번째 기사",
+		date: "2026-03-29",
+		content: "이것은 세 번째 기사 내용 일부입니다.",
+	},
+	{
+		article_id: 5,
+		image: "",
+		title: "세 번째 기사",
+		date: "2026-03-29",
+		content: "이것은 세 번째 기사 내용 일부입니다.",
+	},
+	{
+		article_id: 6,
+		image: "",
+		title: "세 번째 기사",
+		date: "2026-03-29",
+		content: "이것은 세 번째 기사 내용 일부입니다.",
+	},
+	{
+		article_id: 7,
+		image: "",
+		title: "세 번째 기사",
+		date: "2026-03-29",
+		content: "이것은 세 번째 기사 내용 일부입니다.",
+	},
+	{
+		article_id: 8,
+		image: "",
+		title: "세 번째 기사",
+		date: "2026-03-29",
+		content: "이것은 세 번째 기사 내용 일부입니다.",
+	},
+	{
+		article_id: 9,
+		image: "",
+		title: "아홉 번째 기사",
+		date: "2026-03-29",
+		content: "이것은 세 번째 기사 내용 일부입니다.",
+	},
 ];
 
 export function getArticles() {

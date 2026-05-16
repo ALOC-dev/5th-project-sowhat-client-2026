@@ -1,0 +1,34 @@
+.page{
+    width: 100%;
+    min-height: 100vh;
+    padding: 10px;
+    
+}
+
+.layout{
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    
+}
+
+.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1eeeece;
+    border-radius: 8px;
+}
+
+.p1{
+    font-weight: 500 ;
+    font-size: 25px;
+}
+.p2{
+    font-weight: 400 ;
+    font-size: 15px;
+    color: #d9d9d910;
+}

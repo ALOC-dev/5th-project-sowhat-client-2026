@@ -1,4 +1,4 @@
-import * as styles from "./ArticleCard.style";
+import styled from "./ArticleCard.module.css";
 
 type Article = {
   article_id: number;
@@ -16,13 +16,13 @@ type ArticleCardProps = {
 export default function ArticleCard({ article, onDetailView }: ArticleCardProps) {
 	return (
 		<div
-			style={styles.articleCardStyle}
+			className={styled.articleCard}
 			key={article.article_id}
 			onClick={()=>onDetailView(article.article_id)}
 		>
-			<h2 style={styles.articleTitleStyle}>{article.title}</h2>
-			<p style={styles.articleDateStyle}>{article.date}</p>
-			<p style={styles.articleContentStyle}>{article.content}</p>
+			<h2 className={styled.articleTitle}>{article.title}</h2>
+			<p className={styled.articleDate}>{article.date}</p>
+			<p className={styled.articleContent}>{article.content}</p>
 		</div>
 	);
 }

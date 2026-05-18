@@ -1,15 +1,5 @@
-ArticleCard;
-
 import { Article } from "../types";
 import styled from "./ArticleCard.module.css";
-
-// type Article = {
-//   article_id: number;
-//   title: string;
-//   date: string;
-//   content: string;
-//   image: string;
-// };
 
 type ArticleCardProps = {
 	article: Article;

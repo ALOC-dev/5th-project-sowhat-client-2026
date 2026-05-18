@@ -18,9 +18,25 @@ export type ArticleDetailResponse = {
 	keyword: string;
 };
 
-export type PersonalAnalysis = {
+export type PersonalAnalysisResponse = {
 	effect: string;
 	solution: string;
+};
+
+export type ProfileCreateRequest = {
+	age: number;
+	gender: string;
+	region: string;
+	job: string;
+	interest: string;
+};
+
+export type ProfileModifyRequest = {
+	age?: number;
+	gender?: string;
+	region?: string;
+	job?: string;
+	interest?: string;
 };
 
 export type ProfileResponse = {
@@ -30,4 +46,9 @@ export type ProfileResponse = {
 	region: string;
 	job: string;
 	interest: string;
+};
+
+export type ProfileCreateResponse = {
+	user_id: number;
+	message?: string;
 };

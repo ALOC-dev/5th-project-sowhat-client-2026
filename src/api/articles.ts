@@ -23,15 +23,17 @@
 // 	},
 // ];
 
+import { Article, ArticleDetail, PersonalAnalysis } from "../types";
 import { api } from "./client";
 import {
 	ArticleDetailResponse,
 	ArticleResponse,
-	PersonalAnalysis,
+	PersonalAnalysisResponse,
 } from "./contracts";
+import { toArticleDetail, toPersonalAnalysis } from "./mappers";
 
 // 전체 기사 조회: GET /api/articles
-export async function getArticles(): Promise<ArticleResponse[]> {
+export async function getArticles(): Promise<Article[]> {
 	const data = (await api<ArticleResponse[]>(`/api/articles`)) ?? [];
 	return data;
 }
@@ -39,11 +41,11 @@ export async function getArticles(): Promise<ArticleResponse[]> {
 // 개별 기사 + 공통해설 조회: GET /api/articles/{article_id}
 export async function getArticleDetail(
 	article_id: number,
-): Promise<ArticleDetailResponse | void> {
+): Promise<ArticleDetail | void> {
 	const data = await api<ArticleDetailResponse>(
 		`/api/articles/${article_id}`,
 	);
-	return data;
+	return toArticleDetail(data);
 }
 
 // 개인별 해설 조회: GET /api/articles/analysis?article_id=xxx&user_id=xxx
@@ -51,8 +53,8 @@ export async function getPersonalAnalysis(
 	article_id: number,
 	user_id: number,
 ): Promise<PersonalAnalysis | void> {
-	const data = await api<PersonalAnalysis>(
+	const data = await api<PersonalAnalysisResponse>(
 		`/api/articles/analysis?article_id=${article_id}&user_id=${user_id}`,
 	);
-	return data;
+	return toPersonalAnalysis(data);
 }

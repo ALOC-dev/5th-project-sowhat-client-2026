@@ -56,15 +56,15 @@ const stringToCategory = (inputStr: string): CategoryEnum => {
 };
 
 export const toArticle = (res: ArticleResponse | void): Article | void => {
-	return res == undefined
-		? res
-		: {
+	return res
+		? {
 				article_id: res.article_id,
 				title: res.title,
 				link: res.link,
 				content: res.content,
 				media: res.media,
-			};
+			}
+		: undefined;
 };
 
 export const toArticleList = (res: ArticleResponse[]): Article[] => {
@@ -74,9 +74,8 @@ export const toArticleList = (res: ArticleResponse[]): Article[] => {
 export const toArticleDetail = (
 	res: ArticleDetailResponse | void,
 ): ArticleDetail | void => {
-	return res == undefined
-		? res
-		: {
+	return res
+		? {
 				article_id: res.article_id,
 				title: res.title,
 				link: res.link,
@@ -84,29 +83,30 @@ export const toArticleDetail = (
 				media: res.media,
 				summary: res.summary,
 				keyword: res.keyword,
-			};
+			}
+		: undefined;
 };
 
 export const toPersonalAnalysis = (
 	res: PersonalAnalysisResponse | void,
 ): PersonalAnalysis | void => {
-	return res == undefined
-		? res
-		: {
+	return res
+		? {
 				effect: res.effect,
 				solution: res.solution,
-			};
+			}
+		: undefined;
 };
 
 export const toUserInfo = (res: ProfileResponse | void): UserInfo | void => {
-	return res == undefined
-		? res
-		: {
+	return res
+		? {
 				user_id: res.user_id,
 				age: res.age,
 				gender: stringToGender(res.gender),
 				region: stringToRegion(res.region),
 				job: stringToJob(res.job),
 				interest: stringToCategory(res.interest),
-			};
+			}
+		: undefined;
 };

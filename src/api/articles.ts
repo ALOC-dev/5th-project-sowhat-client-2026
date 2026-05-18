@@ -1,4 +1,4 @@
-/* 뉴스 기사 Mock data */
+/* 뉴스 기사 Mock data  */
 const MOCK_ARTICLES = [
 	{
 		article_id: 1,
@@ -68,4 +68,3 @@ const MOCK_ARTICLES = [
 export function getArticles() {
 	return MOCK_ARTICLES;
 }
-

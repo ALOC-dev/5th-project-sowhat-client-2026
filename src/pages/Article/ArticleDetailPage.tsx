@@ -1,19 +1,29 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getArticles } from "../../api/articles";
+import { getArticleDetail } from "../../api/articles";
+import { ArticleDetail } from "../../types";
 import styled from "./ArticleDetailPage.module.css";
 
 type ArticleDetailPageProps = {
   isLogin: boolean;
 };
 
-export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
-  const { article_id } = useParams();
-  const navigate = useNavigate();
+export default function ArticleDetailPage() {
+	const { article_id } = useParams();
+	const navigate = useNavigate();
 
-  const articles = getArticles();
-  const article = articles.find(
-    (article) => article.article_id === Number(article_id)
-  );
+	const [article, setArticle] = useState<Article | null>(
+		null,
+	);
+  
+  useEffect(() => {
+		const fetchArticleDetail = async () => {
+			const fetched = await getArticleDetail(Number(article_id));
+			setArticle((prev) => fetched ?? null);
+		};
+
+		fetchArticleDetail();
+	}, []);
 
   return (
     <div className={styled.page}>

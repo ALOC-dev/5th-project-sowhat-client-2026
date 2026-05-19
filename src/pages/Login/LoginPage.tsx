@@ -1,12 +1,22 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function LoginPage() {
-    const [id, setId] = useState("");
-    const [password, setPassword] = useState("");
+type LoginPageProps = {
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-    const handleLogin = () => {
+export default function LoginPage({ setIsLogin }: LoginPageProps) {
+  const [id, setId] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const navigate = useNavigate();
+
+  const handleLogin = (): void => {
     console.log("아이디:", id);
     console.log("비밀번호:", password);
+
+    setIsLogin(true);
+    navigate("/");
   };
 
   return (
@@ -17,19 +27,21 @@ export default function LoginPage() {
         type="text"
         placeholder="아이디"
         value={id}
-        onChange={(e) => setId(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setId(e.target.value)
+        }
       />
 
       <input
         type="password"
         placeholder="비밀번호"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setPassword(e.target.value)
+        }
       />
 
       <button onClick={handleLogin}>로그인</button>
-
-      
     </div>
   );
 }

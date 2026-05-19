@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getArticleDetail, getPersonalAnalysis } from "../../api/articles";
 import { ArticleDetail, PersonalAnalysis } from "../../types";
 import styled from "./ArticleDetailPage.module.css";
@@ -9,6 +9,7 @@ type ArticleDetailPageProps = {
 };
 
 export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
+	const location = useLocation();
 	const { article_id } = useParams();
 	const navigate = useNavigate();
 
@@ -89,7 +90,13 @@ export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
 							<p className={styled.p2}>
 								지금 로그인하고 확인하세요.
 							</p>
-							<button onClick={() => navigate("/login")}>
+							<button
+								onClick={() =>
+									navigate(
+										`/login?redirect=${location.pathname}`,
+									)
+								}
+							>
 								로그인
 							</button>
 						</>

@@ -34,7 +34,7 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 
 	return (
 		<div className={styles.page}>
-			<button className={styles.backButton} onClick={() => navigate("/")}>
+			<button className={styles.backButton} onClick={() => navigate(-1)}>
 				← 돌아가기
 			</button>
 

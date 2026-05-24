@@ -1,0 +1,129 @@
+.page {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  padding: 24px 64px;
+  box-sizing: border-box;
+}
+
+.backButton {
+  border: none;
+  border-radius: 12px;
+  padding: 8px 12px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 48px;
+  align-items: start;
+}
+
+.articleBox {
+  max-width: 560px;
+}
+
+.title {
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.date {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 40px;
+}
+
+.content {
+  font-size: 16px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.sideBox {
+  min-height: 300px;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  padding: 36px 32px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.sideBox h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.sideBox ul {
+  margin-bottom: 36px;
+  padding-left: 20px;
+}
+
+.sideBox li {
+  margin-bottom: 8px;
+}
+
+.p1 {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.p2 {
+  font-size: 14px;
+  color: #777;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sideBox button {
+  display: block;
+  margin: 0 auto;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  background-color: #e5e5e5;
+  cursor: pointer;
+}
+
+.divider {
+  margin: 40px 0 28px;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+.summaryBox {
+  margin-top: 24px;
+}
+
+.summaryTitle {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.summaryText {
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.keywordList {
+  padding-left: 20px;
+}
+
+.keywordList li {
+  margin-bottom: 20px;
+}
+
+.keywordList strong {
+  font-size: 16px;
+}
+
+.keywordList p {
+  margin-top: 6px;
+  font-size: 14px;
+}

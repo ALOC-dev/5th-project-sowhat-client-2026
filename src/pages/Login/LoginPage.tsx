@@ -1,35 +1,50 @@
 import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-export default function LoginPage() {
-    const [id, setId] = useState("");
-    const [password, setPassword] = useState("");
+type LoginPageProps = {
+	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-    const handleLogin = () => {
-    console.log("아이디:", id);
-    console.log("비밀번호:", password);
-  };
+export default function LoginPage({ setIsLogin }: LoginPageProps) {
+	const [id, setId] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
 
-  return (
-    <div className="login-page">
-      <h2>로그인</h2>
+	// 로그인한 뒤 리디렉션할 주소
+	const [searchParams] = useSearchParams("redirect");
+	const redirect = searchParams.get("redirect");
+	const navigate = useNavigate();
 
-      <input
-        type="text"
-        placeholder="아이디"
-        value={id}
-        onChange={(e) => setId(e.target.value)}
-      />
+	const handleLogin = (): void => {
+		console.log("아이디:", id);
+		console.log("비밀번호:", password);
 
-      <input
-        type="password"
-        placeholder="비밀번호"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+		setIsLogin(true);
+		navigate(redirect ?? "/");
+	};
 
-      <button onClick={handleLogin}>로그인</button>
+	return (
+		<div className="login-page">
+			<h2>로그인</h2>
 
-      
-    </div>
-  );
+			<input
+				type="text"
+				placeholder="아이디"
+				value={id}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+					setId(e.target.value)
+				}
+			/>
+
+			<input
+				type="password"
+				placeholder="비밀번호"
+				value={password}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+					setPassword(e.target.value)
+				}
+			/>
+
+			<button onClick={handleLogin}>로그인</button>
+		</div>
+	);
 }

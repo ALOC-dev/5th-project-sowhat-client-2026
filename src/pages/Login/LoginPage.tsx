@@ -1,47 +1,73 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import styles from "./LoginPage.module.css";
 
 type LoginPageProps = {
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function LoginPage({ setIsLogin }: LoginPageProps) {
-  const [id, setId] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+	const [id, setId] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
 
-  const navigate = useNavigate();
+	// 로그인한 뒤 리디렉션할 주소
+	const [searchParams] = useSearchParams("redirect");
+	const redirect = searchParams.get("redirect");
+	const navigate = useNavigate();
 
-  const handleLogin = (): void => {
-    console.log("아이디:", id);
-    console.log("비밀번호:", password);
+	const handleLogin = (): void => {
+		console.log("아이디:", id);
+		console.log("비밀번호:", password);
 
-    setIsLogin(true);
-    navigate("/");
-  };
+		setIsLogin(true);
+		navigate(redirect ?? "/");
+	};
 
-  return (
-    <div className="login-page">
-      <h2>로그인</h2>
+	return (
+		<div className={styles.page}>
+			<div className={styles.card}>
+				<p className={styles.eyebrow}>Welcome back</p>
+				<h2 className={styles.logo}>So What?</h2>
+				<p className={styles.subtitle}>
+					로그인하고 나만의 뉴스 분석을 받아보세요
+				</p>
 
-      <input
-        type="text"
-        placeholder="아이디"
-        value={id}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setId(e.target.value)
-        }
-      />
+				<div className={styles.fields}>
+					<input
+						className={styles.input}
+						type="text"
+						placeholder="아이디"
+						value={id}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+							setId(e.target.value)
+						}
+					/>
 
-      <input
-        type="password"
-        placeholder="비밀번호"
-        value={password}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setPassword(e.target.value)
-        }
-      />
+					<input
+						className={styles.input}
+						type="password"
+						placeholder="비밀번호"
+						value={password}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+							setPassword(e.target.value)
+						}
+					/>
+				</div>
 
-      <button onClick={handleLogin}>로그인</button>
-    </div>
-  );
+				<button className={styles.submit} onClick={handleLogin}>
+					로그인
+				</button>
+
+				<p className={styles.footer}>
+					계정이 없으신가요?{" "}
+					<button
+						className={styles.link}
+						onClick={() => navigate("/signup")}
+					>
+						회원가입
+					</button>
+				</p>
+			</div>
+		</div>
+	);
 }

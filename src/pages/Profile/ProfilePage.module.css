@@ -1,59 +1,65 @@
 .page {
   width: 100%;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 56px);
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  padding-top: 40px;
+  padding-top: 48px;
   box-sizing: border-box;
 }
 
 .backButton {
   align-self: flex-start;
-  margin-left: 80px;
+  margin-left: 24px;
 
   border: none;
-  border-radius: 14px;
-  background: #f5f5f5;
+  border-radius: 999px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
 
-  padding: 8px 14px;
+  padding: 8px 16px;
+  font-size: 13px;
   cursor: pointer;
 }
 
 .title {
-  font-size: 28px;
-  font-weight: 700;
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-h);
 
-  margin-bottom: 28px;
+  margin: 24px 0 24px;
 }
 
 .profileIcon {
-  width: 90px;
-  height: 90px;
+  width: 88px;
+  height: 88px;
 
   border-radius: 50%;
-  background-color: #ddd;
+  background-color: var(--accent-soft);
+  border: 1px solid var(--accent-border);
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  font-size: 40px;
+  font-size: 36px;
   margin-bottom: 24px;
 }
 
 .infoBox {
-  width: 280px;
+  width: 300px;
 
-  border: 1px solid #ddd;
-  border-radius: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
 
   padding: 24px;
   box-sizing: border-box;
 
-  background: white;
+  background: var(--bg-card);
 }
 
 .infoRow {
@@ -61,15 +67,21 @@
   justify-content: space-between;
 
   margin-bottom: 14px;
-  font-size: 15px;
+  font-size: 14px;
+}
+
+.infoRow:last-child {
+  margin-bottom: 0;
 }
 
 .label {
-  font-weight: 600;
+  font-weight: 500;
+  color: var(--text);
 }
 
 .value {
-  color: #555;
+  color: var(--text-h);
+  font-weight: 500;
 }
 
 .buttonGroup {
@@ -81,24 +93,34 @@
 
 .editButton {
   border: none;
-  border-radius: 12px;
+  border-radius: 999px;
 
-  padding: 10px 18px;
-  background: #eaeaea;
+  padding: 10px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-h);
+  font-size: 13px;
 
   cursor: pointer;
 }
 
+.editButton:hover {
+  background: rgba(28, 25, 23, 0.04);
+}
+
 .logoutButton {
   border: none;
-  border-radius: 12px;
+  border-radius: 999px;
 
-  padding: 10px 18px;
-  background: #d9d9d9;
+  padding: 10px 20px;
+  background: var(--accent);
+  color: #1c1917;
+  font-size: 13px;
+  font-weight: 500;
 
   cursor: pointer;
 }
 
 .logoutButton:hover {
-  background: #c8c8c8;
+  background: #f59e0b;
 }

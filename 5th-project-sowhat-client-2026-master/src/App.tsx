@@ -26,14 +26,21 @@ function Header({ isLogin }: HeaderProps) {
 				{isLogin ? (
 					<>
 						<button
-							className={styles.navLink}
+							className={styles.button}
 							onClick={() => navigate("/articles")}
 						>
 							뉴스
 						</button>
 
 						<button
-							className={styles.avatarButton}
+							className={styles.button}
+							onClick={() => navigate("/articles")}
+						>
+							지역소식
+						</button>
+
+						<button
+							className={styles.button}
 							onClick={() => navigate("/profile")}
 						>
 							👤
@@ -42,7 +49,7 @@ function Header({ isLogin }: HeaderProps) {
 				) : (
 					<>
 						<button
-							className={styles.navLink}
+							className={styles.button}
 							onClick={() =>
 								navigate(`/login?redirect=${location.pathname}`)
 							}

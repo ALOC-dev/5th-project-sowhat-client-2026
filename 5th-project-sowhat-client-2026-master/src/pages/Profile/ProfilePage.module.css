@@ -1,0 +1,104 @@
+.page {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 40px;
+  box-sizing: border-box;
+}
+
+.backButton {
+  align-self: flex-start;
+  margin-left: 80px;
+
+  border: none;
+  border-radius: 14px;
+  background: #f5f5f5;
+
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+
+  margin-bottom: 28px;
+}
+
+.profileIcon {
+  width: 90px;
+  height: 90px;
+
+  border-radius: 50%;
+  background-color: #ddd;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 40px;
+  margin-bottom: 24px;
+}
+
+.infoBox {
+  width: 280px;
+
+  border: 1px solid #ddd;
+  border-radius: 14px;
+
+  padding: 24px;
+  box-sizing: border-box;
+
+  background: white;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.value {
+  color: #555;
+}
+
+.buttonGroup {
+  margin-top: 24px;
+
+  display: flex;
+  gap: 12px;
+}
+
+.editButton {
+  border: none;
+  border-radius: 12px;
+
+  padding: 10px 18px;
+  background: #eaeaea;
+
+  cursor: pointer;
+}
+
+.logoutButton {
+  border: none;
+  border-radius: 12px;
+
+  padding: 10px 18px;
+  background: #d9d9d9;
+
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  background: #c8c8c8;
+}

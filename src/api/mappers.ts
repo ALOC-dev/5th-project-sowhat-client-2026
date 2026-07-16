@@ -5,14 +5,15 @@ import {
 	GenderEnum,
 	JobEnum,
 	PersonalAnalysis,
+	PurposeEnum,
 	RegionEnum,
-	UserInfo,
+	User,
 } from "../types";
 import {
 	ArticleDetailResponse,
 	ArticleResponse,
 	PersonalAnalysisResponse,
-	ProfileResponse,
+	UserResponse,
 } from "./contracts";
 
 const stringToGender = (inputStr: string): GenderEnum => {
@@ -52,23 +53,49 @@ const stringToCategory = (inputStr: string): CategoryEnum => {
 		? "POLITICS"
 		: inputStr == "ECONOMY"
 			? "ECONOMY"
-			: "SOCIETY";
+			: inputStr == "SOCIETY"
+				? "SOCIETY"
+				: "INDUSTRY_IT";
+};
+
+const stringToPurpose = (inputStr: string): PurposeEnum => {
+	inputStr = inputStr.trim().toUpperCase();
+	return inputStr == "EMPLOYMENT"
+		? "EMPLOYMENT"
+		: inputStr == "INVESTMENT"
+			? "INVESTMENT"
+			: inputStr == "POLICY"
+				? "POLICY"
+				: inputStr == "INDUSTRY"
+					? "INDUSTRY"
+					: inputStr == "SOCIAL"
+						? "SOCIAL"
+						: inputStr == "STUDY"
+							? "STUDY"
+							: inputStr == "STARTUP"
+								? "STARTUP"
+								: inputStr == "TECH"
+									? "TECH"
+									: "GENERAL";
 };
 
 export const toArticle = (res: ArticleResponse | void): Article | void => {
 	return res
 		? {
-				article_id: res.article_id,
+				id: res.id,
 				title: res.title,
-				link: res.link,
+				source_url: res.source_url,
+				publisher: res.publisher,
+				published_at: new Date(res.published_at),
+				category: stringToCategory(res.category),
 				content: res.content,
-				media: res.media,
 			}
 		: undefined;
 };
 
 export const toArticleList = (res: ArticleResponse[]): Article[] => {
-	return res.map((a) => a ?? toArticle(a));
+	const mapped = res.map((a) => toArticle(a));
+	return mapped.filter((v) => v != undefined);
 };
 
 export const toArticleDetail = (
@@ -76,11 +103,14 @@ export const toArticleDetail = (
 ): ArticleDetail | void => {
 	return res
 		? {
-				article_id: res.article_id,
+				id: res.id,
 				title: res.title,
-				link: res.link,
+				source_url: res.source_url,
+				publisher: res.publisher,
+				published_at: new Date(res.published_at),
+				reporter: res.reporter,
+				category: stringToCategory(res.category),
 				content: res.content,
-				media: res.media,
 				summary: res.summary,
 				keyword: res.keyword,
 			}
@@ -98,15 +128,17 @@ export const toPersonalAnalysis = (
 		: undefined;
 };
 
-export const toUserInfo = (res: ProfileResponse | void): UserInfo | void => {
+export const toUser = (res: UserResponse | void): User | void => {
 	return res
 		? {
-				user_id: res.user_id,
+				id: res.id,
 				age: res.age,
 				gender: stringToGender(res.gender),
 				region: stringToRegion(res.region),
 				job: stringToJob(res.job),
 				interest: stringToCategory(res.interest),
+				purpose: stringToPurpose(res.purpose),
+				extra_information: res.extra_information,
 			}
 		: undefined;
 };

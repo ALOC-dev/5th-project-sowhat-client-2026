@@ -30,12 +30,12 @@ import {
 	ArticleResponse,
 	PersonalAnalysisResponse,
 } from "./contracts";
-import { toArticleDetail, toPersonalAnalysis } from "./mappers";
+import { toArticleDetail, toArticleList, toPersonalAnalysis } from "./mappers";
 
 // 전체 기사 조회: GET /api/articles
 export async function getArticles(): Promise<Article[]> {
 	const data = (await api<ArticleResponse[]>(`/api/articles`)) ?? [];
-	return data;
+	return toArticleList(data);
 }
 
 // 개별 기사 + 공통해설 조회: GET /api/articles/{article_id}

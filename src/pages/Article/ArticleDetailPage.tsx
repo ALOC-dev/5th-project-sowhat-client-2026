@@ -48,7 +48,8 @@ export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
 						<>
 							<h1 className={styled.title}>{article.title}</h1>
 							<p className={styled.date}>
-								{article.date?.toDateString() ?? "2026-05-19"}
+								{article.published_at.toDateString() ??
+									"2026-05-19"}
 							</p>
 							<p className={styled.content}>{article.content}</p>
 						</>
@@ -62,8 +63,8 @@ export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
 
 						<ul className={styled.keywordList}>
 							<li>
-								<strong>{article?.keyword}</strong>
-								<p>'{article?.keyword}'에 대한 설명입니다.</p>
+								<strong>{article?.keyword[0].word}</strong>
+								<p>{article?.keyword[0].description}</p>
 							</li>
 						</ul>
 					</section>

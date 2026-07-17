@@ -12,9 +12,9 @@ export default function ArticleListPage() {
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	const selectedCategory = searchParams.get("category") as
-		| CategoryEnum
-		| null;
+	const selectedCategory = searchParams.get(
+		"category",
+	) as CategoryEnum | null;
 
 	useEffect(() => {
 		const fetchArticles = async () => {
@@ -64,10 +64,10 @@ export default function ArticleListPage() {
 				) : (
 					filteredArticles.map((article) => (
 						<ArticleCard
-							key={article.article_id}
+							key={article.id}
 							article={article}
-							onDetailView={(article_id) => {
-								navigate(`/articles/${article_id}`);
+							onDetailView={(articleId) => {
+								navigate(`/articles/${articleId}`);
 							}}
 						/>
 					))

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getProfile } from "../../api/profiles";
+import { getUser } from "../../api/users";
 import {
 	categoryLabel,
 	genderLabel,
 	jobLabel,
 	regionLabel,
-	UserInfo,
+	User,
 } from "../../types";
 import styles from "./ProfilePage.module.css";
 
@@ -16,7 +16,7 @@ type ProfilePageProps = {
 
 export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 	const navigate = useNavigate();
-	const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+	const [user, setUser] = useState<User | null>(null);
 
 	const handleLogout = (): void => {
 		setIsLogin(false);
@@ -24,12 +24,12 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 	};
 
 	useEffect(() => {
-		const fetchUserInfo = async () => {
-			const fetched = await getProfile(1);
-			setUserInfo((prev) => fetched ?? null);
+		const fetchUser = async () => {
+			const fetched = await getUser(1);
+			setUser((prev) => fetched ?? null);
 		};
 
-		fetchUserInfo();
+		fetchUser();
 	}, []);
 
 	return (
@@ -46,35 +46,35 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 				<div className={styles.infoRow}>
 					<span className={styles.label}>나이</span>
 					<span className={styles.value}>
-						{userInfo ? userInfo.age : "-"}
+						{user ? user.age : "-"}
 					</span>
 				</div>
 
 				<div className={styles.infoRow}>
 					<span className={styles.label}>성별</span>
 					<span className={styles.value}>
-						{userInfo ? genderLabel(userInfo.gender) : "-"}
+						{user ? genderLabel(user.gender) : "-"}
 					</span>
 				</div>
 
 				<div className={styles.infoRow}>
 					<span className={styles.label}>거주지역</span>
 					<span className={styles.value}>
-						{userInfo ? regionLabel(userInfo.region) : "-"}
+						{user ? regionLabel(user.region) : "-"}
 					</span>
 				</div>
 
 				<div className={styles.infoRow}>
 					<span className={styles.label}>직업</span>
 					<span className={styles.value}>
-						{userInfo ? jobLabel(userInfo.job) : "-"}
+						{user ? jobLabel(user.job) : "-"}
 					</span>
 				</div>
 
 				<div className={styles.infoRow}>
 					<span className={styles.label}>관심분야</span>
 					<span className={styles.value}>
-						{userInfo ? categoryLabel(userInfo.interest) : "-"}
+						{user ? categoryLabel(user.interest) : "-"}
 					</span>
 				</div>
 			</div>

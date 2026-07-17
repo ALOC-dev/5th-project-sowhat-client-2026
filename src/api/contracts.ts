@@ -1,21 +1,28 @@
 /* 요청/응답 형식 정의 */
 
+import { KeywordItem } from "../types";
+
 export type ArticleResponse = {
-	article_id: number;
+	id: number;
 	title: string;
-	link: string;
+	source_url: string;
+	publisher: string;
+	published_at: string;
 	content: string;
-	media: string;
+	category: string;
 };
 
 export type ArticleDetailResponse = {
-	article_id: number;
+	id: number;
 	title: string;
-	link: string;
+	source_url: string;
+	publisher: string;
+	published_at: string;
+	reporter: string;
+	category: string;
 	content: string;
-	media: string;
 	summary: string;
-	keyword: string;
+	keyword: KeywordItem[];
 };
 
 export type PersonalAnalysisResponse = {
@@ -23,32 +30,38 @@ export type PersonalAnalysisResponse = {
 	solution: string;
 };
 
-export type ProfileCreateRequest = {
+export type UserCreateRequest = {
 	age: number;
 	gender: string;
 	region: string;
 	job: string;
 	interest: string;
+	purpose: string;
+	extra_information: string;
 };
 
-export type ProfileModifyRequest = {
+export type UserUpdateRequest = {
 	age?: number;
 	gender?: string;
 	region?: string;
 	job?: string;
 	interest?: string;
+	purpose?: string;
+	extra_information?: string;
 };
 
-export type ProfileResponse = {
-	user_id: number;
+export type UserResponse = {
+	id: number;
 	age: number;
 	gender: string;
 	region: string;
 	job: string;
 	interest: string;
+	purpose: string;
+	extra_information: string;
 };
 
-export type ProfileCreateResponse = {
-	user_id: number;
+export type UserCreateResponse = {
+	id: number;
 	message?: string;
 };

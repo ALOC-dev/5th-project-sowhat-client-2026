@@ -5,7 +5,7 @@ import { Article, CategoryEnum, categoryLabel } from "../../types";
 import ArticleCard from "../../ui/ArticleCard";
 import styles from "./ArticleListPage.module.css";
 
-const CATEGORIES: CategoryEnum[] = ["POLITICS", "ECONOMY", "SOCIETY"];
+const CATEGORIES: CategoryEnum[] = ["POLITICS", "ECONOMY", "SOCIETY", "INDUSTRY_IT"];
 
 export default function ArticleListPage() {
 	const [articles, setArticles] = useState<Article[]>([]);
@@ -37,6 +37,7 @@ export default function ArticleListPage() {
 
 			<div className={styles.categoryTabs}>
 				<button
+				
 					className={styles.categoryTab}
 					data-active={!selectedCategory}
 					onClick={() => setSearchParams({})}

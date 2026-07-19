@@ -94,7 +94,7 @@ export const categoryLabel = (category: CategoryEnum): string =>
 			? "경제"
 			: category == "SOCIETY"
 				? "사회"
-				: "산업/IT";
+					: "산업/IT";
 
 export const purposeLabel = (purpose: PurposeEnum): string =>
 	purpose == "EMPLOYMENT"

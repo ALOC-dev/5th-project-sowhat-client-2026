@@ -55,7 +55,7 @@ const stringToCategory = (inputStr: string): CategoryEnum => {
 			? "ECONOMY"
 			: inputStr == "SOCIETY"
 				? "SOCIETY"
-				: "INDUSTRY_IT";
+				: "INDUSTRY_IT" ;
 };
 
 const stringToPurpose = (inputStr: string): PurposeEnum => {

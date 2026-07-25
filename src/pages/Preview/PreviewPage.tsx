@@ -13,7 +13,7 @@ export default function PreviewPage() {
 		<div className={styles.page}>
 			<h1 className={styles.title}>화면 미리보기</h1>
 			<p className={styles.subtitle}>
-				실제 페이지를 축소해서 보여줘요. 클릭하면 새 탭에서 열려요.
+				
 			</p>
 
 			<div className={styles.grid}>

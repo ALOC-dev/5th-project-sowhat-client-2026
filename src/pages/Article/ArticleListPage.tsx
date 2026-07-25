@@ -1,16 +1,29 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getArticles } from "../../api/articles";
-import { Article, CategoryEnum, categoryLabel } from "../../types";
+import { Article, CategoryEnum, categoryLabel, jobLabel } from "../../types";
+import {
+	ExperienceProfile,
+	readExperienceProfile,
+} from "../Main/ExperienceModal";
 import ArticleCard from "../../ui/ArticleCard";
 import styles from "./ArticleListPage.module.css";
 
-const CATEGORIES: CategoryEnum[] = ["POLITICS", "ECONOMY", "SOCIETY", "INDUSTRY_IT"];
+const CATEGORIES: CategoryEnum[] = [
+	"POLITICS",
+	"ECONOMY",
+	"SOCIETY",
+	"INDUSTRY_IT",
+];
 
 export default function ArticleListPage() {
 	const [articles, setArticles] = useState<Article[]>([]);
 	const navigate = useNavigate();
+	const location = useLocation();
 	const [searchParams, setSearchParams] = useSearchParams();
+	const [experience, setExperience] = useState<ExperienceProfile | null>(
+		null,
+	);
 
 	const selectedCategory = searchParams.get(
 		"category",
@@ -25,6 +38,17 @@ export default function ArticleListPage() {
 		fetchArticles();
 	}, []);
 
+	useEffect(() => {
+		const profile = readExperienceProfile();
+		if (!profile) return;
+		setExperience(profile);
+
+		if (!searchParams.get("category")) {
+			setSearchParams({ category: profile.interest });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const filteredArticles = selectedCategory
 		? articles.filter((article) => article.category === selectedCategory)
 		: articles;
@@ -35,9 +59,28 @@ export default function ArticleListPage() {
 				<h1 className={styles.pageTitle}>전체 기사 보기</h1>
 			</div>
 
+			{experience && (
+				<div className={styles.experienceBanner}>
+					<p className={styles.experienceText}>
+						<strong>{jobLabel(experience.job)}</strong>이신
+						분들이 많이 보는{" "}
+						<strong>{categoryLabel(experience.interest)}</strong>{" "}
+						뉴스를 모아봤어요. 간단한 해설은 바로 볼 수 있고,{" "}
+						나에게 맞춘 자세한 해설은 로그인하면 확인할 수 있어요.
+					</p>
+					<button
+						className={styles.experienceCta}
+						onClick={() =>
+							navigate(`/login?redirect=${location.pathname}`)
+						}
+					>
+						로그인하고 전체 해설 보기
+					</button>
+				</div>
+			)}
+
 			<div className={styles.categoryTabs}>
 				<button
-				
 					className={styles.categoryTab}
 					data-active={!selectedCategory}
 					onClick={() => setSearchParams({})}

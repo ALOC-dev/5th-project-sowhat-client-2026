@@ -74,6 +74,42 @@
   margin-bottom: 0;
 }
 
+.editRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.editRow:last-child {
+  margin-bottom: 0;
+}
+
+.editInput {
+  width: 100%;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--bg-card);
+  color: var(--text-h);
+  font-size: 13px;
+}
+
+.editTextarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--bg-card);
+  color: var(--text-h);
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+}
+
 .label {
   font-weight: 500;
   color: var(--text);

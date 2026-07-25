@@ -6,6 +6,7 @@ import ArticleDetailPage from "./pages/Article/ArticleDetailPage";
 import ArticleListPage from "./pages/Article/ArticleListPage";
 import LoginPage from "./pages/Login/LoginPage";
 import MainPage from "./pages/Main/MainPage";
+import PreviewPage from "./pages/Preview/PreviewPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 
 type HeaderProps = {
@@ -84,6 +85,8 @@ export default function App() {
 				/>
 
 				<Route path="/articles" element={<ArticleListPage />} />
+
+				<Route path="/preview" element={<PreviewPage />} />
 
 				<Route
 					path="/articles/:article_id"

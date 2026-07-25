@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getArticleDetail, getPersonalAnalysis } from "../../api/articles";
-import { ArticleDetail, PersonalAnalysis } from "../../types";
+import { ArticleDetail, jobLabel, PersonalAnalysis } from "../../types";
+import { readExperienceProfile } from "../Main/ExperienceModal";
 import styled from "./ArticleDetailPage.module.css";
 
 type ArticleDetailPageProps = {
@@ -15,6 +16,9 @@ export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
 
 	const [article, setArticle] = useState<ArticleDetail | null>(null);
 	const [analysis, setAnalysis] = useState<PersonalAnalysis | null>(null);
+	const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
+
+	const experience = readExperienceProfile();
 
 	useEffect(() => {
 		const fetchArticleDetail = async () => {
@@ -82,6 +86,26 @@ export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
 							<ul>
 								<li>{analysis?.solution}</li>
 							</ul>
+
+							<p className={styled.feedbackLabel}>
+								이 해설이 도움이 되었나요?
+							</p>
+							<div className={styled.feedbackRow}>
+								<button
+									className={styled.feedbackButton}
+									data-active={feedback === "up"}
+									onClick={() => setFeedback("up")}
+								>
+									👍 도움이 됐어요
+								</button>
+								<button
+									className={styled.feedbackButton}
+									data-active={feedback === "down"}
+									onClick={() => setFeedback("down")}
+								>
+									👎 별로예요
+								</button>
+							</div>
 						</>
 					) : (
 						<>
@@ -89,7 +113,9 @@ export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
 								이 소식이 나에게 어떤 영향을 줄까요?
 							</p>
 							<p className={styled.p2}>
-								지금 로그인하고 확인하세요.
+								{experience
+									? `${jobLabel(experience.job)}이시라면 특히 확인해볼 만한 내용이에요. 지금 로그인하고 나를 위한 해설을 확인하세요.`
+									: "지금 로그인하고 확인하세요."}
 							</p>
 							<button
 								onClick={() =>

@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ExperienceModal from "./ExperienceModal";
 import styles from "./MainPage.module.css";
 
 const HOW_IT_WORKS = [
@@ -24,6 +26,7 @@ const HOW_IT_WORKS = [
 
 export default function MainPage() {
 	const navigate = useNavigate();
+	const [showExperience, setShowExperience] = useState(false);
 
 	return (
 		<div className={styles.mainPage}>
@@ -54,13 +57,22 @@ export default function MainPage() {
 						</button>
 						<button
 							className={styles.ghostButton}
-							onClick={() => navigate("/articles")}
+							onClick={() => setShowExperience(true)}
 						>
 							뉴스 둘러보기
 						</button>
 					</div>
 				</div>
 			</section>
+
+			{showExperience && (
+				<ExperienceModal
+					onClose={() => {
+						setShowExperience(false);
+						navigate("/articles");
+					}}
+				/>
+			)}
 
 			<section className={styles.howSection}>
 				<div className={styles.howHeader}>

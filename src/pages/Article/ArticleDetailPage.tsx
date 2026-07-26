@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getArticleDetail, getPersonalAnalysis } from "../../api/articles";
-import { ArticleDetail, jobLabel, PersonalAnalysis } from "../../types";
+import { ArticleDetail, PersonalAnalysis } from "../../types";
 import { readExperienceProfile } from "../Main/ExperienceModal";
 import styled from "./ArticleDetailPage.module.css";
 
@@ -114,7 +114,7 @@ export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
 							</p>
 							<p className={styled.p2}>
 								{experience
-									? `${jobLabel(experience.job)}이시라면 특히 확인해볼 만한 내용이에요. 지금 로그인하고 나를 위한 해설을 확인하세요.`
+									? `${experience.job}이시라면 특히 확인해볼 만한 내용이에요. 지금 로그인하고 나를 위한 해설을 확인하세요.`
 									: "지금 로그인하고 확인하세요."}
 							</p>
 							<button

@@ -1,6 +1,6 @@
 /* 요청/응답 형식 정의 */
 
-import { KeywordItem } from "../types";
+import { CategoryEnum, GenderEnum, KeywordItem, PurposeEnum } from "../types";
 
 export type ArticleResponse = {
 	id: number;
@@ -9,7 +9,7 @@ export type ArticleResponse = {
 	publisher: string;
 	published_at: string;
 	content: string;
-	category: string;
+	category: CategoryEnum;
 };
 
 export type ArticleDetailResponse = {
@@ -19,7 +19,7 @@ export type ArticleDetailResponse = {
 	publisher: string;
 	published_at: string;
 	reporter: string;
-	category: string;
+	category: CategoryEnum;
 	content: string;
 	summary: string;
 	keyword: KeywordItem[];
@@ -28,36 +28,42 @@ export type ArticleDetailResponse = {
 export type PersonalAnalysisResponse = {
 	effect: string;
 	solution: string;
+	links: Object[];
 };
 
 export type UserCreateRequest = {
+	login_id: string;
+	username: string;
 	age: number;
-	gender: string;
+	gender: GenderEnum;
 	region: string;
 	job: string;
-	interest: string;
-	purpose: string;
+	interest: CategoryEnum;
+	purpose: PurposeEnum;
 	extra_information: string;
 };
 
 export type UserUpdateRequest = {
+	username?: string;
 	age?: number;
-	gender?: string;
+	gender?: GenderEnum;
 	region?: string;
 	job?: string;
-	interest?: string;
-	purpose?: string;
+	interest?: CategoryEnum;
+	purpose?: PurposeEnum;
 	extra_information?: string;
 };
 
 export type UserResponse = {
 	id: number;
+	login_id: string;
+	username: string;
 	age: number;
-	gender: string;
+	gender: GenderEnum;
 	region: string;
 	job: string;
-	interest: string;
-	purpose: string;
+	interest: CategoryEnum;
+	purpose: PurposeEnum;
 	extra_information: string;
 };
 

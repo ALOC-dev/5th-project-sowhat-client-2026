@@ -1,4 +1,4 @@
-import { Article, categoryLabel } from "../types";
+import { Article } from "../types";
 import styled from "./ArticleCard.module.css";
 
 type ArticleCardProps = {
@@ -21,7 +21,7 @@ export default function ArticleCard({
 					className={styled.categoryChip}
 					data-category={article.category}
 				>
-					{categoryLabel(article.category)}
+					{article.category}
 				</span>
 			)}
 			<h2 className={styled.articleTitle}>{article.title}</h2>

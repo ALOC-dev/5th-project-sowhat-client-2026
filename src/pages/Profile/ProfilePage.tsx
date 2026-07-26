@@ -1,57 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUser, updateUser } from "../../api/users";
-import {
-	CategoryEnum,
-	categoryLabel,
-	GenderEnum,
-	genderLabel,
-	JobEnum,
-	jobLabel,
-	PurposeEnum,
-	purposeLabel,
-	RegionEnum,
-	regionLabel,
-	User,
-} from "../../types";
+import { CategoryEnum, GenderEnum, PurposeEnum, User } from "../../types";
 import styles from "./ProfilePage.module.css";
 
 type ProfilePageProps = {
 	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const GENDERS: GenderEnum[] = ["MALE", "FEMALE"];
-const REGIONS: RegionEnum[] = [
-	"SEOUL",
-	"BUSAN",
-	"DAEGU",
-	"INCHEON",
-	"DAEJEON",
-];
-const JOBS: JobEnum[] = [
-	"STUDENT",
-	"OFFICE_WORKER",
-	"DEVELOPER",
-	"JOB_SEEKER",
-	"ETC",
-];
-const CATEGORIES: CategoryEnum[] = [
-	"POLITICS",
-	"ECONOMY",
-	"SOCIETY",
-	"INDUSTRY_IT",
-];
-const PURPOSES: PurposeEnum[] = [
-	"EMPLOYMENT",
-	"INVESTMENT",
-	"POLICY",
-	"INDUSTRY",
-	"SOCIAL",
-	"STUDY",
-	"STARTUP",
-	"TECH",
-	"GENERAL",
-];
+const GENDERS: GenderEnum[] = ["남", "여"];
+const REGIONS = ["서울", "부산", "대구", "인천", "대전"];
+const JOBS = ["학생", "경영·사업", "공학·기술", "취업준비생", "기타"];
+const CATEGORIES: CategoryEnum[] = ["정치", "경제", "사회", "산업/IT"];
+const PURPOSES: PurposeEnum[] = ["일반", "공부", "취·창업", "투자"];
 
 export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 	const navigate = useNavigate();
@@ -67,7 +28,7 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 
 	useEffect(() => {
 		const fetchUser = async () => {
-			const fetched = await getUser(1);
+			const fetched = await getUser();
 			setUser((prev) => fetched ?? null);
 		};
 
@@ -88,7 +49,8 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 	const saveEditing = async () => {
 		if (!user || !form) return;
 		setIsSaving(true);
-		const updated = await updateUser(user.id, {
+		const updated = await updateUser({
+			username: form.username,
 			age: form.age,
 			gender: form.gender,
 			region: form.region,
@@ -124,7 +86,10 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 							type="number"
 							value={form.age}
 							onChange={(e) =>
-								setForm({ ...form, age: Number(e.target.value) })
+								setForm({
+									...form,
+									age: Number(e.target.value),
+								})
 							}
 						/>
 					</div>
@@ -143,7 +108,7 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 						>
 							{GENDERS.map((g) => (
 								<option key={g} value={g}>
-									{genderLabel(g)}
+									{g}
 								</option>
 							))}
 						</select>
@@ -157,13 +122,13 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 							onChange={(e) =>
 								setForm({
 									...form,
-									region: e.target.value as RegionEnum,
+									region: e.target.value,
 								})
 							}
 						>
 							{REGIONS.map((r) => (
 								<option key={r} value={r}>
-									{regionLabel(r)}
+									{r}
 								</option>
 							))}
 						</select>
@@ -175,12 +140,15 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 							className={styles.editInput}
 							value={form.job}
 							onChange={(e) =>
-								setForm({ ...form, job: e.target.value as JobEnum })
+								setForm({
+									...form,
+									job: e.target.value,
+								})
 							}
 						>
 							{JOBS.map((j) => (
 								<option key={j} value={j}>
-									{jobLabel(j)}
+									{j}
 								</option>
 							))}
 						</select>
@@ -200,7 +168,7 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 						>
 							{CATEGORIES.map((c) => (
 								<option key={c} value={c}>
-									{categoryLabel(c)}
+									{c}
 								</option>
 							))}
 						</select>
@@ -220,7 +188,7 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 						>
 							{PURPOSES.map((p) => (
 								<option key={p} value={p}>
-									{purposeLabel(p)}
+									{p}
 								</option>
 							))}
 						</select>
@@ -253,35 +221,35 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 					<div className={styles.infoRow}>
 						<span className={styles.label}>성별</span>
 						<span className={styles.value}>
-							{user ? genderLabel(user.gender) : "-"}
+							{user ? user.gender : "-"}
 						</span>
 					</div>
 
 					<div className={styles.infoRow}>
 						<span className={styles.label}>거주지역</span>
 						<span className={styles.value}>
-							{user ? regionLabel(user.region) : "-"}
+							{user ? user.region : "-"}
 						</span>
 					</div>
 
 					<div className={styles.infoRow}>
 						<span className={styles.label}>직업</span>
 						<span className={styles.value}>
-							{user ? jobLabel(user.job) : "-"}
+							{user ? user.job : "-"}
 						</span>
 					</div>
 
 					<div className={styles.infoRow}>
 						<span className={styles.label}>관심분야</span>
 						<span className={styles.value}>
-							{user ? categoryLabel(user.interest) : "-"}
+							{user ? user.interest : "-"}
 						</span>
 					</div>
 
 					<div className={styles.infoRow}>
 						<span className={styles.label}>관심목적</span>
 						<span className={styles.value}>
-							{user ? purposeLabel(user.purpose) : "-"}
+							{user ? user.purpose : "-"}
 						</span>
 					</div>
 
@@ -317,7 +285,10 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 					</>
 				) : (
 					<>
-						<button className={styles.editButton} onClick={startEditing}>
+						<button
+							className={styles.editButton}
+							onClick={startEditing}
+						>
 							수정하기
 						</button>
 

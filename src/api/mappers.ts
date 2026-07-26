@@ -1,83 +1,10 @@
-import {
-	Article,
-	ArticleDetail,
-	CategoryEnum,
-	GenderEnum,
-	JobEnum,
-	PersonalAnalysis,
-	PurposeEnum,
-	RegionEnum,
-	User,
-} from "../types";
+import { Article, ArticleDetail, PersonalAnalysis, User } from "../types";
 import {
 	ArticleDetailResponse,
 	ArticleResponse,
 	PersonalAnalysisResponse,
 	UserResponse,
 } from "./contracts";
-
-const stringToGender = (inputStr: string): GenderEnum => {
-	inputStr = inputStr.trim().toUpperCase();
-	return inputStr == "MALE" ? "MALE" : "FEMALE";
-};
-
-const stringToRegion = (inputStr: string): RegionEnum => {
-	inputStr = inputStr.trim().toUpperCase();
-	return inputStr == "SEOUL"
-		? "SEOUL"
-		: inputStr == "BUSAN"
-			? "BUSAN"
-			: inputStr == "DAEGU"
-				? "DAEGU"
-				: inputStr == "INCHEON"
-					? "INCHEON"
-					: "DAEJEON";
-};
-
-const stringToJob = (inputStr: string): JobEnum => {
-	inputStr = inputStr.trim().toUpperCase();
-	return inputStr == "STUDENT"
-		? "STUDENT"
-		: inputStr == "OFFICE_WORKER"
-			? "OFFICE_WORKER"
-			: inputStr == "DEVELOPER"
-				? "DEVELOPER"
-				: inputStr == "JOB_SEEKER"
-					? "JOB_SEEKER"
-					: "ETC";
-};
-
-const stringToCategory = (inputStr: string): CategoryEnum => {
-	inputStr = inputStr.trim().toUpperCase();
-	return inputStr == "POLITICS"
-		? "POLITICS"
-		: inputStr == "ECONOMY"
-			? "ECONOMY"
-			: inputStr == "SOCIETY"
-				? "SOCIETY"
-				: "INDUSTRY_IT" ;
-};
-
-const stringToPurpose = (inputStr: string): PurposeEnum => {
-	inputStr = inputStr.trim().toUpperCase();
-	return inputStr == "EMPLOYMENT"
-		? "EMPLOYMENT"
-		: inputStr == "INVESTMENT"
-			? "INVESTMENT"
-			: inputStr == "POLICY"
-				? "POLICY"
-				: inputStr == "INDUSTRY"
-					? "INDUSTRY"
-					: inputStr == "SOCIAL"
-						? "SOCIAL"
-						: inputStr == "STUDY"
-							? "STUDY"
-							: inputStr == "STARTUP"
-								? "STARTUP"
-								: inputStr == "TECH"
-									? "TECH"
-									: "GENERAL";
-};
 
 export const toArticle = (res: ArticleResponse | void): Article | void => {
 	return res
@@ -87,7 +14,7 @@ export const toArticle = (res: ArticleResponse | void): Article | void => {
 				source_url: res.source_url,
 				publisher: res.publisher,
 				published_at: new Date(res.published_at),
-				category: stringToCategory(res.category),
+				category: res.category,
 				content: res.content,
 			}
 		: undefined;
@@ -109,7 +36,7 @@ export const toArticleDetail = (
 				publisher: res.publisher,
 				published_at: new Date(res.published_at),
 				reporter: res.reporter,
-				category: stringToCategory(res.category),
+				category: res.category,
 				content: res.content,
 				summary: res.summary,
 				keyword: res.keyword,
@@ -124,6 +51,7 @@ export const toPersonalAnalysis = (
 		? {
 				effect: res.effect,
 				solution: res.solution,
+				links: [],
 			}
 		: undefined;
 };
@@ -132,12 +60,14 @@ export const toUser = (res: UserResponse | void): User | void => {
 	return res
 		? {
 				id: res.id,
+				login_id: res.login_id,
+				username: res.username,
 				age: res.age,
-				gender: stringToGender(res.gender),
-				region: stringToRegion(res.region),
-				job: stringToJob(res.job),
-				interest: stringToCategory(res.interest),
-				purpose: stringToPurpose(res.purpose),
+				gender: res.gender,
+				region: res.region,
+				job: res.job,
+				interest: res.interest,
+				purpose: res.purpose,
 				extra_information: res.extra_information,
 			}
 		: undefined;

@@ -54,7 +54,7 @@ export async function getPersonalAnalysis(
 	user_id: number,
 ): Promise<PersonalAnalysis | void> {
 	const data = await api<PersonalAnalysisResponse>(
-		`/api/articles/analysis?article_id=${article_id}&user_id=${user_id}`,
+		`/api/articles/analysis?article-id=${article_id}&user-id=${user_id}`,
 	);
 	return toPersonalAnalysis(data);
 }

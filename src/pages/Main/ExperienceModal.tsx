@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { CategoryEnum, categoryLabel, JobEnum, jobLabel } from "../../types";
+import { CategoryEnum } from "../../types";
 import styles from "./ExperienceModal.module.css";
 
 export type ExperienceProfile = {
 	ageGroup: string;
-	job: JobEnum;
+	job: string;
 	interest: CategoryEnum;
 };
 
@@ -20,19 +20,8 @@ export const readExperienceProfile = (): ExperienceProfile | null => {
 };
 
 const AGE_GROUPS = ["10대", "20대", "30대", "40대", "50대 이상"];
-const JOBS: JobEnum[] = [
-	"STUDENT",
-	"OFFICE_WORKER",
-	"DEVELOPER",
-	"JOB_SEEKER",
-	"ETC",
-];
-const CATEGORIES: CategoryEnum[] = [
-	"POLITICS",
-	"ECONOMY",
-	"SOCIETY",
-	"INDUSTRY_IT",
-];
+const JOBS = ["학생", "경영·사업", "공학·기술", "취업준비생", "기타"];
+const CATEGORIES: CategoryEnum[] = ["정치", "경제", "사회", "산업/IT"];
 
 type ExperienceModalProps = {
 	onClose: (profile: ExperienceProfile | null) => void;
@@ -49,7 +38,7 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 		if (!canSubmit) return;
 		const profile: ExperienceProfile = {
 			ageGroup,
-			job: job as JobEnum,
+			job: job,
 			interest: interest as CategoryEnum,
 		};
 		try {
@@ -65,10 +54,7 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 
 	return (
 		<div className={styles.overlay} onClick={() => onClose(null)}>
-			<div
-				className={styles.modal}
-				onClick={(e) => e.stopPropagation()}
-			>
+			<div className={styles.modal} onClick={(e) => e.stopPropagation()}>
 				<p className={styles.title}>
 					<span className={styles.sparkle}>✨</span> 맞춤 해설
 					체험하기
@@ -98,7 +84,7 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 					<option value="">직업 선택</option>
 					{JOBS.map((j) => (
 						<option key={j} value={j}>
-							{jobLabel(j)}
+							{j}
 						</option>
 					))}
 				</select>
@@ -111,7 +97,7 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 					<option value="">주요 관심분야</option>
 					{CATEGORIES.map((c) => (
 						<option key={c} value={c}>
-							{categoryLabel(c)}
+							{c}
 						</option>
 					))}
 				</select>
@@ -124,10 +110,7 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 					체험 해설 보기
 				</button>
 
-				<button
-					className={styles.skip}
-					onClick={() => onClose(null)}
-				>
+				<button className={styles.skip} onClick={() => onClose(null)}>
 					건너뛰기
 				</button>
 			</div>

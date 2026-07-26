@@ -16,27 +16,11 @@ type ProfilePageProps = {
 	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const GENDERS: GenderEnum[] = ["남", "여"];
-const REGIONS: RegionEnum[] = [
-	"서울",
-	"부산",
-	"대구",
-	"인천",
-	"대전",
-	"울산",
-	"경기",
-	"강원",
-	"충북",
-	"충남",
-	"전북",
-	"전남",
-	"경북",
-	"경남",
-	"제주",
-];
-const JOBS: JobEnum[] = ["학생", "경영·사업", "공학·기술", "취업준비생"];
-const CATEGORIES: CategoryEnum[] = ["정치", "경제", "사회", "산업/IT"];
-const PURPOSES: PurposeEnum[] = ["일반", "공부", "취·창업", "투자"];
+const GENDERS = Object.values(GenderEnum);
+const REGIONS = Object.values(RegionEnum);
+const JOBS = Object.values(JobEnum);
+const CATEGORIES = Object.values(CategoryEnum);
+const PURPOSES = Object.values(PurposeEnum);
 
 export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 	const navigate = useNavigate();
@@ -88,9 +72,9 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 					? undefined
 					: form.extra_information,
 		};
-		console.log(payload);
 		const updated = await updateUser(payload);
 		setIsSaving(false);
+
 		if (updated) {
 			setUser(updated);
 			setIsEditing(false);

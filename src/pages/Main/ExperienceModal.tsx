@@ -20,14 +20,14 @@ export const readExperienceProfile = (): ExperienceProfile | null => {
 };
 
 const AGE_GROUPS = ["10대", "20대", "30대", "40대", "50대 이상"];
-const JOBS: JobEnum[] = [
-	"학생",
-	"경영·사업",
-	"공학·기술",
-	"취업준비생",
-	"은퇴·무직",
+const JOBS = [
+	JobEnum.STUDENT,
+	JobEnum.MANAGEMENT_BUSINESS,
+	JobEnum.ENGINEERING_TECHNICAL,
+	JobEnum.JOB_SEEKER,
+	JobEnum.RETIRED_UNEMPLOYED,
 ];
-const CATEGORIES: CategoryEnum[] = ["정치", "경제", "사회", "산업/IT"];
+const CATEGORIES = Object.values(CategoryEnum);
 
 type ExperienceModalProps = {
 	onClose: (profile: ExperienceProfile | null) => void;

@@ -9,7 +9,7 @@ import {
 } from "../Main/ExperienceModal";
 import styles from "./ArticleListPage.module.css";
 
-const CATEGORIES: CategoryEnum[] = ["정치", "경제", "사회", "산업/IT"];
+const CATEGORIES = Object.values(CategoryEnum);
 
 export default function ArticleListPage() {
 	const [articles, setArticles] = useState<Article[]>([]);

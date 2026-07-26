@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserUpdateRequest } from "../../api/contracts";
 import { getUser, updateUser } from "../../api/users";
-import { CategoryEnum, GenderEnum, PurposeEnum, User } from "../../types";
+import {
+	CategoryEnum,
+	GenderEnum,
+	JobEnum,
+	PurposeEnum,
+	RegionEnum,
+	User,
+} from "../../types";
 import styles from "./ProfilePage.module.css";
 
 type ProfilePageProps = {
@@ -10,8 +17,24 @@ type ProfilePageProps = {
 };
 
 const GENDERS: GenderEnum[] = ["남", "여"];
-const REGIONS = ["서울", "부산", "대구", "인천", "대전"];
-const JOBS = ["학생", "경영·사업", "공학·기술", "취업준비생", "기타"];
+const REGIONS: RegionEnum[] = [
+	"서울",
+	"부산",
+	"대구",
+	"인천",
+	"대전",
+	"울산",
+	"경기",
+	"강원",
+	"충북",
+	"충남",
+	"전북",
+	"전남",
+	"경북",
+	"경남",
+	"제주",
+];
+const JOBS: JobEnum[] = ["학생", "경영·사업", "공학·기술", "취업준비생"];
 const CATEGORIES: CategoryEnum[] = ["정치", "경제", "사회", "산업/IT"];
 const PURPOSES: PurposeEnum[] = ["일반", "공부", "취·창업", "투자"];
 
@@ -130,7 +153,7 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 							onChange={(e) =>
 								setForm({
 									...form,
-									region: e.target.value,
+									region: e.target.value as RegionEnum,
 								})
 							}
 						>
@@ -150,7 +173,7 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 							onChange={(e) =>
 								setForm({
 									...form,
-									job: e.target.value,
+									job: e.target.value as JobEnum,
 								})
 							}
 						>

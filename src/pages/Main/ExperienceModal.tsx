@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { CategoryEnum } from "../../types";
+import { CategoryEnum, JobEnum } from "../../types";
 import styles from "./ExperienceModal.module.css";
 
 export type ExperienceProfile = {
 	ageGroup: string;
-	job: string;
+	job: JobEnum;
 	interest: CategoryEnum;
 };
 
@@ -20,7 +20,13 @@ export const readExperienceProfile = (): ExperienceProfile | null => {
 };
 
 const AGE_GROUPS = ["10대", "20대", "30대", "40대", "50대 이상"];
-const JOBS = ["학생", "경영·사업", "공학·기술", "취업준비생", "기타"];
+const JOBS: JobEnum[] = [
+	"학생",
+	"경영·사업",
+	"공학·기술",
+	"취업준비생",
+	"은퇴·무직",
+];
 const CATEGORIES: CategoryEnum[] = ["정치", "경제", "사회", "산업/IT"];
 
 type ExperienceModalProps = {
@@ -38,7 +44,7 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 		if (!canSubmit) return;
 		const profile: ExperienceProfile = {
 			ageGroup,
-			job: job,
+			job: job as JobEnum,
 			interest: interest as CategoryEnum,
 		};
 		try {

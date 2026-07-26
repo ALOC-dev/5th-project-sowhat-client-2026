@@ -1,6 +1,13 @@
 /* 요청/응답 형식 정의 */
 
-import { CategoryEnum, GenderEnum, KeywordItem, PurposeEnum } from "../types";
+import {
+	CategoryEnum,
+	GenderEnum,
+	JobEnum,
+	KeywordItem,
+	PurposeEnum,
+	RegionEnum,
+} from "../types";
 
 export type ArticleResponse = {
 	id: number;
@@ -36,8 +43,8 @@ export type UserCreateRequest = {
 	username: string;
 	age: number;
 	gender: GenderEnum;
-	region: string;
-	job: string;
+	region: RegionEnum;
+	job: JobEnum;
 	interest: CategoryEnum;
 	purpose: PurposeEnum;
 	extra_information: string;
@@ -47,8 +54,8 @@ export type UserUpdateRequest = {
 	username?: string;
 	age?: number;
 	gender?: GenderEnum;
-	region?: string;
-	job?: string;
+	region?: RegionEnum;
+	job?: JobEnum;
 	interest?: CategoryEnum;
 	purpose?: PurposeEnum;
 	extra_information?: string;
@@ -60,8 +67,8 @@ export type UserResponse = {
 	username: string;
 	age: number;
 	gender: GenderEnum;
-	region: string;
-	job: string;
+	region: RegionEnum;
+	job: JobEnum;
 	interest: CategoryEnum;
 	purpose: PurposeEnum;
 	extra_information: string;

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { login } from "../../api/auth";
 import styles from "./LoginPage.module.css";
 
 type LoginPageProps = {
@@ -15,9 +16,12 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 	const redirect = searchParams.get("redirect");
 	const navigate = useNavigate();
 
-	const handleLogin = (): void => {
+	const handleLogin = async (): Promise<void> => {
 		console.log("아이디:", id);
 		console.log("비밀번호:", password);
+
+		const success = await login({ login_id: id, password: password });
+		if (!success) return;
 
 		setIsLogin(true);
 		navigate(redirect ?? "/");

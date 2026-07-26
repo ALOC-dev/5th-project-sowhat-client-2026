@@ -19,13 +19,13 @@ export async function createUser(
 	return data;
 }
 
-// 사용자 정보 조회: GET /api/profiles/{user_id}
+// 사용자 정보 조회: GET /api/users/me
 export async function getUser(): Promise<User | void> {
 	const data = await api<UserResponse>(`/api/users/me`);
 	return toUser(data);
 }
 
-// 사용자 정보 수정: PATCH /api/profiles/{user_id}
+// 사용자 정보 수정: PATCH /api/users/me
 export async function updateUser(
 	payload: UserUpdateRequest,
 ): Promise<User | void> {

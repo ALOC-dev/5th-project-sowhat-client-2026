@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserUpdateRequest } from "../../api/contracts";
 import { getUser, updateUser } from "../../api/users";
 import { CategoryEnum, GenderEnum, PurposeEnum, User } from "../../types";
 import styles from "./ProfilePage.module.css";
@@ -19,7 +20,7 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 	const [user, setUser] = useState<User | null>(null);
 	const [isEditing, setIsEditing] = useState<boolean>(false);
 	const [isSaving, setIsSaving] = useState<boolean>(false);
-	const [form, setForm] = useState<User | null>(null);
+	const [form, setForm] = useState<UserUpdateRequest | null>(null);
 
 	const handleLogout = (): void => {
 		setIsLogin(false);
@@ -49,16 +50,23 @@ export default function ProfilePage({ setIsLogin }: ProfilePageProps) {
 	const saveEditing = async () => {
 		if (!user || !form) return;
 		setIsSaving(true);
-		const updated = await updateUser({
-			username: form.username,
-			age: form.age,
-			gender: form.gender,
-			region: form.region,
-			job: form.job,
-			interest: form.interest,
-			purpose: form.purpose,
-			extra_information: form.extra_information,
-		});
+		const payload = {
+			username:
+				form.username == user.username ? undefined : form.username,
+			age: form.age == user.age ? undefined : form.age,
+			gender: form.gender == user.gender ? undefined : form.gender,
+			region: form.region == user.region ? undefined : form.region,
+			job: form.job == user.job ? undefined : form.job,
+			interest:
+				form.interest == user.interest ? undefined : form.interest,
+			purpose: form.purpose == user.purpose ? undefined : form.purpose,
+			extra_information:
+				form.extra_information == user.extra_information
+					? undefined
+					: form.extra_information,
+		};
+		console.log(payload);
+		const updated = await updateUser(payload);
 		setIsSaving(false);
 		if (updated) {
 			setUser(updated);

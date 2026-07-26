@@ -44,9 +44,17 @@ function Header({ isLogin }: HeaderProps) {
 					<>
 						<button
 							className={styles.navLink}
-							onClick={() =>
-								navigate(`/login?redirect=${location.pathname}`)
-							}
+							onClick={() => {
+								if (
+									location.pathname == "/login" ||
+									location.pathname == "/signup"
+								)
+									navigate(`/login?redirect=/`);
+								else
+									navigate(
+										`/login?redirect=${location.pathname}`,
+									);
+							}}
 						>
 							로그인
 						</button>

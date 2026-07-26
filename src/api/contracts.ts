@@ -71,3 +71,13 @@ export type UserCreateResponse = {
 	id: number;
 	message?: string;
 };
+
+export type LoginRequest = {
+	login_id: string;
+	password: string;
+};
+
+export type LoginResponse = {
+	id: number;
+	message?: string;
+};

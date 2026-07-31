@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { getUser } from "./api/users";
+import { isMockLoginEnabled, MOCK_USER } from "./lib/mockAuth"; // TODO: 제출 전 삭제
+import { User } from "./types";
 import styles from "./App.module.css";
 
 import ArticleDetailPage from "./pages/Article/ArticleDetailPage";
@@ -7,13 +10,16 @@ import ArticleListPage from "./pages/Article/ArticleListPage";
 import LoginPage from "./pages/Login/LoginPage";
 import MainPage from "./pages/Main/MainPage";
 import PreviewPage from "./pages/Preview/PreviewPage";
+import ProfileEditPage from "./pages/Profile/ProfileEditPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
+import SignupPage from "./pages/Signup/SignupPage";
 
 type HeaderProps = {
 	isLogin: boolean;
+	user: User | null;
 };
 
-function Header({ isLogin }: HeaderProps) {
+function Header({ isLogin, user }: HeaderProps) {
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -36,6 +42,7 @@ function Header({ isLogin }: HeaderProps) {
 						<button
 							className={styles.avatarButton}
 							onClick={() => navigate("/profile")}
+							title={user?.username}
 						>
 							👤
 						</button>
@@ -44,9 +51,17 @@ function Header({ isLogin }: HeaderProps) {
 					<>
 						<button
 							className={styles.navLink}
-							onClick={() =>
-								navigate(`/login?redirect=${location.pathname}`)
-							}
+							onClick={() => {
+								if (
+									location.pathname == "/login" ||
+									location.pathname == "/signup"
+								)
+									navigate(`/login?redirect=/`);
+								else
+									navigate(
+										`/login?redirect=${location.pathname}`,
+									);
+							}}
 						>
 							로그인
 						</button>
@@ -66,13 +81,52 @@ function Header({ isLogin }: HeaderProps) {
 
 export default function App() {
 	const [isLogin, setIsLogin] = useState<boolean>(false);
+	const [user, setUser] = useState<User | null>(null);
+
+	// 새로고침해도 로그인 세션(쿠키)이 살아있으면 로그인 상태 유지
+	useEffect(() => {
+		if (isMockLoginEnabled()) {
+			// TODO: 제출 전 삭제 - 목업 로그인 모드
+			setUser(MOCK_USER);
+			setIsLogin(true);
+			return;
+		}
+		const checkSession = async () => {
+			const fetched = await getUser();
+			if (fetched) {
+				setUser(fetched);
+				setIsLogin(true);
+			}
+		};
+		checkSession();
+	}, []);
+
+	useEffect(() => {
+		if (!isLogin) {
+			setUser(null);
+			return;
+		}
+		if (isMockLoginEnabled()) {
+			// TODO: 제출 전 삭제 - 목업 로그인 모드
+			setUser(MOCK_USER);
+			return;
+		}
+		const fetchUser = async () => {
+			const fetched = await getUser();
+			setUser(fetched ?? null);
+		};
+		fetchUser();
+	}, [isLogin]);
 
 	return (
 		<>
-			<Header isLogin={isLogin} />
+			<Header isLogin={isLogin} user={user} />
 
 			<Routes>
-				<Route path="/" element={<MainPage />} />
+				<Route
+					path="/"
+					element={<MainPage isLogin={isLogin} user={user} />}
+				/>
 
 				<Route
 					path="/login"
@@ -80,9 +134,18 @@ export default function App() {
 				/>
 
 				<Route
-					path="/profile"
-					element={<ProfilePage setIsLogin={setIsLogin} />}
+					path="/signup"
+					element={<SignupPage setIsLogin={setIsLogin} />}
 				/>
+
+				<Route
+					path="/profile"
+					element={
+						<ProfilePage user={user} setIsLogin={setIsLogin} />
+					}
+				/>
+
+				<Route path="/profile/edit" element={<ProfileEditPage />} />
 
 				<Route path="/articles" element={<ArticleListPage />} />
 
@@ -90,7 +153,9 @@ export default function App() {
 
 				<Route
 					path="/articles/:article_id"
-					element={<ArticleDetailPage isLogin={isLogin} />}
+					element={
+						<ArticleDetailPage isLogin={isLogin} user={user} />
+					}
 				/>
 			</Routes>
 		</>

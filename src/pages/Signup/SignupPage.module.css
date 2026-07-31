@@ -9,7 +9,7 @@
 
 .card {
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
   text-align: center;
 }
 
@@ -35,7 +35,29 @@
   font-size: 14px;
   color: var(--text);
   margin-top: 8px;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
+}
+
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.5;
+}
+
+.stepIndicator span[data-active="true"] {
+  color: var(--accent);
+  opacity: 1;
+  font-weight: 600;
+}
+
+.stepArrow {
+  opacity: 0.3;
 }
 
 .fields {
@@ -43,6 +65,7 @@
   flex-direction: column;
   gap: 12px;
   margin-bottom: 20px;
+  text-align: left;
 }
 
 .input {
@@ -55,6 +78,7 @@
   background-color: var(--bg-card);
   color: var(--text-h);
   font-size: 14px;
+  cursor: pointer;
 }
 
 .input::placeholder {
@@ -66,13 +90,54 @@
   border-color: var(--accent);
 }
 
+.textarea {
+  width: 100%;
+  min-height: 70px;
+  padding: 12px 16px;
+  box-sizing: border-box;
+
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  color: var(--text-h);
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.textarea::placeholder {
+  color: #c4bfb5;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 .error {
   font-size: 13px;
   color: #dc2626;
-  margin: -8px 0 16px;
+  margin: -4px 0 0;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 10px;
+}
+
+.backStepButton {
+  flex: 1;
+  padding: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--bg-card);
+  color: var(--text-h);
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .submit {
+  flex: 2;
   width: 100%;
   padding: 12px 0;
 
@@ -83,22 +148,23 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.15s ease;
-  margin-bottom: 20px;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
 }
 
-.submit:hover {
-  background-color: #f59e0b;
-}
-
-.submit:disabled {
-  opacity: 0.6;
+.submit:disabled,
+.backStepButton:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
+}
+
+.submit:not(:disabled):hover {
+  background-color: #f59e0b;
 }
 
 .footer {
   font-size: 14px;
   color: var(--text);
+  margin-top: 20px;
 }
 
 .link {
@@ -110,22 +176,4 @@
   text-underline-offset: 2px;
   cursor: pointer;
   font-size: 14px;
-}
-
-/* TODO: 제출 전 삭제 - 개발용 임시 로그인 버튼 */
-.devMockButton {
-  width: 100%;
-  margin-top: 24px;
-  padding: 10px 0;
-
-  border: 1px dashed #cbd5e1;
-  border-radius: 10px;
-  background-color: #f8fafc;
-  color: #64748b;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.devMockButton:hover {
-  background-color: #f1f5f9;
 }

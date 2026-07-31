@@ -1,0 +1,125 @@
+.page {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  box-sizing: border-box;
+}
+
+.backButton {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0 0 24px;
+}
+
+.formBox {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg-card);
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--bg);
+  color: var(--text-h);
+  font-size: 14px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.textarea {
+  width: 100%;
+  min-height: 70px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--bg);
+  color: var(--text-h);
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.cancelButton {
+  flex: 1;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-h);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.saveButton {
+  flex: 1;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 0;
+  background: var(--accent);
+  color: #1c1917;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saveButton:hover {
+  background: #f59e0b;
+}
+
+.cancelButton:disabled,
+.saveButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

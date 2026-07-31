@@ -1,12 +1,12 @@
-import { User } from "../types.ts";
-import { api } from "./client.ts";
+import { User } from "../types";
+import { api } from "./client";
 import {
 	UserCreateRequest,
 	UserCreateResponse,
 	UserResponse,
 	UserUpdateRequest,
-} from "./contracts.ts";
-import { toUser } from "./mappers.ts";
+} from "./contracts";
+import { toUser } from "./mappers";
 
 // 회원가입: POST /api/profiles
 export async function createUser(
@@ -19,18 +19,17 @@ export async function createUser(
 	return data;
 }
 
-// 사용자 정보 조회: GET /api/profiles/{user_id}
-export async function getUser(userId: number): Promise<User | void> {
-	const data = await api<UserResponse>(`/api/users/${userId}`);
+// 사용자 정보 조회: GET /api/users/me
+export async function getUser(): Promise<User | void> {
+	const data = await api<UserResponse>(`/api/users/me`);
 	return toUser(data);
 }
 
-// 사용자 정보 수정: PATCH /api/profiles/{user_id}
+// 사용자 정보 수정: PATCH /api/users/me
 export async function updateUser(
-	userId: number,
 	payload: UserUpdateRequest,
 ): Promise<User | void> {
-	const data = await api<UserResponse>(`/api/users/${userId}`, {
+	const data = await api<UserResponse>(`/api/users/me`, {
 		method: "PATCH",
 		body: JSON.stringify(payload),
 	});

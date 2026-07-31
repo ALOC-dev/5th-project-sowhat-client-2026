@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CategoryEnum, categoryLabel, JobEnum, jobLabel } from "../../types";
+import { CategoryEnum, JobEnum } from "../../types";
 import styles from "./ExperienceModal.module.css";
 
 export type ExperienceProfile = {
@@ -20,19 +20,14 @@ export const readExperienceProfile = (): ExperienceProfile | null => {
 };
 
 const AGE_GROUPS = ["10대", "20대", "30대", "40대", "50대 이상"];
-const JOBS: JobEnum[] = [
-	"STUDENT",
-	"OFFICE_WORKER",
-	"DEVELOPER",
-	"JOB_SEEKER",
-	"ETC",
+const JOBS = [
+	JobEnum.STUDENT,
+	JobEnum.MANAGEMENT_BUSINESS,
+	JobEnum.ENGINEERING_TECHNICAL,
+	JobEnum.JOB_SEEKER,
+	JobEnum.RETIRED_UNEMPLOYED,
 ];
-const CATEGORIES: CategoryEnum[] = [
-	"POLITICS",
-	"ECONOMY",
-	"SOCIETY",
-	"INDUSTRY_IT",
-];
+const CATEGORIES = Object.values(CategoryEnum);
 
 type ExperienceModalProps = {
 	onClose: (profile: ExperienceProfile | null) => void;
@@ -65,10 +60,7 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 
 	return (
 		<div className={styles.overlay} onClick={() => onClose(null)}>
-			<div
-				className={styles.modal}
-				onClick={(e) => e.stopPropagation()}
-			>
+			<div className={styles.modal} onClick={(e) => e.stopPropagation()}>
 				<p className={styles.title}>
 					<span className={styles.sparkle}>✨</span> 맞춤 해설
 					체험하기
@@ -98,7 +90,7 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 					<option value="">직업 선택</option>
 					{JOBS.map((j) => (
 						<option key={j} value={j}>
-							{jobLabel(j)}
+							{j}
 						</option>
 					))}
 				</select>
@@ -111,7 +103,7 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 					<option value="">주요 관심분야</option>
 					{CATEGORIES.map((c) => (
 						<option key={c} value={c}>
-							{categoryLabel(c)}
+							{c}
 						</option>
 					))}
 				</select>
@@ -124,10 +116,7 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 					체험 해설 보기
 				</button>
 
-				<button
-					className={styles.skip}
-					onClick={() => onClose(null)}
-				>
+				<button className={styles.skip} onClick={() => onClose(null)}>
 					건너뛰기
 				</button>
 			</div>

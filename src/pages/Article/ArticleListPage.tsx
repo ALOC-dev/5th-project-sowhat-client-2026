@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getArticles } from "../../api/articles";
-import { Article, CategoryEnum, categoryLabel, jobLabel } from "../../types";
+import { Article, CategoryEnum } from "../../types";
+import ArticleCard from "../../ui/ArticleCard";
 import {
 	ExperienceProfile,
 	readExperienceProfile,
 } from "../Main/ExperienceModal";
-import ArticleCard from "../../ui/ArticleCard";
 import styles from "./ArticleListPage.module.css";
 
-const CATEGORIES: CategoryEnum[] = [
-	"POLITICS",
-	"ECONOMY",
-	"SOCIETY",
-	"INDUSTRY_IT",
-];
+const CATEGORIES = Object.values(CategoryEnum);
 
 export default function ArticleListPage() {
 	const [articles, setArticles] = useState<Article[]>([]);
@@ -62,11 +57,10 @@ export default function ArticleListPage() {
 			{experience && (
 				<div className={styles.experienceBanner}>
 					<p className={styles.experienceText}>
-						<strong>{jobLabel(experience.job)}</strong>이신
-						분들이 많이 보는{" "}
-						<strong>{categoryLabel(experience.interest)}</strong>{" "}
-						뉴스를 모아봤어요. 간단한 해설은 바로 볼 수 있고,{" "}
-						나에게 맞춘 자세한 해설은 로그인하면 확인할 수 있어요.
+						<strong>{experience.job}</strong>이신 분들이 많이 보는{" "}
+						<strong>{experience.interest}</strong> 뉴스를
+						모아봤어요. 간단한 해설은 바로 볼 수 있고, 나에게 맞춘
+						자세한 해설은 로그인하면 확인할 수 있어요.
 					</p>
 					<button
 						className={styles.experienceCta}
@@ -95,7 +89,7 @@ export default function ArticleListPage() {
 						data-active={selectedCategory === category}
 						onClick={() => setSearchParams({ category })}
 					>
-						{categoryLabel(category)}
+						{category}
 					</button>
 				))}
 			</div>

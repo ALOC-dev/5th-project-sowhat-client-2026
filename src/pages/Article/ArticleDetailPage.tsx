@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getArticleDetail, getPersonalAnalysis } from "../../api/articles";
-import { ArticleDetail, jobLabel, PersonalAnalysis } from "../../types";
+import { ArticleDetail, PersonalAnalysis, User } from "../../types";
+import { recordArticleView } from "../../lib/readingHistory";
 import { readExperienceProfile } from "../Main/ExperienceModal";
 import styled from "./ArticleDetailPage.module.css";
 
 type ArticleDetailPageProps = {
 	isLogin: boolean;
+	user: User | null;
 };
 
-export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
+export default function ArticleDetailPage({
+	isLogin,
+	user,
+}: ArticleDetailPageProps) {
 	const location = useLocation();
 	const { article_id } = useParams();
 	const navigate = useNavigate();
@@ -24,16 +29,27 @@ export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
 		const fetchArticleDetail = async () => {
 			const fetched = await getArticleDetail(Number(article_id));
 			setArticle((prev) => fetched ?? null);
+			if (fetched) {
+				recordArticleView({
+					id: fetched.id,
+					title: fetched.title,
+					category: fetched.category,
+				});
+			}
 		};
 
 		const fetchPersonalAnalysis = async () => {
-			const fetched = await getPersonalAnalysis(Number(article_id), 1);
+			if (!user) return;
+			const fetched = await getPersonalAnalysis(
+				Number(article_id),
+				user.id,
+			);
 			setAnalysis((prev) => fetched ?? null);
 		};
 
 		fetchArticleDetail();
 		if (isLogin) fetchPersonalAnalysis();
-	}, []);
+	}, [isLogin, user?.id]);
 
 	return (
 		<div className={styled.page}>
@@ -114,7 +130,7 @@ export default function ArticleDetailPage({ isLogin }: ArticleDetailPageProps) {
 							</p>
 							<p className={styled.p2}>
 								{experience
-									? `${jobLabel(experience.job)}이시라면 특히 확인해볼 만한 내용이에요. 지금 로그인하고 나를 위한 해설을 확인하세요.`
+									? `${experience.job}이시라면 특히 확인해볼 만한 내용이에요. 지금 로그인하고 나를 위한 해설을 확인하세요.`
 									: "지금 로그인하고 확인하세요."}
 							</p>
 							<button

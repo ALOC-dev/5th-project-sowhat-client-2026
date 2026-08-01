@@ -66,7 +66,8 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 		setStep(2);
 	};
 
-	const canSubmit = age.trim().length > 0 && !isSubmitting;
+	const canSubmit =
+		age.trim().length > 0 && Number(age) >= 0 && !isSubmitting;
 
 	const handleSubmit = async () => {
 		if (!canSubmit) return;
@@ -161,9 +162,14 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 						<input
 							className={styles.input}
 							type="number"
+							min="0"
+							max="120"
 							placeholder="나이"
 							value={age}
-							onChange={(e) => setAge(e.target.value)}
+							onChange={(e) => {
+								const v = e.target.value;
+								if (v === "" || Number(v) >= 0) setAge(v);
+							}}
 						/>
 
 						<select

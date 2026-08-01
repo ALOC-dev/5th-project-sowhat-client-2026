@@ -4,6 +4,7 @@ import {
 	getReadingHistory,
 	ReadingHistoryItem,
 } from "../../lib/readingHistory";
+import { getSavedAnalyses, SavedAnalysisItem } from "../../lib/savedAnalyses";
 import { disableMockLogin } from "../../lib/mockAuth"; // TODO: 제출 전 삭제
 import { User } from "../../types";
 import styles from "./ProfilePage.module.css";
@@ -16,6 +17,7 @@ type ProfilePageProps = {
 export default function ProfilePage({ user, setIsLogin }: ProfilePageProps) {
 	const navigate = useNavigate();
 	const [history, setHistory] = useState<ReadingHistoryItem[]>([]);
+	const [saved, setSaved] = useState<SavedAnalysisItem[]>([]);
 
 	const handleLogout = (): void => {
 		disableMockLogin(); // TODO: 제출 전 삭제
@@ -25,6 +27,7 @@ export default function ProfilePage({ user, setIsLogin }: ProfilePageProps) {
 
 	useEffect(() => {
 		setHistory(getReadingHistory());
+		setSaved(getSavedAnalyses());
 	}, []);
 
 	return (
@@ -150,6 +153,38 @@ export default function ProfilePage({ user, setIsLogin }: ProfilePageProps) {
 								</li>
 							))}
 						</ul>
+					)}
+
+					{saved.length > 0 && (
+						<div className={styles.savedBox}>
+							<h3 className={styles.historyTitle}>
+								도움이 된 해설 ({saved.length})
+							</h3>
+							<ul className={styles.historyList}>
+								{saved.map((item) => (
+									<li
+										key={item.articleId}
+										className={styles.savedItem}
+										onClick={() =>
+											navigate(
+												`/articles/${item.articleId}`,
+											)
+										}
+									>
+										<span
+											className={styles.historyItemTitle}
+										>
+											{item.title}
+										</span>
+										{item.effect && (
+											<p className={styles.savedEffect}>
+												{item.effect}
+											</p>
+										)}
+									</li>
+								))}
+							</ul>
+						</div>
 					)}
 				</div>
 			</div>

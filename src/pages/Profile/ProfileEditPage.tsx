@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUser, updateUser } from "../../api/users";
+import { updateUser } from "../../api/users";
+import { isMockLoginEnabled, MOCK_USER } from "../../lib/mockAuth"; // TODO: 제출 전 삭제
 import {
 	CategoryEnum,
 	GenderEnum,
@@ -17,38 +18,43 @@ const JOBS = Object.values(JobEnum);
 const CATEGORIES = Object.values(CategoryEnum);
 const PURPOSES = Object.values(PurposeEnum);
 
-export default function ProfileEditPage() {
+type ProfileEditPageProps = {
+	user: User | null;
+};
+
+export default function ProfileEditPage({ user }: ProfileEditPageProps) {
 	const navigate = useNavigate();
-	const [original, setOriginal] = useState<User | null>(null);
-	const [form, setForm] = useState<User | null>(null);
+	const [form, setForm] = useState<User | null>(user);
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 
 	useEffect(() => {
-		const fetchUser = async () => {
-			const fetched = await getUser();
-			setOriginal(fetched ?? null);
-			setForm(fetched ?? null);
-		};
-
-		fetchUser();
-	}, []);
+		setForm(user);
+	}, [user]);
 
 	const handleSave = async () => {
-		if (!original || !form) return;
+		if (!user || !form) return;
 		setIsSaving(true);
 
+		if (isMockLoginEnabled()) {
+			// TODO: 제출 전 삭제 - 목업 로그인 모드에서는 실제 저장 대신 화면 확인용으로 목업 데이터만 갱신
+			Object.assign(MOCK_USER, form);
+			setIsSaving(false);
+			navigate("/profile");
+			return;
+		}
+
 		const updated = await updateUser({
-			username: form.username == original.username ? undefined : form.username,
-			age: form.age == original.age ? undefined : form.age,
-			gender: form.gender == original.gender ? undefined : form.gender,
-			region: form.region == original.region ? undefined : form.region,
-			job: form.job == original.job ? undefined : form.job,
+			username: form.username == user.username ? undefined : form.username,
+			age: form.age == user.age ? undefined : form.age,
+			gender: form.gender == user.gender ? undefined : form.gender,
+			region: form.region == user.region ? undefined : form.region,
+			job: form.job == user.job ? undefined : form.job,
 			interest:
-				form.interest == original.interest ? undefined : form.interest,
+				form.interest == user.interest ? undefined : form.interest,
 			purpose:
-				form.purpose == original.purpose ? undefined : form.purpose,
+				form.purpose == user.purpose ? undefined : form.purpose,
 			extra_information:
-				form.extra_information == original.extra_information
+				form.extra_information == user.extra_information
 					? undefined
 					: form.extra_information,
 		});
@@ -60,6 +66,12 @@ export default function ProfileEditPage() {
 	if (!form) {
 		return (
 			<div className={styles.page}>
+				<button
+					className={styles.backButton}
+					onClick={() => navigate("/profile")}
+				>
+					← 돌아가기
+				</button>
 				<p>불러오는 중...</p>
 			</div>
 		);
@@ -94,10 +106,13 @@ export default function ProfileEditPage() {
 					<input
 						className={styles.input}
 						type="number"
+						min="0"
+						max="120"
 						value={form.age}
-						onChange={(e) =>
-							setForm({ ...form, age: Number(e.target.value) })
-						}
+						onChange={(e) => {
+							const v = Number(e.target.value);
+							if (v >= 0) setForm({ ...form, age: v });
+						}}
 					/>
 				</div>
 

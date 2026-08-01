@@ -64,6 +64,7 @@
   color: rgba(255, 255, 255, 0.7);
   max-width: 460px;
   margin: 0 auto 40px;
+  text-wrap: balance;
 }
 
 .breakDesktop {

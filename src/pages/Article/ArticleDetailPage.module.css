@@ -26,6 +26,18 @@
   align-items: start;
 }
 
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .sideBox {
+    min-height: auto;
+    padding: 20px 18px;
+  }
+}
+
 .articleBox {
   max-width: 620px;
 }
@@ -81,13 +93,13 @@
 
 .sideBox li {
   margin-bottom: 10px;
-  padding: 12px 14px;
-  border-radius: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
   background-color: #fff;
   border: 1px solid var(--accent-border);
-  font-size: 14px;
-  color: var(--text-h);
+  font-size: 13px;
   line-height: 1.5;
+  color: var(--text-h);
 }
 
 .p1 {
@@ -96,6 +108,45 @@
   color: var(--text-h);
   text-align: center;
   margin-top: 8px;
+}
+
+.previewWrap {
+  position: relative;
+  margin: 16px 0 20px;
+}
+
+.previewBlur {
+  filter: blur(3px);
+  opacity: 0.7;
+  pointer-events: none;
+  user-select: none;
+}
+
+.previewLabel {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #92400e;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.previewOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.previewLock {
+  font-size: 20px;
+  margin-bottom: 8px;
 }
 
 .p2 {

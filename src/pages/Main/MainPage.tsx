@@ -100,7 +100,6 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 							</h1>
 							<p className={styles.subtitle}>
 								복잡한 뉴스를 쉽게 요약하고, AI가 이 소식이
-								<br className={styles.breakDesktop} />
 								나에게 어떤 영향을 미치는지 분석해 드려요
 							</p>
 							<div className={styles.heroButtons}>

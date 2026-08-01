@@ -22,9 +22,13 @@ type HeaderProps = {
 function Header({ isLogin, user }: HeaderProps) {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const isLanding = location.pathname === "/";
 
 	return (
-		<header className={styles.header}>
+		<header
+			className={styles.header}
+			data-landing={isLanding}
+		>
 			<div className={styles.logo} onClick={() => navigate("/")}>
 				So What
 			</div>
@@ -145,9 +149,15 @@ export default function App() {
 					}
 				/>
 
-				<Route path="/profile/edit" element={<ProfileEditPage />} />
+				<Route
+					path="/profile/edit"
+					element={<ProfileEditPage user={user} />}
+				/>
 
-				<Route path="/articles" element={<ArticleListPage />} />
+				<Route
+					path="/articles"
+					element={<ArticleListPage isLogin={isLogin} />}
+				/>
 
 				<Route path="/preview" element={<PreviewPage />} />
 

@@ -11,7 +11,11 @@ import styles from "./ArticleListPage.module.css";
 
 const CATEGORIES = Object.values(CategoryEnum);
 
-export default function ArticleListPage() {
+export default function ArticleListPage({
+	isLogin,
+}: {
+	isLogin: boolean;
+}) {
 	const [articles, setArticles] = useState<Article[]>([]);
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -54,7 +58,7 @@ export default function ArticleListPage() {
 				<h1 className={styles.pageTitle}>전체 기사 보기</h1>
 			</div>
 
-			{experience && (
+			{experience && !isLogin && (
 				<div className={styles.experienceBanner}>
 					<p className={styles.experienceText}>
 						<strong>{experience.job}</strong>이신 분들이 많이 보는{" "}

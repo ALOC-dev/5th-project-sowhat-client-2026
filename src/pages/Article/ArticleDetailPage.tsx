@@ -3,6 +3,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getArticleDetail, getPersonalAnalysis } from "../../api/articles";
 import { ArticleDetail, PersonalAnalysis, User } from "../../types";
 import { recordArticleView } from "../../lib/readingHistory";
+import {
+	isAnalysisSaved,
+	removeSavedAnalysis,
+	saveAnalysis,
+} from "../../lib/savedAnalyses";
+import { isMockLoginEnabled, MOCK_ANALYSIS } from "../../lib/mockAuth"; // TODO: 제출 전 삭제
 import { readExperienceProfile } from "../Main/ExperienceModal";
 import styled from "./ArticleDetailPage.module.css";
 
@@ -39,6 +45,11 @@ export default function ArticleDetailPage({
 		};
 
 		const fetchPersonalAnalysis = async () => {
+			if (isMockLoginEnabled()) {
+				// TODO: 제출 전 삭제 - 목업 로그인 모드
+				setAnalysis(MOCK_ANALYSIS);
+				return;
+			}
 			if (!user) return;
 			const fetched = await getPersonalAnalysis(
 				Number(article_id),
@@ -50,6 +61,28 @@ export default function ArticleDetailPage({
 		fetchArticleDetail();
 		if (isLogin) fetchPersonalAnalysis();
 	}, [isLogin, user?.id]);
+
+	useEffect(() => {
+		if (article_id) {
+			setFeedback(isAnalysisSaved(Number(article_id)) ? "up" : null);
+		}
+	}, [article_id]);
+
+	const handleFeedback = (value: "up" | "down") => {
+		setFeedback(value);
+		if (!article) return;
+
+		if (value === "up") {
+			saveAnalysis({
+				articleId: article.id,
+				title: article.title,
+				effect: analysis?.effect ?? "",
+				solution: analysis?.solution ?? "",
+			});
+		} else {
+			removeSavedAnalysis(article.id);
+		}
+	};
 
 	return (
 		<div className={styled.page}>
@@ -110,14 +143,14 @@ export default function ArticleDetailPage({
 								<button
 									className={styled.feedbackButton}
 									data-active={feedback === "up"}
-									onClick={() => setFeedback("up")}
+									onClick={() => handleFeedback("up")}
 								>
 									👍 도움이 됐어요
 								</button>
 								<button
 									className={styled.feedbackButton}
 									data-active={feedback === "down"}
-									onClick={() => setFeedback("down")}
+									onClick={() => handleFeedback("down")}
 								>
 									👎 별로예요
 								</button>
@@ -128,11 +161,38 @@ export default function ArticleDetailPage({
 							<p className={styled.p1}>
 								이 소식이 나에게 어떤 영향을 줄까요?
 							</p>
-							<p className={styled.p2}>
-								{experience
-									? `${experience.job}이시라면 특히 확인해볼 만한 내용이에요. 지금 로그인하고 나를 위한 해설을 확인하세요.`
-									: "지금 로그인하고 확인하세요."}
-							</p>
+
+							<div className={styled.previewWrap}>
+								<div className={styled.previewBlur}>
+									<p className={styled.previewLabel}>
+										예시
+									</p>
+									<ul>
+										<li>
+											이 소식은 자산·소비 계획에 영향을
+											줄 수 있어요. 로그인하면 내 상황에
+											맞춘 진짜 분석을 볼 수 있어요.
+										</li>
+									</ul>
+									<ul>
+										<li>
+											관련 지원 제도나 대응 방법을
+											확인해보는 걸 추천해요.
+										</li>
+									</ul>
+								</div>
+								<div className={styled.previewOverlay}>
+									<span className={styled.previewLock}>
+										🔒
+									</span>
+									<p className={styled.p2}>
+										{experience
+											? `${experience.job}이시라면 특히 확인해볼 만한 내용이에요. 로그인하면 나를 위한 해설을 볼 수 있어요.`
+											: "로그인하면 나를 위한 진짜 해설을 볼 수 있어요."}
+									</p>
+								</div>
+							</div>
+
 							<button
 								onClick={() =>
 									navigate(

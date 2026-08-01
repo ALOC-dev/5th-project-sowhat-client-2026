@@ -4,7 +4,7 @@
  * 실제 제출/배포 전에는 이 파일과, 이 파일을 사용하는 부분(LoginPage의 "테스트용 임시 로그인"
  * 버튼, App.tsx의 isMockLogin 체크)을 꼭 지워주세요.
  */
-import { CategoryEnum, GenderEnum, JobEnum, PurposeEnum, RegionEnum, User } from "../types";
+import { CategoryEnum, GenderEnum, JobEnum, PersonalAnalysis, PurposeEnum, RegionEnum, User } from "../types";
 
 const MOCK_FLAG_KEY = "sowhat_dev_mock_login";
 
@@ -19,6 +19,12 @@ export const MOCK_USER: User = {
 	interest: CategoryEnum.ECONOMY,
 	purpose: PurposeEnum.GENERAL,
 	extra_information: "임시 테스트 계정입니다.",
+};
+
+export const MOCK_ANALYSIS: PersonalAnalysis = {
+	effect: "(테스트 계정용 임시 문구) 이 소식은 20대 학생/직장인 독자에게 생활비 부담과 관련이 있을 수 있어요.",
+	solution: "(테스트 계정용 임시 문구) 관련 지원 제도가 있는지 한 번 확인해보는 걸 추천해요.",
+	links: [],
 };
 
 export const enableMockLogin = (): void => {

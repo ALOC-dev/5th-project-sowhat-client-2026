@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser } from "../../api/users";
+import { login, signup } from "../../api/auth";
+import { ApiError } from "../../api/client";
+import { getUser } from "../../api/users";
 import {
 	CategoryEnum,
 	GenderEnum,
 	JobEnum,
 	PurposeEnum,
 	RegionEnum,
+	User,
 } from "../../types";
 import styles from "./SignupPage.module.css";
 
 type SignupPageProps = {
 	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 const GENDERS = Object.values(GenderEnum);
@@ -20,7 +24,7 @@ const JOBS = Object.values(JobEnum);
 const CATEGORIES = Object.values(CategoryEnum);
 const PURPOSES = Object.values(PurposeEnum);
 
-export default function SignupPage({ setIsLogin }: SignupPageProps) {
+export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 	const navigate = useNavigate();
 	const [step, setStep] = useState<1 | 2>(1);
 	const [error, setError] = useState<string>("");
@@ -31,6 +35,7 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 	const [username, setUsername] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [passwordConfirm, setPasswordConfirm] = useState<string>("");
+	const [showPassword, setShowPassword] = useState<boolean>(false);
 
 	// Step 2: 개인 정보
 	const [age, setAge] = useState<string>("");
@@ -43,25 +48,23 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 	const [purpose, setPurpose] = useState<PurposeEnum>(PurposeEnum.GENERAL);
 	const [extraInformation, setExtraInformation] = useState<string>("");
 
+	const isIdValid = loginId.trim().length >= 4;
+	const passwordTypeCount = [
+		/[A-Za-z]/.test(password),
+		/[0-9]/.test(password),
+		/[^A-Za-z0-9]/.test(password),
+	].filter(Boolean).length;
+	const isPasswordValid = password.length >= 8 && passwordTypeCount >= 2;
+	const isPasswordConfirmValid =
+		passwordConfirm.length > 0 && password === passwordConfirm;
+
 	const canGoNext =
-		loginId.trim().length > 0 &&
+		isIdValid &&
 		username.trim().length > 0 &&
-		password.length >= 4 &&
-		password === passwordConfirm;
+		isPasswordValid &&
+		isPasswordConfirmValid;
 
 	const handleNext = () => {
-		if (!loginId.trim() || !username.trim()) {
-			setError("아이디와 이름을 입력해주세요.");
-			return;
-		}
-		if (password.length < 4) {
-			setError("비밀번호는 4자 이상 입력해주세요.");
-			return;
-		}
-		if (password !== passwordConfirm) {
-			setError("비밀번호가 서로 달라요.");
-			return;
-		}
 		setError("");
 		setStep(2);
 	};
@@ -74,26 +77,40 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 		setIsSubmitting(true);
 		setError("");
 
-		const created = await createUser({
-			login_id: loginId,
-			password,
-			username,
-			age: Number(age),
-			gender,
-			region,
-			job,
-			interest,
-			purpose,
-			extra_information: extraInformation,
-		});
+		try {
+			await signup({
+				login_id: loginId,
+				password,
+				username,
+				age: Number(age),
+				gender,
+				region,
+				job,
+				interest,
+				purpose,
+				extra_information: extraInformation,
+			});
 
-		setIsSubmitting(false);
+			const success = await login({ login_id: loginId, password });
+			if (!success) {
+				setError(
+					"가입은 완료됐지만 로그인에 실패했어요. 로그인 화면에서 다시 시도해주세요.",
+				);
+				return;
+			}
 
-		if (created) {
+			const fetched = await getUser();
+			setUser(fetched ?? null);
 			setIsLogin(true);
 			navigate("/");
-		} else {
-			setError("가입에 실패했어요. 아이디가 이미 사용 중일 수 있어요.");
+		} catch (e) {
+			if (e instanceof ApiError && e.status === 409) {
+				setError("이미 사용 중인 아이디예요.");
+			} else {
+				setError("가입에 실패했어요. 잠시 후 다시 시도해주세요.");
+			}
+		} finally {
+			setIsSubmitting(false);
 		}
 	};
 
@@ -123,6 +140,11 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 							value={loginId}
 							onChange={(e) => setLoginId(e.target.value)}
 						/>
+						{loginId.length > 0 && !isIdValid && (
+							<p className={styles.fieldError}>
+								아이디는 4자 이상 입력해주세요.
+							</p>
+						)}
 						<input
 							className={styles.input}
 							type="text"
@@ -130,22 +152,60 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
 						/>
-						<input
-							className={styles.input}
-							type="password"
-							placeholder="비밀번호"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-						/>
-						<input
-							className={styles.input}
-							type="password"
-							placeholder="비밀번호 확인"
-							value={passwordConfirm}
-							onChange={(e) =>
-								setPasswordConfirm(e.target.value)
-							}
-						/>
+						<div className={styles.passwordField}>
+							<input
+								className={styles.input}
+								type={showPassword ? "text" : "password"}
+								placeholder="비밀번호"
+								value={password}
+								onChange={(e) =>
+									setPassword(e.target.value)
+								}
+							/>
+							<button
+								type="button"
+								className={styles.togglePassword}
+								onClick={() =>
+									setShowPassword((v) => !v)
+								}
+								tabIndex={-1}
+							>
+								{showPassword ? "숨기기" : "보기"}
+							</button>
+						</div>
+						{password.length > 0 && !isPasswordValid && (
+							<p className={styles.fieldError}>
+								비밀번호는 8자 이상이며 영문·숫자·특수문자
+								중 2가지 이상을 포함해야 해요.
+							</p>
+						)}
+						<div className={styles.passwordField}>
+							<input
+								className={styles.input}
+								type={showPassword ? "text" : "password"}
+								placeholder="비밀번호 확인"
+								value={passwordConfirm}
+								onChange={(e) =>
+									setPasswordConfirm(e.target.value)
+								}
+							/>
+							<button
+								type="button"
+								className={styles.togglePassword}
+								onClick={() =>
+									setShowPassword((v) => !v)
+								}
+								tabIndex={-1}
+							>
+								{showPassword ? "숨기기" : "보기"}
+							</button>
+						</div>
+						{passwordConfirm.length > 0 &&
+							password !== passwordConfirm && (
+								<p className={styles.fieldError}>
+									비밀번호가 일치하지 않아요.
+								</p>
+							)}
 
 						{error && <p className={styles.error}>{error}</p>}
 
@@ -159,88 +219,129 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 					</div>
 				) : (
 					<div className={styles.fields}>
-						<input
-							className={styles.input}
-							type="number"
-							min="0"
-							max="120"
-							placeholder="나이"
-							value={age}
-							onChange={(e) => {
-								const v = e.target.value;
-								if (v === "" || Number(v) >= 0) setAge(v);
-							}}
-						/>
+						<div className={styles.fieldGroup}>
+							<label className={styles.fieldLabel}>나이</label>
+							<input
+								className={styles.input}
+								type="number"
+								min="0"
+								max="120"
+								placeholder="나이"
+								value={age}
+								onChange={(e) => {
+									const v = e.target.value;
+									if (v === "" || Number(v) >= 0)
+										setAge(v);
+								}}
+							/>
+						</div>
 
-						<select
-							className={styles.input}
-							value={gender}
-							onChange={(e) =>
-								setGender(e.target.value as GenderEnum)
-							}
-						>
-							{GENDERS.map((g) => (
-								<option key={g} value={g}>
-									{g}
-								</option>
-							))}
-						</select>
+						<div className={styles.grid2}>
+							<div className={styles.fieldGroup}>
+								<label className={styles.fieldLabel}>
+									성별
+								</label>
+								<select
+									className={styles.input}
+									value={gender}
+									onChange={(e) =>
+										setGender(
+											e.target.value as GenderEnum,
+										)
+									}
+								>
+									{GENDERS.map((g) => (
+										<option key={g} value={g}>
+											{g}
+										</option>
+									))}
+								</select>
+							</div>
 
-						<select
-							className={styles.input}
-							value={region}
-							onChange={(e) =>
-								setRegion(e.target.value as RegionEnum)
-							}
-						>
-							{REGIONS.map((r) => (
-								<option key={r} value={r}>
-									{r}
-								</option>
-							))}
-						</select>
+							<div className={styles.fieldGroup}>
+								<label className={styles.fieldLabel}>
+									거주지역
+								</label>
+								<select
+									className={styles.input}
+									value={region}
+									onChange={(e) =>
+										setRegion(
+											e.target.value as RegionEnum,
+										)
+									}
+								>
+									{REGIONS.map((r) => (
+										<option key={r} value={r}>
+											{r}
+										</option>
+									))}
+								</select>
+							</div>
+						</div>
 
-						<select
-							className={styles.input}
-							value={job}
-							onChange={(e) =>
-								setJob(e.target.value as JobEnum)
-							}
-						>
-							{JOBS.map((j) => (
-								<option key={j} value={j}>
-									{j}
-								</option>
-							))}
-						</select>
+						<div className={styles.grid2}>
+							<div className={styles.fieldGroup}>
+								<label className={styles.fieldLabel}>
+									직업
+								</label>
+								<select
+									className={styles.input}
+									value={job}
+									onChange={(e) =>
+										setJob(e.target.value as JobEnum)
+									}
+								>
+									{JOBS.map((j) => (
+										<option key={j} value={j}>
+											{j}
+										</option>
+									))}
+								</select>
+							</div>
 
-						<select
-							className={styles.input}
-							value={interest}
-							onChange={(e) =>
-								setInterest(e.target.value as CategoryEnum)
-							}
-						>
-							{CATEGORIES.map((c) => (
-								<option key={c} value={c}>
-									{c}
-								</option>
-							))}
-						</select>
+							<div className={styles.fieldGroup}>
+								<label className={styles.fieldLabel}>
+									관심분야
+								</label>
+								<select
+									className={styles.input}
+									value={interest}
+									onChange={(e) =>
+										setInterest(
+											e.target.value as CategoryEnum,
+										)
+									}
+								>
+									{CATEGORIES.map((c) => (
+										<option key={c} value={c}>
+											{c}
+										</option>
+									))}
+								</select>
+							</div>
+						</div>
 
-						<select
-							className={styles.input}
-							value={purpose}
-							onChange={(e) =>
-								setPurpose(e.target.value as PurposeEnum)
-							}
-						>
-							{PURPOSES.map((p) => (
-								<option key={p} value={p}>
-									{p}
-								</option>
-							))}
-						</select>
+						<div className={styles.fieldGroup}>
+							<label className={styles.fieldLabel}>
+								관심목적
+							</label>
+							<select
+								className={styles.input}
+								value={purpose}
+								onChange={(e) =>
+									setPurpose(
+										e.target.value as PurposeEnum,
+									)
+								}
+							>
+								{PURPOSES.map((p) => (
+									<option key={p} value={p}>
+										{p}
+									</option>
+								))}
+							</select>
+						</div>
 
 						<textarea
 							className={styles.textarea}

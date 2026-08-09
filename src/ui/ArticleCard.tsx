@@ -1,3 +1,5 @@
+import { getCategoryImage } from "../lib/categoryImages";
+import { formatDate } from "../lib/formatDate";
 import { Article } from "../types";
 import styled from "./ArticleCard.module.css";
 
@@ -19,20 +21,25 @@ export default function ArticleCard({
 			key={article.id}
 			onClick={() => onDetailView(article.id)}
 		>
-			{article.category && (
-				<span
-					className={styled.categoryChip}
-					data-category={article.category}
-				>
-					{article.category}
-				</span>
-			)}
+			<div
+				className={styled.thumbnail}
+				style={{
+					backgroundImage: `url(${getCategoryImage(article)})`,
+				}}
+			>
+				{article.category && (
+					<span
+						className={styled.categoryChip}
+						data-category={article.category}
+					>
+						{article.category}
+					</span>
+				)}
+			</div>
 			<h2 className={styled.articleTitle}>{article.title}</h2>
 			<div className={styled.metaRow}>
 				<span>{article.publisher}</span>
-				<span>
-					{article.published_at.toDateString() ?? "2026-05-19"}
-				</span>
+				<span>{formatDate(article.published_at)}</span>
 			</div>
 			<p className={styled.articleContent}>{article.content}</p>
 		</div>

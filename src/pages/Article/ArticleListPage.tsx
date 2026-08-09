@@ -17,6 +17,7 @@ export default function ArticleListPage({
 	isLogin: boolean;
 }) {
 	const [articles, setArticles] = useState<Article[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -30,8 +31,10 @@ export default function ArticleListPage({
 
 	useEffect(() => {
 		const fetchArticles = async () => {
+			setIsLoading(true);
 			const fetched = await getArticles();
 			setArticles((prev) => fetched);
+			setIsLoading(false);
 		};
 
 		fetchArticles();
@@ -99,7 +102,11 @@ export default function ArticleListPage({
 			</div>
 
 			<div className={styles.articleList}>
-				{filteredArticles.length === 0 ? (
+				{isLoading ? (
+					<p className={styles.emptyState}>
+						기사를 불러오는 중이에요...
+					</p>
+				) : filteredArticles.length === 0 ? (
 					<p className={styles.emptyState}>
 						해당 카테고리의 기사가 없습니다.
 					</p>

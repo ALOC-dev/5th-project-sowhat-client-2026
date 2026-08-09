@@ -109,15 +109,17 @@
   padding: 14px 32px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 999px;
-  background-color: transparent;
-  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(28, 25, 23, 0.35);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 14px;
   cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease;
+  transition: border-color 0.15s ease, color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .ghostButton:hover {
   border-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(28, 25, 23, 0.5);
   color: #fff;
 }
 

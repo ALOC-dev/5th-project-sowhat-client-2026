@@ -3,8 +3,7 @@
   flex-direction: column;
   gap: 8px;
 
-  padding: 20px;
-
+  overflow: hidden;
   border-radius: 12px;
   cursor: pointer;
   border: 1px solid var(--border);
@@ -16,9 +15,37 @@
   box-shadow: var(--shadow);
 }
 
+.articleCard > *:not(.thumbnail) {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.articleCard > *:last-child {
+  padding-bottom: 20px;
+}
+
+.thumbnail {
+  height: 140px;
+  padding: 10px !important;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: flex-end;
+
+  background-size: cover;
+  background-position: center;
+}
+
+.articleCard[data-size="lg"] .thumbnail {
+  height: 220px;
+}
+
+.articleCard[data-size="sm"] .thumbnail {
+  height: 96px;
+}
+
 .categoryChip {
   display: inline-block;
-  align-self: flex-start;
 
   font-size: 10px;
   font-weight: 500;
@@ -26,7 +53,7 @@
 
   border-radius: 999px;
   border: 1px solid var(--accent-border);
-  background-color: var(--accent-bg);
+  background-color: rgba(255, 255, 255, 0.9);
   color: #92400e;
 }
 

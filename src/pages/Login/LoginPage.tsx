@@ -1,21 +1,39 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { login } from "../../api/auth";
-import { enableMockLogin } from "../../lib/mockAuth"; // TODO: 제출 전 삭제
+import { getUser } from "../../api/users";
+import { User } from "../../types";
 import styles from "./LoginPage.module.css";
+
+const REMEMBER_ID_KEY = "sowhat_remember_login_id";
 
 type LoginPageProps = {
 	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
-export default function LoginPage({ setIsLogin }: LoginPageProps) {
-	const [id, setId] = useState<string>("");
+export default function LoginPage({ setIsLogin, setUser }: LoginPageProps) {
+	const [id, setId] = useState<string>(() => {
+		try {
+			return localStorage.getItem(REMEMBER_ID_KEY) ?? "";
+		} catch {
+			return "";
+		}
+	});
+	const [rememberId, setRememberId] = useState<boolean>(() => {
+		try {
+			return localStorage.getItem(REMEMBER_ID_KEY) !== null;
+		} catch {
+			return false;
+		}
+	});
 	const [password, setPassword] = useState<string>("");
+	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
 	// 로그인한 뒤 리디렉션할 주소
-	const [searchParams] = useSearchParams("redirect");
+	const [searchParams] = useSearchParams();
 	const redirect = searchParams.get("redirect");
 	const navigate = useNavigate();
 
@@ -35,8 +53,20 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 				return;
 			}
 
+			try {
+				if (rememberId) {
+					localStorage.setItem(REMEMBER_ID_KEY, id);
+				} else {
+					localStorage.removeItem(REMEMBER_ID_KEY);
+				}
+			} catch {
+				// localStorage 사용 불가 환경이면 그냥 무시
+			}
+
+			const fetched = await getUser();
+			setUser(fetched ?? null);
 			setIsLogin(true);
-			navigate(redirect ?? "/");
+			navigate(redirect || "/");
 		} catch (e) {
 			setError(
 				"로그인 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.",
@@ -44,13 +74,6 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 		} finally {
 			setIsSubmitting(false);
 		}
-	};
-
-	// TODO: 제출 전 삭제 - 백엔드 없이 로그인 이후 화면 확인용
-	const handleMockLogin = (): void => {
-		enableMockLogin();
-		setIsLogin(true);
-		navigate(redirect ?? "/");
 	};
 
 	return (
@@ -76,19 +99,38 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 						}}
 					/>
 
-					<input
-						className={styles.input}
-						type="password"
-						placeholder="비밀번호"
-						value={password}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-							setPassword(e.target.value)
-						}
-						onKeyDown={(e) => {
-							if (e.key === "Enter") handleLogin();
-						}}
-					/>
+					<div className={styles.passwordField}>
+						<input
+							className={styles.input}
+							type={showPassword ? "text" : "password"}
+							placeholder="비밀번호"
+							value={password}
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>,
+							) => setPassword(e.target.value)}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") handleLogin();
+							}}
+						/>
+						<button
+							type="button"
+							className={styles.togglePassword}
+							onClick={() => setShowPassword((v) => !v)}
+							tabIndex={-1}
+						>
+							{showPassword ? "숨기기" : "보기"}
+						</button>
+					</div>
 				</div>
+
+				<label className={styles.rememberRow}>
+					<input
+						type="checkbox"
+						checked={rememberId}
+						onChange={(e) => setRememberId(e.target.checked)}
+					/>
+					아이디 저장
+				</label>
 
 				{error && <p className={styles.error}>{error}</p>}
 
@@ -109,14 +151,6 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 						회원가입
 					</button>
 				</p>
-
-				{/* TODO: 제출 전 삭제 - 개발 중 화면 확인용 임시 버튼 */}
-				<button
-					className={styles.devMockButton}
-					onClick={handleMockLogin}
-				>
-					⚙ 테스트용 임시 로그인 (개발 중에만 사용)
-				</button>
 			</div>
 		</div>
 	);

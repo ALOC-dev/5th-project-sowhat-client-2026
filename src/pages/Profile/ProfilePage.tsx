@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getViewedArticles } from "../../api/users";
 import {
 	getReadingHistory,
 	ReadingHistoryItem,
 } from "../../lib/readingHistory";
 import { getSavedAnalyses, SavedAnalysisItem } from "../../lib/savedAnalyses";
-import { disableMockLogin } from "../../lib/mockAuth"; // TODO: 제출 전 삭제
+import { logout } from "../../api/auth";
 import { User } from "../../types";
 import styles from "./ProfilePage.module.css";
 
@@ -19,16 +20,28 @@ export default function ProfilePage({ user, setIsLogin }: ProfilePageProps) {
 	const [history, setHistory] = useState<ReadingHistoryItem[]>([]);
 	const [saved, setSaved] = useState<SavedAnalysisItem[]>([]);
 
-	const handleLogout = (): void => {
-		disableMockLogin(); // TODO: 제출 전 삭제
+	const handleLogout = async (): Promise<void> => {
+		await logout();
 		setIsLogin(false);
 		navigate("/");
 	};
 
 	useEffect(() => {
-		setHistory(getReadingHistory());
+		const loadHistory = async () => {
+			if (user) {
+				try {
+					setHistory(await getViewedArticles());
+					return;
+				} catch {
+					// 조회 실패 시 로컬 기록으로 대체
+				}
+			}
+			setHistory(getReadingHistory());
+		};
+
+		loadHistory();
 		setSaved(getSavedAnalyses());
-	}, []);
+	}, [user]);
 
 	return (
 		<div className={styles.page}>

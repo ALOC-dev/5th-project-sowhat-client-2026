@@ -4,7 +4,7 @@ export type ReadingHistoryItem = {
 	id: number;
 	title: string;
 	category?: CategoryEnum;
-	viewedAt: string;
+	viewedAt?: string;
 };
 
 const STORAGE_KEY = "sowhat_reading_history";

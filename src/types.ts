@@ -95,10 +95,15 @@ export type ArticleDetail = {
 	keyword: KeywordItem[];
 };
 
+export type PersonalAnalysisLink = {
+	title: string;
+	url: string;
+};
+
 export type PersonalAnalysis = {
 	effect: string;
 	solution: string;
-	links: string[];
+	links: PersonalAnalysisLink[];
 };
 
 export type User = {

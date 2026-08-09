@@ -19,6 +19,14 @@ export const readExperienceProfile = (): ExperienceProfile | null => {
 	}
 };
 
+export const clearExperienceProfile = (): void => {
+	try {
+		sessionStorage.removeItem(EXPERIENCE_STORAGE_KEY);
+	} catch {
+		// sessionStorage 사용 불가 환경이면 그냥 무시
+	}
+};
+
 const AGE_GROUPS = ["10대", "20대", "30대", "40대", "50대 이상"];
 const JOBS = [
 	JobEnum.STUDENT,
@@ -59,7 +67,13 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 	};
 
 	return (
-		<div className={styles.overlay} onClick={() => onClose(null)}>
+		<div
+			className={styles.overlay}
+			onClick={() => {
+				clearExperienceProfile();
+				onClose(null);
+			}}
+		>
 			<div className={styles.modal} onClick={(e) => e.stopPropagation()}>
 				<p className={styles.title}>
 					<span className={styles.sparkle}>✨</span> 맞춤 해설
@@ -116,7 +130,13 @@ export default function ExperienceModal({ onClose }: ExperienceModalProps) {
 					체험 해설 보기
 				</button>
 
-				<button className={styles.skip} onClick={() => onClose(null)}>
+				<button
+					className={styles.skip}
+					onClick={() => {
+						clearExperienceProfile();
+						onClose(null);
+					}}
+				>
 					건너뛰기
 				</button>
 			</div>

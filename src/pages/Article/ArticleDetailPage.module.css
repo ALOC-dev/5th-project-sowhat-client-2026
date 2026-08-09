@@ -59,6 +59,24 @@
   margin-bottom: 32px;
 }
 
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  opacity: 0.7;
+  margin-bottom: 32px;
+}
+
+.meta span:not(:last-child)::after {
+  content: "·";
+  margin-left: 10px;
+  opacity: 0.6;
+}
+
 .content {
   font-size: 15px;
   color: var(--text-h);
@@ -79,8 +97,8 @@
 
 .sideBox h3 {
   font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
   color: #92400e;
   margin-bottom: 14px;
 }
@@ -93,13 +111,45 @@
 
 .sideBox li {
   margin-bottom: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: 16px 18px;
+  border-radius: 12px;
   background-color: #fff;
   border: 1px solid var(--accent-border);
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.7;
   color: var(--text-h);
+}
+
+.linkList li {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+}
+
+.linkList a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 16px;
+  border-radius: 12px;
+  background-color: #fff;
+  border: 1px solid var(--accent-border);
+
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-h);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.linkList a:hover {
+  background-color: var(--accent-bg);
+}
+
+.linkIcon {
+  font-size: 15px;
 }
 
 .p1 {
@@ -242,23 +292,46 @@
   padding-left: 0;
   list-style: none;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  gap: 0;
 }
 
 .keywordList li {
-  padding: 6px 14px;
-  border-radius: 999px;
-  background-color: var(--code-bg);
-  border: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  padding: 10px 2px;
+  border-bottom: 1px solid var(--border);
   margin-bottom: 0;
 }
 
+.keywordList li:last-child {
+  border-bottom: none;
+}
+
+.keywordBadge {
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  opacity: 0.5;
+}
+
 .keywordList strong {
+  display: block;
   font-size: 13px;
-  color: var(--text-h);
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
 }
 
 .keywordList p {
-  display: none;
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+  opacity: 0.8;
+  line-height: 1.6;
 }

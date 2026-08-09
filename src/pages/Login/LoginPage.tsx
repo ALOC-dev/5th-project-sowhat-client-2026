@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { login } from "../../api/auth";
+import { getUser } from "../../api/users";
+import { User } from "../../types";
 import styles from "./LoginPage.module.css";
 
 const REMEMBER_ID_KEY = "sowhat_remember_login_id";
 
 type LoginPageProps = {
 	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
-export default function LoginPage({ setIsLogin }: LoginPageProps) {
+export default function LoginPage({ setIsLogin, setUser }: LoginPageProps) {
 	const [id, setId] = useState<string>(() => {
 		try {
 			return localStorage.getItem(REMEMBER_ID_KEY) ?? "";
@@ -25,6 +28,7 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 		}
 	});
 	const [password, setPassword] = useState<string>("");
+	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -59,6 +63,8 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 				// localStorage 사용 불가 환경이면 그냥 무시
 			}
 
+			const fetched = await getUser();
+			setUser(fetched ?? null);
 			setIsLogin(true);
 			navigate(redirect ?? "/");
 		} catch (e) {
@@ -93,18 +99,28 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 						}}
 					/>
 
-					<input
-						className={styles.input}
-						type="password"
-						placeholder="비밀번호"
-						value={password}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-							setPassword(e.target.value)
-						}
-						onKeyDown={(e) => {
-							if (e.key === "Enter") handleLogin();
-						}}
-					/>
+					<div className={styles.passwordField}>
+						<input
+							className={styles.input}
+							type={showPassword ? "text" : "password"}
+							placeholder="비밀번호"
+							value={password}
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>,
+							) => setPassword(e.target.value)}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") handleLogin();
+							}}
+						/>
+						<button
+							type="button"
+							className={styles.togglePassword}
+							onClick={() => setShowPassword((v) => !v)}
+							tabIndex={-1}
+						>
+							{showPassword ? "숨기기" : "보기"}
+						</button>
+					</div>
 				</div>
 
 				<label className={styles.rememberRow}>

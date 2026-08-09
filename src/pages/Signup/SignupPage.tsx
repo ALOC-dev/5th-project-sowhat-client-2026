@@ -2,17 +2,20 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, signup } from "../../api/auth";
 import { ApiError } from "../../api/client";
+import { getUser } from "../../api/users";
 import {
 	CategoryEnum,
 	GenderEnum,
 	JobEnum,
 	PurposeEnum,
 	RegionEnum,
+	User,
 } from "../../types";
 import styles from "./SignupPage.module.css";
 
 type SignupPageProps = {
 	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 const GENDERS = Object.values(GenderEnum);
@@ -21,7 +24,7 @@ const JOBS = Object.values(JobEnum);
 const CATEGORIES = Object.values(CategoryEnum);
 const PURPOSES = Object.values(PurposeEnum);
 
-export default function SignupPage({ setIsLogin }: SignupPageProps) {
+export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 	const navigate = useNavigate();
 	const [step, setStep] = useState<1 | 2>(1);
 	const [error, setError] = useState<string>("");
@@ -32,6 +35,7 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 	const [username, setUsername] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [passwordConfirm, setPasswordConfirm] = useState<string>("");
+	const [showPassword, setShowPassword] = useState<boolean>(false);
 
 	// Step 2: 개인 정보
 	const [age, setAge] = useState<string>("");
@@ -95,6 +99,8 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 				return;
 			}
 
+			const fetched = await getUser();
+			setUser(fetched ?? null);
 			setIsLogin(true);
 			navigate("/");
 		} catch (e) {
@@ -146,28 +152,54 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
 						/>
-						<input
-							className={styles.input}
-							type="password"
-							placeholder="비밀번호"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-						/>
+						<div className={styles.passwordField}>
+							<input
+								className={styles.input}
+								type={showPassword ? "text" : "password"}
+								placeholder="비밀번호"
+								value={password}
+								onChange={(e) =>
+									setPassword(e.target.value)
+								}
+							/>
+							<button
+								type="button"
+								className={styles.togglePassword}
+								onClick={() =>
+									setShowPassword((v) => !v)
+								}
+								tabIndex={-1}
+							>
+								{showPassword ? "숨기기" : "보기"}
+							</button>
+						</div>
 						{password.length > 0 && !isPasswordValid && (
 							<p className={styles.fieldError}>
 								비밀번호는 8자 이상이며 영문·숫자·특수문자
 								중 2가지 이상을 포함해야 해요.
 							</p>
 						)}
-						<input
-							className={styles.input}
-							type="password"
-							placeholder="비밀번호 확인"
-							value={passwordConfirm}
-							onChange={(e) =>
-								setPasswordConfirm(e.target.value)
-							}
-						/>
+						<div className={styles.passwordField}>
+							<input
+								className={styles.input}
+								type={showPassword ? "text" : "password"}
+								placeholder="비밀번호 확인"
+								value={passwordConfirm}
+								onChange={(e) =>
+									setPasswordConfirm(e.target.value)
+								}
+							/>
+							<button
+								type="button"
+								className={styles.togglePassword}
+								onClick={() =>
+									setShowPassword((v) => !v)
+								}
+								tabIndex={-1}
+							>
+								{showPassword ? "숨기기" : "보기"}
+							</button>
+						</div>
 						{passwordConfirm.length > 0 &&
 							password !== passwordConfirm && (
 								<p className={styles.fieldError}>

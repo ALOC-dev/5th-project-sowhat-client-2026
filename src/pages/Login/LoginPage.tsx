@@ -33,7 +33,7 @@ export default function LoginPage({ setIsLogin, setUser }: LoginPageProps) {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
 	// 로그인한 뒤 리디렉션할 주소
-	const [searchParams] = useSearchParams("redirect");
+	const [searchParams] = useSearchParams();
 	const redirect = searchParams.get("redirect");
 	const navigate = useNavigate();
 
@@ -66,7 +66,7 @@ export default function LoginPage({ setIsLogin, setUser }: LoginPageProps) {
 			const fetched = await getUser();
 			setUser(fetched ?? null);
 			setIsLogin(true);
-			navigate(redirect ?? "/");
+			navigate(redirect || "/");
 		} catch (e) {
 			setError(
 				"로그인 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.",

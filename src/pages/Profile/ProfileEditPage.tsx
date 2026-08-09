@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateUser } from "../../api/users";
-import { isMockLoginEnabled, MOCK_USER } from "../../lib/mockAuth"; // TODO: 제출 전 삭제
 import {
 	CategoryEnum,
 	GenderEnum,
@@ -20,9 +19,13 @@ const PURPOSES = Object.values(PurposeEnum);
 
 type ProfileEditPageProps = {
 	user: User | null;
+	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
-export default function ProfileEditPage({ user }: ProfileEditPageProps) {
+export default function ProfileEditPage({
+	user,
+	setUser,
+}: ProfileEditPageProps) {
 	const navigate = useNavigate();
 	const [form, setForm] = useState<User | null>(user);
 	const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -34,14 +37,6 @@ export default function ProfileEditPage({ user }: ProfileEditPageProps) {
 	const handleSave = async () => {
 		if (!user || !form) return;
 		setIsSaving(true);
-
-		if (isMockLoginEnabled()) {
-			// TODO: 제출 전 삭제 - 목업 로그인 모드에서는 실제 저장 대신 화면 확인용으로 목업 데이터만 갱신
-			Object.assign(MOCK_USER, form);
-			setIsSaving(false);
-			navigate("/profile");
-			return;
-		}
 
 		const updated = await updateUser({
 			username: form.username == user.username ? undefined : form.username,
@@ -60,7 +55,10 @@ export default function ProfileEditPage({ user }: ProfileEditPageProps) {
 		});
 
 		setIsSaving(false);
-		if (updated) navigate("/profile");
+		if (updated) {
+			setUser(updated);
+			navigate("/profile");
+		}
 	};
 
 	if (!form) {

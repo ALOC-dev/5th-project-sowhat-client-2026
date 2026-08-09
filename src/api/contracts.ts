@@ -35,7 +35,13 @@ export type ArticleDetailResponse = {
 export type PersonalAnalysisResponse = {
 	effect: string;
 	solution: string;
-	links: Object[];
+	links: { title: string; url: string }[];
+};
+
+export type ViewedArticleResponse = {
+	article_id: number;
+	title: string;
+	category: CategoryEnum;
 };
 
 export type UserCreateRequest = {

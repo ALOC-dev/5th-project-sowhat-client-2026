@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { getUser } from "./api/users";
-import { isMockLoginEnabled, MOCK_USER } from "./lib/mockAuth"; // TODO: 제출 전 삭제
 import { User } from "./types";
 import styles from "./App.module.css";
 
@@ -89,12 +88,6 @@ export default function App() {
 
 	// 새로고침해도 로그인 세션(쿠키)이 살아있으면 로그인 상태 유지
 	useEffect(() => {
-		if (isMockLoginEnabled()) {
-			// TODO: 제출 전 삭제 - 목업 로그인 모드
-			setUser(MOCK_USER);
-			setIsLogin(true);
-			return;
-		}
 		const checkSession = async () => {
 			const fetched = await getUser();
 			if (fetched) {
@@ -108,11 +101,6 @@ export default function App() {
 	useEffect(() => {
 		if (!isLogin) {
 			setUser(null);
-			return;
-		}
-		if (isMockLoginEnabled()) {
-			// TODO: 제출 전 삭제 - 목업 로그인 모드
-			setUser(MOCK_USER);
 			return;
 		}
 		const fetchUser = async () => {
@@ -151,7 +139,9 @@ export default function App() {
 
 				<Route
 					path="/profile/edit"
-					element={<ProfileEditPage user={user} />}
+					element={
+						<ProfileEditPage user={user} setUser={setUser} />
+					}
 				/>
 
 				<Route

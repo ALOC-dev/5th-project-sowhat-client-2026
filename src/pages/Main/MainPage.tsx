@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { getArticles } from "../../api/articles";
 import { Article, User } from "../../types";
 import ArticleCard from "../../ui/ArticleCard";
-import ExperienceModal from "./ExperienceModal";
+import ExperienceModal, {
+	clearExperienceProfile,
+} from "./ExperienceModal";
 import styles from "./MainPage.module.css";
 
 const HOW_IT_WORKS = [
@@ -111,7 +113,10 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 								</button>
 								<button
 									className={styles.ghostButton}
-									onClick={() => setShowExperience(true)}
+									onClick={() => {
+										clearExperienceProfile();
+										setShowExperience(true);
+									}}
 								>
 									뉴스 둘러보기
 								</button>

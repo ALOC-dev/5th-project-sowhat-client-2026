@@ -1,15 +1,29 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { login } from "../../api/auth";
-import { enableMockLogin } from "../../lib/mockAuth"; // TODO: 제출 전 삭제
 import styles from "./LoginPage.module.css";
+
+const REMEMBER_ID_KEY = "sowhat_remember_login_id";
 
 type LoginPageProps = {
 	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function LoginPage({ setIsLogin }: LoginPageProps) {
-	const [id, setId] = useState<string>("");
+	const [id, setId] = useState<string>(() => {
+		try {
+			return localStorage.getItem(REMEMBER_ID_KEY) ?? "";
+		} catch {
+			return "";
+		}
+	});
+	const [rememberId, setRememberId] = useState<boolean>(() => {
+		try {
+			return localStorage.getItem(REMEMBER_ID_KEY) !== null;
+		} catch {
+			return false;
+		}
+	});
 	const [password, setPassword] = useState<string>("");
 	const [error, setError] = useState<string>("");
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -35,6 +49,16 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 				return;
 			}
 
+			try {
+				if (rememberId) {
+					localStorage.setItem(REMEMBER_ID_KEY, id);
+				} else {
+					localStorage.removeItem(REMEMBER_ID_KEY);
+				}
+			} catch {
+				// localStorage 사용 불가 환경이면 그냥 무시
+			}
+
 			setIsLogin(true);
 			navigate(redirect ?? "/");
 		} catch (e) {
@@ -44,13 +68,6 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 		} finally {
 			setIsSubmitting(false);
 		}
-	};
-
-	// TODO: 제출 전 삭제 - 백엔드 없이 로그인 이후 화면 확인용
-	const handleMockLogin = (): void => {
-		enableMockLogin();
-		setIsLogin(true);
-		navigate(redirect ?? "/");
 	};
 
 	return (
@@ -90,6 +107,15 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 					/>
 				</div>
 
+				<label className={styles.rememberRow}>
+					<input
+						type="checkbox"
+						checked={rememberId}
+						onChange={(e) => setRememberId(e.target.checked)}
+					/>
+					아이디 저장
+				</label>
+
 				{error && <p className={styles.error}>{error}</p>}
 
 				<button
@@ -109,14 +135,6 @@ export default function LoginPage({ setIsLogin }: LoginPageProps) {
 						회원가입
 					</button>
 				</p>
-
-				{/* TODO: 제출 전 삭제 - 개발 중 화면 확인용 임시 버튼 */}
-				<button
-					className={styles.devMockButton}
-					onClick={handleMockLogin}
-				>
-					⚙ 테스트용 임시 로그인 (개발 중에만 사용)
-				</button>
 			</div>
 		</div>
 	);

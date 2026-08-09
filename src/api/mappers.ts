@@ -51,7 +51,10 @@ export const toPersonalAnalysis = (
 		? {
 				effect: res.effect,
 				solution: res.solution,
-				links: [],
+				links: res.links.map((link) => ({
+					title: link.title,
+					url: link.url,
+				})),
 			}
 		: undefined;
 };

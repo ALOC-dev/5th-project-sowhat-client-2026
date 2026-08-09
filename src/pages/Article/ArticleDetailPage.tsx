@@ -8,9 +8,17 @@ import {
 	removeSavedAnalysis,
 	saveAnalysis,
 } from "../../lib/savedAnalyses";
-import { isMockLoginEnabled, MOCK_ANALYSIS } from "../../lib/mockAuth"; // TODO: 제출 전 삭제
 import { readExperienceProfile } from "../Main/ExperienceModal";
 import styled from "./ArticleDetailPage.module.css";
+
+// 긴 줄글을 문장 단위로 나눠 하나씩 확인할 수 있는 불릿으로 보여준다
+function toSentences(text?: string): string[] {
+	if (!text) return [];
+	return text
+		.split(/(?<=[.!?])\s+/)
+		.map((s) => s.trim())
+		.filter(Boolean);
+}
 
 type ArticleDetailPageProps = {
 	isLogin: boolean;
@@ -45,11 +53,6 @@ export default function ArticleDetailPage({
 		};
 
 		const fetchPersonalAnalysis = async () => {
-			if (isMockLoginEnabled()) {
-				// TODO: 제출 전 삭제 - 목업 로그인 모드
-				setAnalysis(MOCK_ANALYSIS);
-				return;
-			}
 			if (!user) return;
 			const fetched = await getPersonalAnalysis(
 				Number(article_id),
@@ -100,9 +103,15 @@ export default function ArticleDetailPage({
 					) : (
 						<>
 							<h1 className={styled.title}>{article.title}</h1>
-							<p className={styled.date}>
-								{article.published_at.toDateString() ??
-									"2026-05-19"}
+							<p className={styled.meta}>
+								<span>{article.publisher}</span>
+								{article.reporter && (
+									<span>{article.reporter} 기자</span>
+								)}
+								<span>
+									{article.published_at.toDateString() ??
+										"2026-05-19"}
+								</span>
 							</p>
 							<p className={styled.content}>{article.content}</p>
 						</>
@@ -115,10 +124,17 @@ export default function ArticleDetailPage({
 						<p className={styled.summaryText}>{article?.summary}</p>
 
 						<ul className={styled.keywordList}>
-							<li>
-								<strong>{article?.keyword[0].word}</strong>
-								<p>{article?.keyword[0].description}</p>
-							</li>
+							{article?.keyword.map((item, i) => (
+								<li key={item.word}>
+									<span className={styled.keywordBadge}>
+										{i + 1}
+									</span>
+									<div>
+										<strong>{item.word}</strong>
+										<p>{item.description}</p>
+									</div>
+								</li>
+							))}
 						</ul>
 					</section>
 				</article>
@@ -126,15 +142,49 @@ export default function ArticleDetailPage({
 				<article className={styled.sideBox}>
 					{isLogin ? (
 						<>
-							<h3>이 소식이 나에게 줄 영향은?</h3>
+							<h3>💡 이 소식이 나에게 줄 영향은?</h3>
 							<ul>
-								<li>{analysis?.effect}</li>
+								{toSentences(analysis?.effect).map(
+									(sentence, i) => (
+										<li key={i}>{sentence}</li>
+									),
+								)}
 							</ul>
 
-							<h3>어떻게 대비할까요?</h3>
+							<h3>🛡️ 어떻게 대비할까요?</h3>
 							<ul>
-								<li>{analysis?.solution}</li>
+								{toSentences(analysis?.solution).map(
+									(sentence, i) => (
+										<li key={i}>{sentence}</li>
+									),
+								)}
 							</ul>
+
+							{analysis?.links && analysis.links.length > 0 && (
+								<>
+									<h3>참고 링크</h3>
+									<ul className={styled.linkList}>
+										{analysis.links.map((link) => (
+											<li key={link.url}>
+												<a
+													href={link.url}
+													target="_blank"
+													rel="noreferrer"
+												>
+													<span
+														className={
+															styled.linkIcon
+														}
+													>
+														🔗
+													</span>
+													{link.title}
+												</a>
+											</li>
+										))}
+									</ul>
+								</>
+							)}
 
 							<p className={styled.feedbackLabel}>
 								이 해설이 도움이 되었나요?
@@ -178,6 +228,13 @@ export default function ArticleDetailPage({
 										<li>
 											관련 지원 제도나 대응 방법을
 											확인해보는 걸 추천해요.
+										</li>
+									</ul>
+									<ul>
+										<li>
+											<a href="#">
+												관련 지원 제도 안내 페이지
+											</a>
 										</li>
 									</ul>
 								</div>

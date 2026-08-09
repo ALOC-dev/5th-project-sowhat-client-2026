@@ -187,88 +187,129 @@ export default function SignupPage({ setIsLogin }: SignupPageProps) {
 					</div>
 				) : (
 					<div className={styles.fields}>
-						<input
-							className={styles.input}
-							type="number"
-							min="0"
-							max="120"
-							placeholder="나이"
-							value={age}
-							onChange={(e) => {
-								const v = e.target.value;
-								if (v === "" || Number(v) >= 0) setAge(v);
-							}}
-						/>
+						<div className={styles.fieldGroup}>
+							<label className={styles.fieldLabel}>나이</label>
+							<input
+								className={styles.input}
+								type="number"
+								min="0"
+								max="120"
+								placeholder="나이"
+								value={age}
+								onChange={(e) => {
+									const v = e.target.value;
+									if (v === "" || Number(v) >= 0)
+										setAge(v);
+								}}
+							/>
+						</div>
 
-						<select
-							className={styles.input}
-							value={gender}
-							onChange={(e) =>
-								setGender(e.target.value as GenderEnum)
-							}
-						>
-							{GENDERS.map((g) => (
-								<option key={g} value={g}>
-									{g}
-								</option>
-							))}
-						</select>
+						<div className={styles.grid2}>
+							<div className={styles.fieldGroup}>
+								<label className={styles.fieldLabel}>
+									성별
+								</label>
+								<select
+									className={styles.input}
+									value={gender}
+									onChange={(e) =>
+										setGender(
+											e.target.value as GenderEnum,
+										)
+									}
+								>
+									{GENDERS.map((g) => (
+										<option key={g} value={g}>
+											{g}
+										</option>
+									))}
+								</select>
+							</div>
 
-						<select
-							className={styles.input}
-							value={region}
-							onChange={(e) =>
-								setRegion(e.target.value as RegionEnum)
-							}
-						>
-							{REGIONS.map((r) => (
-								<option key={r} value={r}>
-									{r}
-								</option>
-							))}
-						</select>
+							<div className={styles.fieldGroup}>
+								<label className={styles.fieldLabel}>
+									거주지역
+								</label>
+								<select
+									className={styles.input}
+									value={region}
+									onChange={(e) =>
+										setRegion(
+											e.target.value as RegionEnum,
+										)
+									}
+								>
+									{REGIONS.map((r) => (
+										<option key={r} value={r}>
+											{r}
+										</option>
+									))}
+								</select>
+							</div>
+						</div>
 
-						<select
-							className={styles.input}
-							value={job}
-							onChange={(e) =>
-								setJob(e.target.value as JobEnum)
-							}
-						>
-							{JOBS.map((j) => (
-								<option key={j} value={j}>
-									{j}
-								</option>
-							))}
-						</select>
+						<div className={styles.grid2}>
+							<div className={styles.fieldGroup}>
+								<label className={styles.fieldLabel}>
+									직업
+								</label>
+								<select
+									className={styles.input}
+									value={job}
+									onChange={(e) =>
+										setJob(e.target.value as JobEnum)
+									}
+								>
+									{JOBS.map((j) => (
+										<option key={j} value={j}>
+											{j}
+										</option>
+									))}
+								</select>
+							</div>
 
-						<select
-							className={styles.input}
-							value={interest}
-							onChange={(e) =>
-								setInterest(e.target.value as CategoryEnum)
-							}
-						>
-							{CATEGORIES.map((c) => (
-								<option key={c} value={c}>
-									{c}
-								</option>
-							))}
-						</select>
+							<div className={styles.fieldGroup}>
+								<label className={styles.fieldLabel}>
+									관심분야
+								</label>
+								<select
+									className={styles.input}
+									value={interest}
+									onChange={(e) =>
+										setInterest(
+											e.target.value as CategoryEnum,
+										)
+									}
+								>
+									{CATEGORIES.map((c) => (
+										<option key={c} value={c}>
+											{c}
+										</option>
+									))}
+								</select>
+							</div>
+						</div>
 
-						<select
-							className={styles.input}
-							value={purpose}
-							onChange={(e) =>
-								setPurpose(e.target.value as PurposeEnum)
-							}
-						>
-							{PURPOSES.map((p) => (
-								<option key={p} value={p}>
-									{p}
-								</option>
-							))}
-						</select>
+						<div className={styles.fieldGroup}>
+							<label className={styles.fieldLabel}>
+								관심목적
+							</label>
+							<select
+								className={styles.input}
+								value={purpose}
+								onChange={(e) =>
+									setPurpose(
+										e.target.value as PurposeEnum,
+									)
+								}
+							>
+								{PURPOSES.map((p) => (
+									<option key={p} value={p}>
+										{p}
+									</option>
+								))}
+							</select>
+						</div>
 
 						<textarea
 							className={styles.textarea}

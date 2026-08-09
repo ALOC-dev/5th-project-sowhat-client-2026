@@ -87,6 +87,8 @@ export default function ProfileEditPage({
 			<h2 className={styles.title}>내 정보 수정</h2>
 
 			<div className={styles.formBox}>
+				<p className={styles.sectionLabel}>기본 정보</p>
+
 				<div className={styles.row}>
 					<label className={styles.label}>이름</label>
 					<input
@@ -99,116 +101,127 @@ export default function ProfileEditPage({
 					/>
 				</div>
 
-				<div className={styles.row}>
-					<label className={styles.label}>나이</label>
-					<input
-						className={styles.input}
-						type="number"
-						min="0"
-						max="120"
-						value={form.age}
-						onChange={(e) => {
-							const v = Number(e.target.value);
-							if (v >= 0) setForm({ ...form, age: v });
-						}}
-					/>
+				<div className={styles.grid2}>
+					<div className={styles.row}>
+						<label className={styles.label}>나이</label>
+						<input
+							className={styles.input}
+							type="number"
+							min="0"
+							max="120"
+							value={form.age}
+							onChange={(e) => {
+								const v = Number(e.target.value);
+								if (v >= 0) setForm({ ...form, age: v });
+							}}
+						/>
+					</div>
+
+					<div className={styles.row}>
+						<label className={styles.label}>성별</label>
+						<select
+							className={styles.input}
+							value={form.gender}
+							onChange={(e) =>
+								setForm({
+									...form,
+									gender: e.target.value as GenderEnum,
+								})
+							}
+						>
+							{GENDERS.map((g) => (
+								<option key={g} value={g}>
+									{g}
+								</option>
+							))}
+						</select>
+					</div>
 				</div>
 
-				<div className={styles.row}>
-					<label className={styles.label}>성별</label>
-					<select
-						className={styles.input}
-						value={form.gender}
-						onChange={(e) =>
-							setForm({
-								...form,
-								gender: e.target.value as GenderEnum,
-							})
-						}
-					>
-						{GENDERS.map((g) => (
-							<option key={g} value={g}>
-								{g}
-							</option>
-						))}
-					</select>
+				<div className={styles.grid2}>
+					<div className={styles.row}>
+						<label className={styles.label}>거주지역</label>
+						<select
+							className={styles.input}
+							value={form.region}
+							onChange={(e) =>
+								setForm({
+									...form,
+									region: e.target.value as RegionEnum,
+								})
+							}
+						>
+							{REGIONS.map((r) => (
+								<option key={r} value={r}>
+									{r}
+								</option>
+							))}
+						</select>
+					</div>
+
+					<div className={styles.row}>
+						<label className={styles.label}>직업</label>
+						<select
+							className={styles.input}
+							value={form.job}
+							onChange={(e) =>
+								setForm({
+									...form,
+									job: e.target.value as JobEnum,
+								})
+							}
+						>
+							{JOBS.map((j) => (
+								<option key={j} value={j}>
+									{j}
+								</option>
+							))}
+						</select>
+					</div>
 				</div>
 
-				<div className={styles.row}>
-					<label className={styles.label}>거주지역</label>
-					<select
-						className={styles.input}
-						value={form.region}
-						onChange={(e) =>
-							setForm({
-								...form,
-								region: e.target.value as RegionEnum,
-							})
-						}
-					>
-						{REGIONS.map((r) => (
-							<option key={r} value={r}>
-								{r}
-							</option>
-						))}
-					</select>
-				</div>
+				<p className={styles.sectionLabel}>관심 정보</p>
 
-				<div className={styles.row}>
-					<label className={styles.label}>직업</label>
-					<select
-						className={styles.input}
-						value={form.job}
-						onChange={(e) =>
-							setForm({ ...form, job: e.target.value as JobEnum })
-						}
-					>
-						{JOBS.map((j) => (
-							<option key={j} value={j}>
-								{j}
-							</option>
-						))}
-					</select>
-				</div>
+				<div className={styles.grid2}>
+					<div className={styles.row}>
+						<label className={styles.label}>관심분야</label>
+						<select
+							className={styles.input}
+							value={form.interest}
+							onChange={(e) =>
+								setForm({
+									...form,
+									interest: e.target.value as CategoryEnum,
+								})
+							}
+						>
+							{CATEGORIES.map((c) => (
+								<option key={c} value={c}>
+									{c}
+								</option>
+							))}
+						</select>
+					</div>
 
-				<div className={styles.row}>
-					<label className={styles.label}>관심분야</label>
-					<select
-						className={styles.input}
-						value={form.interest}
-						onChange={(e) =>
-							setForm({
-								...form,
-								interest: e.target.value as CategoryEnum,
-							})
-						}
-					>
-						{CATEGORIES.map((c) => (
-							<option key={c} value={c}>
-								{c}
-							</option>
-						))}
-					</select>
-				</div>
-
-				<div className={styles.row}>
-					<label className={styles.label}>관심목적</label>
-					<select
-						className={styles.input}
-						value={form.purpose}
-						onChange={(e) =>
-							setForm({
-								...form,
-								purpose: e.target.value as PurposeEnum,
-							})
-						}
-					>
-						{PURPOSES.map((p) => (
-							<option key={p} value={p}>
-								{p}
-							</option>
-						))}
-					</select>
+					<div className={styles.row}>
+						<label className={styles.label}>관심목적</label>
+						<select
+							className={styles.input}
+							value={form.purpose}
+							onChange={(e) =>
+								setForm({
+									...form,
+									purpose: e.target.value as PurposeEnum,
+								})
+							}
+						>
+							{PURPOSES.map((p) => (
+								<option key={p} value={p}>
+									{p}
+								</option>
+							))}
+						</select>
+					</div>
 				</div>
 
 				<div className={styles.row}>

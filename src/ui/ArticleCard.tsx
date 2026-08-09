@@ -1,4 +1,5 @@
 import { getCategoryImage } from "../lib/categoryImages";
+import { formatDate } from "../lib/formatDate";
 import { Article } from "../types";
 import styled from "./ArticleCard.module.css";
 
@@ -38,9 +39,7 @@ export default function ArticleCard({
 			<h2 className={styled.articleTitle}>{article.title}</h2>
 			<div className={styled.metaRow}>
 				<span>{article.publisher}</span>
-				<span>
-					{article.published_at.toDateString() ?? "2026-05-19"}
-				</span>
+				<span>{formatDate(article.published_at)}</span>
 			</div>
 			<p className={styled.articleContent}>{article.content}</p>
 		</div>

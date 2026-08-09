@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getArticleDetail, getPersonalAnalysis } from "../../api/articles";
 import { ArticleDetail, PersonalAnalysis, User } from "../../types";
+import { formatDate } from "../../lib/formatDate";
 import { recordArticleView } from "../../lib/readingHistory";
 import {
 	isAnalysisSaved,
@@ -108,10 +109,7 @@ export default function ArticleDetailPage({
 								{article.reporter && (
 									<span>{article.reporter} 기자</span>
 								)}
-								<span>
-									{article.published_at.toDateString() ??
-										"2026-05-19"}
-								</span>
+								<span>{formatDate(article.published_at)}</span>
 							</p>
 							<p className={styled.content}>{article.content}</p>
 						</>

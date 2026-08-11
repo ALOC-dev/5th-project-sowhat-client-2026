@@ -100,10 +100,17 @@ export type PersonalAnalysisLink = {
 	url: string;
 };
 
+export type SimilarArticle = {
+	title: string;
+	publisher: string;
+	sourceUrl: string;
+};
+
 export type PersonalAnalysis = {
 	effect: string;
 	solution: string;
 	links: PersonalAnalysisLink[];
+	similarArticles: SimilarArticle[];
 };
 
 export type User = {

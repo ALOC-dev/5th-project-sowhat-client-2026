@@ -1,10 +1,5 @@
-import { Article, ArticleDetail, PersonalAnalysis, User } from "../types";
-import {
-	ArticleDetailResponse,
-	ArticleResponse,
-	PersonalAnalysisResponse,
-	UserResponse,
-} from "./contracts";
+import { Article, ArticleDetail, User } from "../types";
+import { ArticleDetailResponse, ArticleResponse, UserResponse } from "./contracts";
 
 export const toArticle = (res: ArticleResponse | void): Article | void => {
 	return res
@@ -40,21 +35,6 @@ export const toArticleDetail = (
 				content: res.content,
 				summary: res.summary,
 				keyword: res.keyword,
-			}
-		: undefined;
-};
-
-export const toPersonalAnalysis = (
-	res: PersonalAnalysisResponse | void,
-): PersonalAnalysis | void => {
-	return res
-		? {
-				effect: res.effect,
-				solution: res.solution,
-				links: res.links.map((link) => ({
-					title: link.title,
-					url: link.url,
-				})),
 			}
 		: undefined;
 };

@@ -77,3 +77,63 @@ export async function api<T>(
 	const json = (await res.json()) as T;
 	return json;
 }
+
+export type SSEEventHandler = (event: string, data: string) => void;
+
+function parseSSEBlock(block: string, onEvent: SSEEventHandler) {
+	let event = "message";
+	const dataLines: string[] = [];
+
+	for (const line of block.split("\n")) {
+		if (line.startsWith("event:")) {
+			event = line.slice(6).trim();
+		} else if (line.startsWith("data:")) {
+			dataLines.push(line.slice(5).trim());
+		}
+	}
+
+	if (dataLines.length === 0) return;
+	onEvent(event, dataLines.join("\n"));
+}
+
+// text/event-stream 응답을 순서대로 읽어 이벤트가 도착할 때마다 onEvent를 호출한다
+export async function apiStream(
+	path: string,
+	onEvent: SSEEventHandler,
+	signal?: AbortSignal,
+): Promise<void> {
+	const streamHeaders = { Accept: "text/event-stream" };
+	let res = await doFetch(path, { headers: streamHeaders, signal });
+
+	if (res.status === 401 && !NO_REFRESH_PATHS.includes(path)) {
+		const refreshed = await refreshSession();
+		if (refreshed) {
+			res = await doFetch(path, { headers: streamHeaders, signal });
+		}
+	}
+
+	if (!res.ok || !res.body) {
+		const text = await res.text().catch(() => "");
+		throw new ApiError(
+			res.status,
+			`${res.status} ${res.statusText} ${text}`.trim(),
+		);
+	}
+
+	const reader = res.body.getReader();
+	const decoder = new TextDecoder();
+	let buffer = "";
+
+	while (true) {
+		const { done, value } = await reader.read();
+		if (done) break;
+		buffer += decoder.decode(value, { stream: true });
+
+		let sepIndex: number;
+		while ((sepIndex = buffer.indexOf("\n\n")) !== -1) {
+			const rawEvent = buffer.slice(0, sepIndex);
+			buffer = buffer.slice(sepIndex + 2);
+			parseSSEBlock(rawEvent, onEvent);
+		}
+	}
+}

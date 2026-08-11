@@ -152,6 +152,43 @@
   font-size: 15px;
 }
 
+.similarList li {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+}
+
+.similarList a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  padding: 14px 16px;
+  border-radius: 12px;
+  background-color: #fff;
+  border: 1px solid var(--accent-border);
+
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.similarList a:hover {
+  background-color: var(--accent-bg);
+}
+
+.similarList strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-h);
+  line-height: 1.5;
+}
+
+.similarList span {
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.7;
+}
+
 .p1 {
   font-size: 15px;
   font-weight: 600;

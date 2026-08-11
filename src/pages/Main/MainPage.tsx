@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getArticles } from "../../api/articles";
+import { getRecommendedArticles } from "../../api/articles";
 import { Article, User } from "../../types";
 import ArticleCard from "../../ui/ArticleCard";
-import ExperienceModal, {
-	clearExperienceProfile,
-} from "./ExperienceModal";
+import ExperienceModal, { clearExperienceProfile } from "./ExperienceModal";
 import styles from "./MainPage.module.css";
 
 const HOW_IT_WORKS = [
@@ -49,7 +47,7 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 	useEffect(() => {
 		if (!isLogin) return;
 		const fetchRecommended = async () => {
-			const fetched = await getArticles();
+			const fetched = await getRecommendedArticles();
 			setRecommended(fetched.slice(0, 5));
 		};
 		fetchRecommended();
@@ -62,9 +60,7 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 				<div className={styles.heroContent}>
 					{isLogin ? (
 						<>
-							<p className={styles.eyebrow}>
-								WELCOME BACK
-							</p>
+							<p className={styles.eyebrow}>WELCOME BACK</p>
 							<h1 className={styles.headline}>
 								{user?.username ?? "회원"}님,
 								<br />
@@ -143,8 +139,7 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 							회원님을 위해 골라봤어요
 						</h2>
 						<p className={styles.howSubtitle}>
-							관심분야와 최신 이슈를 바탕으로 추천하는
-							기사예요
+							관심분야와 최신 이슈를 바탕으로 추천하는 기사예요
 						</p>
 					</div>
 
@@ -183,8 +178,7 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 							기사 읽기부터 실전 대응까지
 						</h2>
 						<p className={styles.howSubtitle}>
-							왼쪽엔 기사, 오른쪽엔 AI 해설 — 같은 화면에서
-							한번에
+							왼쪽엔 기사, 오른쪽엔 AI 해설 — 같은 화면에서 한번에
 						</p>
 					</div>
 

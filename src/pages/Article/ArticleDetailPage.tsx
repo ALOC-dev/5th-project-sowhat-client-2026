@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getArticleDetail, getPersonalAnalysis } from "../../api/articles";
-import { ArticleDetail, PersonalAnalysis, User } from "../../types";
+import { getArticleDetail, streamPersonalAnalysis } from "../../api/articles";
 import { formatDate } from "../../lib/formatDate";
 import { recordArticleView } from "../../lib/readingHistory";
 import {
@@ -9,6 +8,7 @@ import {
 	removeSavedAnalysis,
 	saveAnalysis,
 } from "../../lib/savedAnalyses";
+import { ArticleDetail, PersonalAnalysis, User } from "../../types";
 import { readExperienceProfile } from "../Main/ExperienceModal";
 import styled from "./ArticleDetailPage.module.css";
 
@@ -53,18 +53,37 @@ export default function ArticleDetailPage({
 			}
 		};
 
-		const fetchPersonalAnalysis = async () => {
-			if (!user) return;
-			const fetched = await getPersonalAnalysis(
-				Number(article_id),
-				user.id,
-			);
-			setAnalysis((prev) => fetched ?? null);
-		};
-
 		fetchArticleDetail();
-		if (isLogin) fetchPersonalAnalysis();
-	}, [isLogin, user?.id]);
+	}, [article_id]);
+
+	useEffect(() => {
+		if (!isLogin || !user) return;
+
+		setAnalysis(null);
+
+		const controller = streamPersonalAnalysis(Number(article_id), {
+			onAnalysis: ({ effect, solution, links, similarArticles }) => {
+				setAnalysis({ effect, solution, links, similarArticles });
+			},
+			onLinks: (links) => {
+				setAnalysis((prev) =>
+					prev
+						? { ...prev, links }
+						: {
+								effect: "",
+								solution: "",
+								links,
+								similarArticles: [],
+							},
+				);
+			},
+			onError: (message) => {
+				console.error("개인 해설 생성 중 오류 발생:", message);
+			},
+		});
+
+		return () => controller.abort();
+	}, [isLogin, user?.id, article_id]);
 
 	useEffect(() => {
 		if (article_id) {
@@ -184,6 +203,37 @@ export default function ArticleDetailPage({
 								</>
 							)}
 
+							{analysis?.similarArticles &&
+								analysis.similarArticles.length > 0 && (
+									<>
+										<h3>비슷한 기사</h3>
+										<ul className={styled.similarList}>
+											{analysis.similarArticles.map(
+												(article) => (
+													<li key={article.sourceUrl}>
+														<a
+															href={
+																article.sourceUrl
+															}
+															target="_blank"
+															rel="noreferrer"
+														>
+															<strong>
+																{article.title}
+															</strong>
+															<span>
+																{
+																	article.publisher
+																}
+															</span>
+														</a>
+													</li>
+												),
+											)}
+										</ul>
+									</>
+								)}
+
 							<p className={styled.feedbackLabel}>
 								이 해설이 도움이 되었나요?
 							</p>
@@ -212,14 +262,12 @@ export default function ArticleDetailPage({
 
 							<div className={styled.previewWrap}>
 								<div className={styled.previewBlur}>
-									<p className={styled.previewLabel}>
-										예시
-									</p>
+									<p className={styled.previewLabel}>예시</p>
 									<ul>
 										<li>
-											이 소식은 자산·소비 계획에 영향을
-											줄 수 있어요. 로그인하면 내 상황에
-											맞춘 진짜 분석을 볼 수 있어요.
+											이 소식은 자산·소비 계획에 영향을 줄
+											수 있어요. 로그인하면 내 상황에 맞춘
+											진짜 분석을 볼 수 있어요.
 										</li>
 									</ul>
 									<ul>

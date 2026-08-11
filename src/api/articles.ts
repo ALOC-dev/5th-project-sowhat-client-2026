@@ -23,18 +23,31 @@
 // 	},
 // ];
 
-import { Article, ArticleDetail, PersonalAnalysis } from "../types";
-import { api } from "./client";
+import {
+	Article,
+	ArticleDetail,
+	PersonalAnalysisLink,
+	SimilarArticle,
+} from "../types";
+import { api, apiStream } from "./client";
 import {
 	ArticleDetailResponse,
 	ArticleResponse,
-	PersonalAnalysisResponse,
+	PersonalAnalysisEvent,
+	PersonalAnalysisLinksEvent,
 } from "./contracts";
-import { toArticleDetail, toArticleList, toPersonalAnalysis } from "./mappers";
+import { toArticleDetail, toArticleList } from "./mappers";
 
 // 전체 기사 조회: GET /api/articles
 export async function getArticles(): Promise<Article[]> {
 	const data = (await api<ArticleResponse[]>(`/api/articles`)) ?? [];
+	return toArticleList(data);
+}
+
+// 추천 기사 조회: GET /api/articles/recommendations
+export async function getRecommendedArticles(): Promise<Article[]> {
+	const data =
+		(await api<ArticleResponse[]>(`/api/articles/recommendations`)) ?? [];
 	return toArticleList(data);
 }
 
@@ -48,13 +61,70 @@ export async function getArticleDetail(
 	return toArticleDetail(data);
 }
 
-// 개인별 해설 조회: GET /api/articles/analysis?article_id=xxx&user_id=xxx
-export async function getPersonalAnalysis(
+export type PersonalAnalysisStreamHandlers = {
+	onAnalysis?: (data: {
+		effect: string;
+		solution: string;
+		links: PersonalAnalysisLink[];
+		similarArticles: SimilarArticle[];
+	}) => void;
+	onLinks?: (links: PersonalAnalysisLink[]) => void;
+	onError?: (message: string) => void;
+	onDone?: () => void;
+};
+
+// 개인별 해설 조회: GET /api/articles/{article_id}/analysis/stream
+// analysis, links 이벤트가 도착하는 순서대로 handlers를 통해 전달한다
+export function streamPersonalAnalysis(
 	article_id: number,
-	user_id: number,
-): Promise<PersonalAnalysis | void> {
-	const data = await api<PersonalAnalysisResponse>(
-		`/api/articles/analysis?article-id=${article_id}&user-id=${user_id}`,
-	);
-	return toPersonalAnalysis(data);
+	handlers: PersonalAnalysisStreamHandlers,
+): AbortController {
+	const controller = new AbortController();
+
+	apiStream(
+		`/api/articles/${article_id}/analysis/stream`,
+		(event, data) => {
+			if (!data) return;
+
+			switch (event) {
+				case "analysis": {
+					const parsed = JSON.parse(data) as PersonalAnalysisEvent;
+					handlers.onAnalysis?.({
+						effect: parsed.effect,
+						solution: parsed.solution,
+						links: parsed.links ?? [],
+						similarArticles: (parsed.similar_articles ?? []).map(
+							(a) => ({
+								title: a.title,
+								publisher: a.publisher,
+								sourceUrl: a.source_url,
+							}),
+						),
+					});
+					break;
+				}
+				case "links": {
+					const parsed = JSON.parse(
+						data,
+					) as PersonalAnalysisLinksEvent;
+					handlers.onLinks?.(parsed);
+					break;
+				}
+				case "error": {
+					handlers.onError?.(data);
+					break;
+				}
+				case "done": {
+					handlers.onDone?.();
+					break;
+				}
+			}
+		},
+		controller.signal,
+	).catch((err) => {
+		if (controller.signal.aborted) return;
+		handlers.onError?.(err instanceof Error ? err.message : String(err));
+	});
+
+	return controller;
 }

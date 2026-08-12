@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getArticleDetail, streamPersonalAnalysis } from "../../api/articles";
+import {
+	getArticleDetail,
+	getExperienceAnalysis,
+	streamPersonalAnalysis,
+} from "../../api/articles";
 import { formatDate } from "../../lib/formatDate";
 import { recordArticleView } from "../../lib/readingHistory";
 import {
@@ -8,7 +12,7 @@ import {
 	removeSavedAnalysis,
 	saveAnalysis,
 } from "../../lib/savedAnalyses";
-import { ArticleDetail, PersonalAnalysis, User } from "../../types";
+import { ArticleDetail, JobEnum, PersonalAnalysis, User } from "../../types";
 import { readExperienceProfile } from "../Main/ExperienceModal";
 import styled from "./ArticleDetailPage.module.css";
 
@@ -57,9 +61,22 @@ export default function ArticleDetailPage({
 	}, [article_id]);
 
 	useEffect(() => {
-		if (!isLogin || !user) return;
-
 		setAnalysis(null);
+
+		if (!isLogin || !user) {
+			if (!experience) return;
+
+			const fetchExperienceAnalysis = async () => {
+				const fetched = await getExperienceAnalysis(
+					Number(article_id),
+					experience,
+				);
+				setAnalysis((prev) => fetched ?? null);
+			};
+
+			fetchExperienceAnalysis();
+			return;
+		}
 
 		const controller = streamPersonalAnalysis(Number(article_id), {
 			onAnalysis: ({ effect, solution, links, similarArticles }) => {
@@ -169,13 +186,15 @@ export default function ArticleDetailPage({
 							</ul>
 
 							<h3>🛡️ 어떻게 대비할까요?</h3>
-							<ul>
-								{toSentences(analysis?.solution).map(
-									(sentence, i) => (
-										<li key={i}>{sentence}</li>
-									),
-								)}
-							</ul>
+							{analysis?.solution && (
+								<ul>
+									{toSentences(analysis.solution).map(
+										(sentence, i) => (
+											<li key={i}>{sentence}</li>
+										),
+									)}
+								</ul>
+							)}
 
 							{analysis?.links && analysis.links.length > 0 && (
 								<>
@@ -223,6 +242,10 @@ export default function ArticleDetailPage({
 															</strong>
 															<span>
 																{
+																	article.published_at
+																}
+																{" | "}
+																{
 																	article.publisher
 																}
 															</span>
@@ -256,43 +279,72 @@ export default function ArticleDetailPage({
 						</>
 					) : (
 						<>
-							<p className={styled.p1}>
-								이 소식이 나에게 어떤 영향을 줄까요?
-							</p>
+							<h3>💡 이 소식이 나에게 줄 영향은?</h3>
 
 							<div className={styled.previewWrap}>
-								<div className={styled.previewBlur}>
-									<p className={styled.previewLabel}>예시</p>
-									<ul>
-										<li>
-											이 소식은 자산·소비 계획에 영향을 줄
-											수 있어요. 로그인하면 내 상황에 맞춘
-											진짜 분석을 볼 수 있어요.
-										</li>
-									</ul>
-									<ul>
-										<li>
-											관련 지원 제도나 대응 방법을
-											확인해보는 걸 추천해요.
-										</li>
-									</ul>
-									<ul>
-										<li>
-											<a href="#">
-												관련 지원 제도 안내 페이지
-											</a>
-										</li>
-									</ul>
-								</div>
-								<div className={styled.previewOverlay}>
-									<span className={styled.previewLock}>
-										🔒
-									</span>
-									<p className={styled.p2}>
-										{experience
-											? `${experience.job}이시라면 특히 확인해볼 만한 내용이에요. 로그인하면 나를 위한 해설을 볼 수 있어요.`
-											: "로그인하면 나를 위한 진짜 해설을 볼 수 있어요."}
-									</p>
+								<ul>
+									{toSentences(analysis?.effect).map(
+										(sentence, i) => (
+											<li key={i}>{sentence}</li>
+										),
+									)}
+								</ul>
+							</div>
+
+							<h3>🛡️ 어떻게 대비할까요?</h3>
+
+							<div className={styled.previewWrap}>
+								<div className={styled.previewBlurWrap}>
+									<div className={styled.previewBlur}>
+										<ul>
+											<li>
+												관련 지원 제도나 대응 방법을
+												확인해보는 걸 추천해요.
+											</li>
+										</ul>
+										<ul>
+											<li>
+												<a href="#">
+													관련 지원 제도 안내 페이지
+												</a>
+											</li>
+										</ul>
+									</div>
+									<div className={styled.previewOverlay}>
+										<span className={styled.previewLock}>
+											🔒
+										</span>
+										<p
+											className={styled.p2}
+											style={{ fontSize: "14px" }}
+										>
+											{experience &&
+												experience.job !==
+													JobEnum.STUDENT &&
+												experience.job !==
+													JobEnum.RETIRED_UNEMPLOYED && (
+													<>
+														{experience.job} 분야에
+														종사하신다면 특히
+														확인해볼 만한
+														내용이에요.
+														<br />
+													</>
+												)}
+											{experience &&
+												experience.job ==
+													JobEnum.STUDENT && (
+													<>
+														{experience.job}
+														이시라면 특히 확인해볼
+														만한 내용이에요.
+														<br />
+													</>
+												)}
+											로그인하면 나를 위한 해설을 볼 수
+											있어요.
+										</p>
+									</div>
 								</div>
 							</div>
 

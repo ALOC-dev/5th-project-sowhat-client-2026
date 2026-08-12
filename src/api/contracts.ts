@@ -32,10 +32,15 @@ export type ArticleDetailResponse = {
 	keyword: KeywordItem[];
 };
 
+export type ExperienceAnalysisResponse = {
+	effect: string;
+};
+
 export type PersonalAnalysisLinkResponse = { title: string; url: string };
 
 export type SimilarArticleResponse = {
 	title: string;
+	published_at: string;
 	publisher: string;
 	source_url: string;
 };

@@ -102,15 +102,16 @@ export type PersonalAnalysisLink = {
 
 export type SimilarArticle = {
 	title: string;
+	published_at: string;
 	publisher: string;
 	sourceUrl: string;
 };
 
 export type PersonalAnalysis = {
 	effect: string;
-	solution: string;
-	links: PersonalAnalysisLink[];
-	similarArticles: SimilarArticle[];
+	solution: string | null;
+	links: PersonalAnalysisLink[] | null;
+	similarArticles: SimilarArticle[] | null;
 };
 
 export type User = {

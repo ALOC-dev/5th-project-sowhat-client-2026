@@ -1,31 +1,8 @@
-/* 뉴스 기사 Mock data */
-// const MOCK_ARTICLES = [
-// 	{
-// 		article_id: 1,
-// 		image: "",
-// 		title: "첫 번째 기사",
-// 		date: "2026-03-31",
-// 		content: "이것은 첫 번째 기사 내용 일부입니다.",
-// 	},
-// 	{
-// 		article_id: 2,
-// 		image: "",
-// 		title: "두 번째 기사",
-// 		date: "2026-03-30",
-// 		content: "이것은 두 번째 기사 내용 일부입니다.",
-// 	},
-// 	{
-// 		article_id: 3,
-// 		image: "",
-// 		title: "세 번째 기사",
-// 		date: "2026-03-29",
-// 		content: "이것은 세 번째 기사 내용 일부입니다.",
-// 	},
-// ];
-
+import { ExperienceProfile } from "../pages/Main/ExperienceModal";
 import {
 	Article,
 	ArticleDetail,
+	PersonalAnalysis,
 	PersonalAnalysisLink,
 	SimilarArticle,
 } from "../types";
@@ -33,10 +10,11 @@ import { api, apiStream } from "./client";
 import {
 	ArticleDetailResponse,
 	ArticleResponse,
+	ExperienceAnalysisResponse,
 	PersonalAnalysisEvent,
 	PersonalAnalysisLinksEvent,
 } from "./contracts";
-import { toArticleDetail, toArticleList } from "./mappers";
+import { toArticleDetail, toArticleList, toPersonalAnalysis } from "./mappers";
 
 // 전체 기사 조회: GET /api/articles
 export async function getArticles(): Promise<Article[]> {
@@ -51,14 +29,23 @@ export async function getRecommendedArticles(): Promise<Article[]> {
 	return toArticleList(data);
 }
 
-// 개별 기사 + 공통해설 조회: GET /api/articles/{article_id}
+// 개별 기사 + 공통해설 조회: GET /api/articles/{articleId}
 export async function getArticleDetail(
-	article_id: number,
+	articleId: number,
 ): Promise<ArticleDetail | void> {
-	const data = await api<ArticleDetailResponse>(
-		`/api/articles/${article_id}`,
-	);
+	const data = await api<ArticleDetailResponse>(`/api/articles/${articleId}`);
 	return toArticleDetail(data);
+}
+
+// 비로그인 시 미리보기 해설 조회: GET /api/articles/{article_id/analysis/experience
+export async function getExperienceAnalysis(
+	articleId: number,
+	experienceProfile: ExperienceProfile,
+): Promise<PersonalAnalysis | void> {
+	const data = await api<ExperienceAnalysisResponse>(
+		`/api/articles/${articleId}/analysis/experience?age-group=${experienceProfile.ageGroup}&job=${experienceProfile.job}&interest=${experienceProfile.interest}`,
+	);
+	return toPersonalAnalysis(data);
 }
 
 export type PersonalAnalysisStreamHandlers = {
@@ -76,13 +63,13 @@ export type PersonalAnalysisStreamHandlers = {
 // 개인별 해설 조회: GET /api/articles/{article_id}/analysis/stream
 // analysis, links 이벤트가 도착하는 순서대로 handlers를 통해 전달한다
 export function streamPersonalAnalysis(
-	article_id: number,
+	articleId: number,
 	handlers: PersonalAnalysisStreamHandlers,
 ): AbortController {
 	const controller = new AbortController();
 
 	apiStream(
-		`/api/articles/${article_id}/analysis/stream`,
+		`/api/articles/${articleId}/analysis/stream`,
 		(event, data) => {
 			if (!data) return;
 
@@ -96,6 +83,7 @@ export function streamPersonalAnalysis(
 						similarArticles: (parsed.similar_articles ?? []).map(
 							(a) => ({
 								title: a.title,
+								published_at: a.published_at,
 								publisher: a.publisher,
 								sourceUrl: a.source_url,
 							}),

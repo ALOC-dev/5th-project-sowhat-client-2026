@@ -142,6 +142,10 @@
   color: var(--text-h);
   text-decoration: none;
   transition: background-color 0.15s ease;
+
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .linkList a:hover {
@@ -149,6 +153,7 @@
 }
 
 .linkIcon {
+  flex-shrink: 0;
   font-size: 15px;
 }
 
@@ -198,13 +203,16 @@
 }
 
 .previewWrap {
-  position: relative;
   margin: 16px 0 20px;
 }
 
+.previewBlurWrap {
+  position: relative;
+}
+
 .previewBlur {
-  filter: blur(3px);
-  opacity: 0.7;
+  filter: blur(6px);
+  opacity: 0.6;
   pointer-events: none;
   user-select: none;
 }

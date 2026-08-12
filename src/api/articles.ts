@@ -52,7 +52,7 @@ export type PersonalAnalysisStreamHandlers = {
 	onAnalysis?: (data: {
 		effect: string;
 		solution: string;
-		links: PersonalAnalysisLink[];
+		links: PersonalAnalysisLink[] | null;
 		similarArticles: SimilarArticle[];
 	}) => void;
 	onLinks?: (links: PersonalAnalysisLink[]) => void;
@@ -79,7 +79,7 @@ export function streamPersonalAnalysis(
 					handlers.onAnalysis?.({
 						effect: parsed.effect,
 						solution: parsed.solution,
-						links: parsed.links ?? [],
+						links: parsed.links,
 						similarArticles: (parsed.similar_articles ?? []).map(
 							(a) => ({
 								title: a.title,

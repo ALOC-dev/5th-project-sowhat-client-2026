@@ -102,12 +102,10 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 
 			<div className={styles.articleList}>
 				{isLoading ? (
-					<p className={styles.emptyState}>
-						기사를 불러오는 중이에요...
-					</p>
+					<p className={styles.emptyState}>기사 불러오는 중...</p>
 				) : filteredArticles.length === 0 ? (
 					<p className={styles.emptyState}>
-						해당 카테고리의 기사가 없어요.
+						해당 카테고리의 기사가 없습니다.
 					</p>
 				) : (
 					filteredArticles.map((article) => (

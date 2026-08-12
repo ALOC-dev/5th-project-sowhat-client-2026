@@ -38,26 +38,30 @@ export default function ProfileEditPage({
 		if (!user || !form) return;
 		setIsSaving(true);
 
-		const updated = await updateUser({
-			username: form.username == user.username ? undefined : form.username,
-			age: form.age == user.age ? undefined : form.age,
-			gender: form.gender == user.gender ? undefined : form.gender,
-			region: form.region == user.region ? undefined : form.region,
-			job: form.job == user.job ? undefined : form.job,
-			interest:
-				form.interest == user.interest ? undefined : form.interest,
-			purpose:
-				form.purpose == user.purpose ? undefined : form.purpose,
-			extra_information:
-				form.extra_information == user.extra_information
-					? undefined
-					: form.extra_information,
-		});
+		try {
+			const updated = await updateUser({
+				username:
+					form.username == user.username ? undefined : form.username,
+				age: form.age == user.age ? undefined : form.age,
+				gender: form.gender == user.gender ? undefined : form.gender,
+				region: form.region == user.region ? undefined : form.region,
+				job: form.job == user.job ? undefined : form.job,
+				interest:
+					form.interest == user.interest ? undefined : form.interest,
+				purpose:
+					form.purpose == user.purpose ? undefined : form.purpose,
+				extra_information:
+					form.extra_information == user.extra_information
+						? undefined
+						: form.extra_information,
+			});
 
-		setIsSaving(false);
-		if (updated) {
-			setUser(updated);
-			navigate("/profile");
+			if (updated) {
+				setUser(updated);
+				navigate("/profile");
+			}
+		} finally {
+			setIsSaving(false);
 		}
 	};
 

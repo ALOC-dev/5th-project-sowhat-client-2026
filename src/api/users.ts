@@ -1,6 +1,6 @@
 import { ReadingHistoryItem } from "../lib/readingHistory";
 import { User } from "../types";
-import { api } from "./client";
+import { ApiOptions, api } from "./client";
 import {
 	UserResponse,
 	UserUpdateRequest,
@@ -9,8 +9,8 @@ import {
 import { toUser } from "./mappers";
 
 // 사용자 정보 조회: GET /api/users/me
-export async function getUser(): Promise<User | void> {
-	const data = await api<UserResponse>(`/api/users/me`);
+export async function getUser(opts?: ApiOptions): Promise<User | void> {
+	const data = await api<UserResponse>(`/api/users/me`, undefined, opts);
 	return toUser(data);
 }
 

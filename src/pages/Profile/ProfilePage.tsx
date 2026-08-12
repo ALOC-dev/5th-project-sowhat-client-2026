@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../api/auth";
 import { getViewedArticles } from "../../api/users";
 import {
 	getReadingHistory,
 	ReadingHistoryItem,
 } from "../../lib/readingHistory";
 import { getSavedAnalyses, SavedAnalysisItem } from "../../lib/savedAnalyses";
-import { logout } from "../../api/auth";
 import { User } from "../../types";
 import styles from "./ProfilePage.module.css";
 
@@ -21,9 +21,12 @@ export default function ProfilePage({ user, setIsLogin }: ProfilePageProps) {
 	const [saved, setSaved] = useState<SavedAnalysisItem[]>([]);
 
 	const handleLogout = async (): Promise<void> => {
-		await logout();
-		setIsLogin(false);
-		navigate("/");
+		try {
+			await logout();
+		} finally {
+			setIsLogin(false);
+			navigate("/");
+		}
 	};
 
 	useEffect(() => {
@@ -58,7 +61,9 @@ export default function ProfilePage({ user, setIsLogin }: ProfilePageProps) {
 						<h2 className={styles.username}>
 							{user?.username ?? "-"}
 						</h2>
-						<p className={styles.loginId}>@{user?.login_id ?? "-"}</p>
+						<p className={styles.loginId}>
+							@{user?.login_id ?? "-"}
+						</p>
 					</div>
 
 					<div className={styles.infoBox}>
@@ -109,9 +114,7 @@ export default function ProfilePage({ user, setIsLogin }: ProfilePageProps) {
 
 						{user?.extra_information && (
 							<>
-								<p className={styles.sectionLabel}>
-									추가 정보
-								</p>
+								<p className={styles.sectionLabel}>추가 정보</p>
 								<p className={styles.extraInfo}>
 									{user.extra_information}
 								</p>

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { getUser } from "./api/users";
-import { User } from "./types";
 import styles from "./App.module.css";
+import { User } from "./types";
 
 import ArticleDetailPage from "./pages/Article/ArticleDetailPage";
 import ArticleListPage from "./pages/Article/ArticleListPage";
@@ -24,10 +24,7 @@ function Header({ isLogin, user }: HeaderProps) {
 	const isLanding = location.pathname === "/";
 
 	return (
-		<header
-			className={styles.header}
-			data-landing={isLanding}
-		>
+		<header className={styles.header} data-landing={isLanding}>
 			<div className={styles.logo} onClick={() => navigate("/")}>
 				So What
 			</div>
@@ -39,7 +36,7 @@ function Header({ isLogin, user }: HeaderProps) {
 							className={styles.navLink}
 							onClick={() => navigate("/articles")}
 						>
-							뉴스
+							전체 기사 보기
 						</button>
 
 						<button
@@ -87,27 +84,28 @@ export default function App() {
 	const [user, setUser] = useState<User | null>(null);
 
 	// 새로고침해도 로그인 세션(쿠키)이 살아있으면 로그인 상태 유지
+	// 로그인 안 한 사용자에게도 항상 실행되는 확인용 호출이라, 실패(401)해도 알림을 띄우지 않는다
 	useEffect(() => {
 		const checkSession = async () => {
-			const fetched = await getUser();
-			if (fetched) {
-				setUser(fetched);
-				setIsLogin(true);
+			try {
+				const fetched = await getUser({ silent: true });
+				if (fetched) {
+					setUser(fetched);
+					setIsLogin(true);
+				}
+			} catch {
+				// 로그인 안 된 상태면 실패해도 무시
 			}
 		};
 		checkSession();
 	}, []);
 
+	// 로그아웃 시(isLogin이 false로 바뀔 때) user 정보 초기화
+	// (isLogin이 true가 되는 경로는 setUser를 이미 직접 호출하므로 여기서 다시 fetch하지 않는다)
 	useEffect(() => {
 		if (!isLogin) {
 			setUser(null);
-			return;
 		}
-		const fetchUser = async () => {
-			const fetched = await getUser();
-			setUser(fetched ?? null);
-		};
-		fetchUser();
 	}, [isLogin]);
 
 	return (
@@ -123,20 +121,14 @@ export default function App() {
 				<Route
 					path="/login"
 					element={
-						<LoginPage
-							setIsLogin={setIsLogin}
-							setUser={setUser}
-						/>
+						<LoginPage setIsLogin={setIsLogin} setUser={setUser} />
 					}
 				/>
 
 				<Route
 					path="/signup"
 					element={
-						<SignupPage
-							setIsLogin={setIsLogin}
-							setUser={setUser}
-						/>
+						<SignupPage setIsLogin={setIsLogin} setUser={setUser} />
 					}
 				/>
 
@@ -149,9 +141,7 @@ export default function App() {
 
 				<Route
 					path="/profile/edit"
-					element={
-						<ProfileEditPage user={user} setUser={setUser} />
-					}
+					element={<ProfileEditPage user={user} setUser={setUser} />}
 				/>
 
 				<Route

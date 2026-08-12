@@ -38,6 +38,9 @@ export default function ArticleDetailPage({
 	const { article_id } = useParams();
 	const navigate = useNavigate();
 
+	const [isArticleLoading, setIsArticleLoading] = useState<boolean>(true);
+	const [isAnalysisLoading, setIsAnalysisLoading] = useState<boolean>(true);
+
 	const [article, setArticle] = useState<ArticleDetail | null>(null);
 	const [analysis, setAnalysis] = useState<PersonalAnalysis | null>(null);
 	const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
@@ -46,14 +49,19 @@ export default function ArticleDetailPage({
 
 	useEffect(() => {
 		const fetchArticleDetail = async () => {
-			const fetched = await getArticleDetail(Number(article_id));
-			setArticle((prev) => fetched ?? null);
-			if (fetched) {
-				recordArticleView({
-					id: fetched.id,
-					title: fetched.title,
-					category: fetched.category,
-				});
+			setIsArticleLoading(true);
+			try {
+				const fetched = await getArticleDetail(Number(article_id));
+				setArticle((prev) => fetched ?? null);
+				if (fetched) {
+					recordArticleView({
+						id: fetched.id,
+						title: fetched.title,
+						category: fetched.category,
+					});
+				}
+			} finally {
+				setIsArticleLoading(false);
 			}
 		};
 
@@ -66,21 +74,29 @@ export default function ArticleDetailPage({
 		if (!isLogin || !user) {
 			if (!experience) return;
 
-			const fetchExperienceAnalysis = async () => {
-				const fetched = await getExperienceAnalysis(
-					Number(article_id),
-					experience,
-				);
-				setAnalysis((prev) => fetched ?? null);
-			};
+			setIsAnalysisLoading(true);
 
-			fetchExperienceAnalysis();
+			try {
+				const fetchExperienceAnalysis = async () => {
+					const fetched = await getExperienceAnalysis(
+						Number(article_id),
+						experience,
+					);
+					setAnalysis((prev) => fetched ?? null);
+				};
+
+				fetchExperienceAnalysis();
+			} finally {
+				setIsAnalysisLoading(false);
+			}
+
 			return;
 		}
 
 		const controller = streamPersonalAnalysis(Number(article_id), {
 			onAnalysis: ({ effect, solution, links, similarArticles }) => {
 				setAnalysis({ effect, solution, links, similarArticles });
+				setIsAnalysisLoading(false);
 			},
 			onLinks: (links) => {
 				setAnalysis((prev) =>
@@ -135,7 +151,9 @@ export default function ArticleDetailPage({
 
 			<div className={styled.layout}>
 				<article className={styled.articleBox}>
-					{!article ? (
+					{isArticleLoading ? (
+						<p>기사를 불러오는 중이에요...</p>
+					) : !article ? (
 						<p>기사를 찾을 수 없습니다.</p>
 					) : (
 						<>
@@ -151,7 +169,6 @@ export default function ArticleDetailPage({
 						</>
 					)}
 					<hr className={styled.divider} />
-
 					<section className={styled.summaryBox}>
 						<h2 className={styled.summaryTitle}>기사 내용 요약</h2>
 
@@ -177,25 +194,31 @@ export default function ArticleDetailPage({
 					{isLogin ? (
 						<>
 							<h3>💡 이 소식이 나에게 줄 영향은?</h3>
-							<ul>
-								{toSentences(analysis?.effect).map(
-									(sentence, i) => (
-										<li key={i}>{sentence}</li>
-									),
-								)}
-							</ul>
-
-							<h3>🛡️ 어떻게 대비할까요?</h3>
-							{analysis?.solution && (
+							{isAnalysisLoading ? (
+								<p>나에게 맞는 해설을 불러오는 중이에요...</p>
+							) : (
 								<ul>
-									{toSentences(analysis.solution).map(
+									{toSentences(analysis?.effect).map(
 										(sentence, i) => (
 											<li key={i}>{sentence}</li>
 										),
 									)}
 								</ul>
 							)}
-
+							<h3>🛡️ 어떻게 대비할까요?</h3>
+							{isAnalysisLoading ? (
+								<p>나에게 맞는 해설을 불러오는 중이에요...</p>
+							) : (
+								analysis?.solution && (
+									<ul>
+										{toSentences(analysis.solution).map(
+											(sentence, i) => (
+												<li key={i}>{sentence}</li>
+											),
+										)}
+									</ul>
+								)
+							)}
 							{analysis?.links && analysis.links.length > 0 && (
 								<>
 									<h3>참고 링크</h3>
@@ -221,7 +244,6 @@ export default function ArticleDetailPage({
 									</ul>
 								</>
 							)}
-
 							{analysis?.similarArticles &&
 								analysis.similarArticles.length > 0 && (
 									<>
@@ -256,7 +278,6 @@ export default function ArticleDetailPage({
 										</ul>
 									</>
 								)}
-
 							<p className={styled.feedbackLabel}>
 								이 해설이 도움이 되었나요?
 							</p>
@@ -281,18 +302,21 @@ export default function ArticleDetailPage({
 						<>
 							<h3>💡 이 소식이 나에게 줄 영향은?</h3>
 
-							<div className={styled.previewWrap}>
-								<ul>
-									{toSentences(analysis?.effect).map(
-										(sentence, i) => (
-											<li key={i}>{sentence}</li>
-										),
-									)}
-								</ul>
-							</div>
+							{isAnalysisLoading ? (
+								<p>나에게 맞는 해설을 불러오는 중이에요...</p>
+							) : (
+								<div className={styled.previewWrap}>
+									<ul>
+										{toSentences(analysis?.effect).map(
+											(sentence, i) => (
+												<li key={i}>{sentence}</li>
+											),
+										)}
+									</ul>
+								</div>
+							)}
 
 							<h3>🛡️ 어떻게 대비할까요?</h3>
-
 							<div className={styled.previewWrap}>
 								<div className={styled.previewBlurWrap}>
 									<div className={styled.previewBlur}>
@@ -322,6 +346,8 @@ export default function ArticleDetailPage({
 												experience.job !==
 													JobEnum.STUDENT &&
 												experience.job !==
+													JobEnum.JOB_SEEKER &&
+												experience.job !==
 													JobEnum.RETIRED_UNEMPLOYED && (
 													<>
 														{experience.job} 분야에
@@ -332,8 +358,10 @@ export default function ArticleDetailPage({
 													</>
 												)}
 											{experience &&
-												experience.job ==
-													JobEnum.STUDENT && (
+												(experience.job ==
+													JobEnum.STUDENT ||
+													experience.job ==
+														JobEnum.JOB_SEEKER) && (
 													<>
 														{experience.job}
 														이시라면 특히 확인해볼
@@ -347,7 +375,6 @@ export default function ArticleDetailPage({
 									</div>
 								</div>
 							</div>
-
 							<button
 								onClick={() =>
 									navigate(

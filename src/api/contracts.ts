@@ -32,11 +32,31 @@ export type ArticleDetailResponse = {
 	keyword: KeywordItem[];
 };
 
-export type PersonalAnalysisResponse = {
+export type ExperienceAnalysisResponse = {
+	effect: string;
+};
+
+export type PersonalAnalysisLinkResponse = { title: string; url: string };
+
+export type SimilarArticleResponse = {
+	title: string;
+	published_at: string;
+	publisher: string;
+	source_url: string;
+};
+
+// GET /api/articles/{article_id}/analysis/stream 의 "analysis" 이벤트 데이터
+// (PersonalAnalysis 테이블 row를 그대로 직렬화한 형태)
+export type PersonalAnalysisEvent = {
+	id: number | null;
 	effect: string;
 	solution: string;
-	links: { title: string; url: string }[];
+	links: PersonalAnalysisLinkResponse[] | null;
+	similar_articles: SimilarArticleResponse[] | null;
 };
+
+// 같은 스트림의 "links" 이벤트 데이터
+export type PersonalAnalysisLinksEvent = PersonalAnalysisLinkResponse[];
 
 export type ViewedArticleResponse = {
 	article_id: number;

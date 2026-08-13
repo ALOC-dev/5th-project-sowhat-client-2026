@@ -11,11 +11,7 @@ import styles from "./ArticleListPage.module.css";
 
 const CATEGORIES = Object.values(CategoryEnum);
 
-export default function ArticleListPage({
-	isLogin,
-}: {
-	isLogin: boolean;
-}) {
+export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 	const [articles, setArticles] = useState<Article[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const navigate = useNavigate();
@@ -32,9 +28,12 @@ export default function ArticleListPage({
 	useEffect(() => {
 		const fetchArticles = async () => {
 			setIsLoading(true);
-			const fetched = await getArticles();
-			setArticles((prev) => fetched);
-			setIsLoading(false);
+			try {
+				const fetched = await getArticles();
+				setArticles((prev) => fetched);
+			} finally {
+				setIsLoading(false);
+			}
 		};
 
 		fetchArticles();
@@ -103,9 +102,7 @@ export default function ArticleListPage({
 
 			<div className={styles.articleList}>
 				{isLoading ? (
-					<p className={styles.emptyState}>
-						기사를 불러오는 중이에요...
-					</p>
+					<p className={styles.emptyState}>기사 불러오는 중...</p>
 				) : filteredArticles.length === 0 ? (
 					<p className={styles.emptyState}>
 						해당 카테고리의 기사가 없습니다.

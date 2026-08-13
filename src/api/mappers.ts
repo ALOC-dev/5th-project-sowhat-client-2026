@@ -2,7 +2,7 @@ import { Article, ArticleDetail, PersonalAnalysis, User } from "../types";
 import {
 	ArticleDetailResponse,
 	ArticleResponse,
-	PersonalAnalysisResponse,
+	ExperienceAnalysisResponse,
 	UserResponse,
 } from "./contracts";
 
@@ -45,16 +45,14 @@ export const toArticleDetail = (
 };
 
 export const toPersonalAnalysis = (
-	res: PersonalAnalysisResponse | void,
+	res: ExperienceAnalysisResponse | void,
 ): PersonalAnalysis | void => {
 	return res
 		? {
 				effect: res.effect,
-				solution: res.solution,
-				links: res.links.map((link) => ({
-					title: link.title,
-					url: link.url,
-				})),
+				solution: null,
+				links: null,
+				similarArticles: null,
 			}
 		: undefined;
 };

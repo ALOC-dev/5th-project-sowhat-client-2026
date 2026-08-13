@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getArticleDetail, getPersonalAnalysis } from "../../api/articles";
-import { ArticleDetail, PersonalAnalysis, User } from "../../types";
+import {
+	getArticleDetail,
+	getExperienceAnalysis,
+	streamPersonalAnalysis,
+} from "../../api/articles";
 import { formatDate } from "../../lib/formatDate";
 import { recordArticleView } from "../../lib/readingHistory";
 import {
@@ -9,6 +12,7 @@ import {
 	removeSavedAnalysis,
 	saveAnalysis,
 } from "../../lib/savedAnalyses";
+import { ArticleDetail, JobEnum, PersonalAnalysis, User } from "../../types";
 import { readExperienceProfile } from "../Main/ExperienceModal";
 import styled from "./ArticleDetailPage.module.css";
 
@@ -34,6 +38,9 @@ export default function ArticleDetailPage({
 	const { article_id } = useParams();
 	const navigate = useNavigate();
 
+	const [isArticleLoading, setIsArticleLoading] = useState<boolean>(true);
+	const [isAnalysisLoading, setIsAnalysisLoading] = useState<boolean>(true);
+
 	const [article, setArticle] = useState<ArticleDetail | null>(null);
 	const [analysis, setAnalysis] = useState<PersonalAnalysis | null>(null);
 	const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
@@ -42,29 +49,72 @@ export default function ArticleDetailPage({
 
 	useEffect(() => {
 		const fetchArticleDetail = async () => {
-			const fetched = await getArticleDetail(Number(article_id));
-			setArticle((prev) => fetched ?? null);
-			if (fetched) {
-				recordArticleView({
-					id: fetched.id,
-					title: fetched.title,
-					category: fetched.category,
-				});
+			setIsArticleLoading(true);
+			try {
+				const fetched = await getArticleDetail(Number(article_id));
+				setArticle((prev) => fetched ?? null);
+				if (fetched) {
+					recordArticleView({
+						id: fetched.id,
+						title: fetched.title,
+						category: fetched.category,
+					});
+				}
+			} finally {
+				setIsArticleLoading(false);
 			}
 		};
 
-		const fetchPersonalAnalysis = async () => {
-			if (!user) return;
-			const fetched = await getPersonalAnalysis(
-				Number(article_id),
-				user.id,
-			);
-			setAnalysis((prev) => fetched ?? null);
-		};
-
 		fetchArticleDetail();
-		if (isLogin) fetchPersonalAnalysis();
-	}, [isLogin, user?.id]);
+	}, [article_id]);
+
+	useEffect(() => {
+		setAnalysis(null);
+
+		if (!isLogin || !user) {
+			if (!experience) return;
+
+			const fetchExperienceAnalysis = async () => {
+				setIsAnalysisLoading(true);
+				try {
+					const fetched = await getExperienceAnalysis(
+						Number(article_id),
+						experience,
+					);
+					setAnalysis((prev) => fetched ?? null);
+				} finally {
+					setIsAnalysisLoading(false);
+				}
+			};
+
+			fetchExperienceAnalysis();
+			return;
+		}
+
+		const controller = streamPersonalAnalysis(Number(article_id), {
+			onAnalysis: ({ effect, solution, links, similarArticles }) => {
+				setAnalysis({ effect, solution, links, similarArticles });
+				setIsAnalysisLoading(false);
+			},
+			onLinks: (links) => {
+				setAnalysis((prev) =>
+					prev
+						? { ...prev, links }
+						: {
+								effect: "",
+								solution: "",
+								links,
+								similarArticles: [],
+							},
+				);
+			},
+			onError: (message) => {
+				console.error("개인 해설 생성 중 오류 발생:", message);
+			},
+		});
+
+		return () => controller.abort();
+	}, [isLogin, user?.id, article_id]);
 
 	useEffect(() => {
 		if (article_id) {
@@ -99,7 +149,9 @@ export default function ArticleDetailPage({
 
 			<div className={styled.layout}>
 				<article className={styled.articleBox}>
-					{!article ? (
+					{isArticleLoading ? (
+						<p>기사 불러오는 중...</p>
+					) : !article ? (
 						<p>기사를 찾을 수 없습니다.</p>
 					) : (
 						<>
@@ -115,7 +167,6 @@ export default function ArticleDetailPage({
 						</>
 					)}
 					<hr className={styled.divider} />
-
 					<section className={styled.summaryBox}>
 						<h2 className={styled.summaryTitle}>기사 내용 요약</h2>
 
@@ -141,23 +192,31 @@ export default function ArticleDetailPage({
 					{isLogin ? (
 						<>
 							<h3>💡 이 소식이 나에게 줄 영향은?</h3>
-							<ul>
-								{toSentences(analysis?.effect).map(
-									(sentence, i) => (
-										<li key={i}>{sentence}</li>
-									),
-								)}
-							</ul>
-
+							{isAnalysisLoading ? (
+								<p>나에게 맞는 해설을 준비하고 있어요...</p>
+							) : (
+								<ul>
+									{toSentences(analysis?.effect).map(
+										(sentence, i) => (
+											<li key={i}>{sentence}</li>
+										),
+									)}
+								</ul>
+							)}
 							<h3>🛡️ 어떻게 대비할까요?</h3>
-							<ul>
-								{toSentences(analysis?.solution).map(
-									(sentence, i) => (
-										<li key={i}>{sentence}</li>
-									),
-								)}
-							</ul>
-
+							{isAnalysisLoading ? (
+								<p>나에게 맞는 해설을 준비하고 있어요...</p>
+							) : (
+								analysis?.solution && (
+									<ul>
+										{toSentences(analysis.solution).map(
+											(sentence, i) => (
+												<li key={i}>{sentence}</li>
+											),
+										)}
+									</ul>
+								)
+							)}
 							{analysis?.links && analysis.links.length > 0 && (
 								<>
 									<h3>참고 링크</h3>
@@ -183,7 +242,40 @@ export default function ArticleDetailPage({
 									</ul>
 								</>
 							)}
-
+							{analysis?.similarArticles &&
+								analysis.similarArticles.length > 0 && (
+									<>
+										<h3>비슷한 기사</h3>
+										<ul className={styled.similarList}>
+											{analysis.similarArticles.map(
+												(article) => (
+													<li key={article.sourceUrl}>
+														<a
+															href={
+																article.sourceUrl
+															}
+															target="_blank"
+															rel="noreferrer"
+														>
+															<strong>
+																{article.title}
+															</strong>
+															<span>
+																{
+																	article.published_at
+																}
+																{" | "}
+																{
+																	article.publisher
+																}
+															</span>
+														</a>
+													</li>
+												),
+											)}
+										</ul>
+									</>
+								)}
 							<p className={styled.feedbackLabel}>
 								이 해설이 도움이 되었나요?
 							</p>
@@ -206,48 +298,84 @@ export default function ArticleDetailPage({
 						</>
 					) : (
 						<>
-							<p className={styled.p1}>
-								이 소식이 나에게 어떤 영향을 줄까요?
-							</p>
+							<h3>💡 이 소식이 나에게 줄 영향은?</h3>
+
+							{!experience ? (
+								""
+							) : isAnalysisLoading ? (
+								<p>나에게 맞는 해설을 준비하고 있어요...</p>
+							) : (
+								<div className={styled.previewWrap}>
+									<ul>
+										{toSentences(analysis?.effect).map(
+											(sentence, i) => (
+												<li key={i}>{sentence}</li>
+											),
+										)}
+									</ul>
+								</div>
+							)}
+
+							{!experience ? "" : <h3>🛡️ 어떻게 대비할까요?</h3>}
 
 							<div className={styled.previewWrap}>
-								<div className={styled.previewBlur}>
-									<p className={styled.previewLabel}>
-										예시
-									</p>
-									<ul>
-										<li>
-											이 소식은 자산·소비 계획에 영향을
-											줄 수 있어요. 로그인하면 내 상황에
-											맞춘 진짜 분석을 볼 수 있어요.
-										</li>
-									</ul>
-									<ul>
-										<li>
-											관련 지원 제도나 대응 방법을
-											확인해보는 걸 추천해요.
-										</li>
-									</ul>
-									<ul>
-										<li>
-											<a href="#">
-												관련 지원 제도 안내 페이지
-											</a>
-										</li>
-									</ul>
-								</div>
-								<div className={styled.previewOverlay}>
-									<span className={styled.previewLock}>
-										🔒
-									</span>
-									<p className={styled.p2}>
-										{experience
-											? `${experience.job}이시라면 특히 확인해볼 만한 내용이에요. 로그인하면 나를 위한 해설을 볼 수 있어요.`
-											: "로그인하면 나를 위한 진짜 해설을 볼 수 있어요."}
-									</p>
+								<div className={styled.previewBlurWrap}>
+									<div className={styled.previewBlur}>
+										<ul>
+											<li>
+												관련 지원 제도나 대응 방법을
+												확인해보는 걸 추천해요.
+											</li>
+										</ul>
+										<ul>
+											<li>
+												<a href="#">
+													관련 지원 제도 안내 페이지
+												</a>
+											</li>
+										</ul>
+									</div>
+									<div className={styled.previewOverlay}>
+										<span className={styled.previewLock}>
+											🔒
+										</span>
+										<p
+											className={styled.p2}
+											style={{ fontSize: "14px" }}
+										>
+											{experience &&
+												experience.job !==
+													JobEnum.STUDENT &&
+												experience.job !==
+													JobEnum.JOB_SEEKER &&
+												experience.job !==
+													JobEnum.RETIRED_UNEMPLOYED && (
+													<>
+														{experience.job} 분야에
+														종사하신다면 특히
+														확인해볼 만한
+														내용이에요.
+														<br />
+													</>
+												)}
+											{experience &&
+												(experience.job ==
+													JobEnum.STUDENT ||
+													experience.job ==
+														JobEnum.JOB_SEEKER) && (
+													<>
+														{experience.job}
+														이시라면 특히 확인해볼
+														만한 내용이에요.
+														<br />
+													</>
+												)}
+											로그인하면 나를 위한 해설을 볼 수
+											있어요.
+										</p>
+									</div>
 								</div>
 							</div>
-
 							<button
 								onClick={() =>
 									navigate(

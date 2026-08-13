@@ -12,6 +12,7 @@ import PreviewPage from "./pages/Preview/PreviewPage";
 import ProfileEditPage from "./pages/Profile/ProfileEditPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import SignupPage from "./pages/Signup/SignupPage";
+import ToastHost from "./ui/ToastHost";
 
 type HeaderProps = {
 	isLogin: boolean;
@@ -146,6 +147,7 @@ export default function App() {
 
 	return (
 		<>
+			<ToastHost />
 			<Header isLogin={isLogin} user={user} />
 
 			<Routes>

@@ -41,14 +41,21 @@ type MainPageProps = {
 
 export default function MainPage({ isLogin, user }: MainPageProps) {
 	const navigate = useNavigate();
+	const [isRecommendationsLoading, setIsRecommendationsLoading] =
+		useState(false);
 	const [showExperience, setShowExperience] = useState(false);
 	const [recommended, setRecommended] = useState<Article[]>([]);
 
 	useEffect(() => {
 		if (!isLogin) return;
 		const fetchRecommended = async () => {
-			const fetched = await getRecommendedArticles();
-			setRecommended(fetched.slice(0, 5));
+			setIsRecommendationsLoading(true);
+			try {
+				const fetched = await getRecommendedArticles();
+				setRecommended(fetched.slice(0, 5));
+			} finally {
+				setIsRecommendationsLoading(false);
+			}
 		};
 		fetchRecommended();
 	}, [isLogin]);
@@ -136,7 +143,7 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 					<div className={styles.howHeader}>
 						<p className={styles.howEyebrow}>오늘의 추천</p>
 						<h2 className={styles.howTitle}>
-							회원님을 위해 골라봤어요
+							{user?.username} 님을 위해 골라봤어요
 						</h2>
 						<p className={styles.howSubtitle}>
 							관심분야와 최신 이슈를 바탕으로 추천하는 기사예요
@@ -144,21 +151,40 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 					</div>
 
 					<div className={styles.recommendGrid}>
-						{recommended.map((article, i) => (
+						{isRecommendationsLoading ? (
 							<div
-								key={article.id}
-								className={styles.recommendItem}
-								data-slot={i === 0 ? "featured" : "normal"}
+								className={styles.loadingState}
+								role="status"
+								aria-live="polite"
 							>
-								<ArticleCard
-									article={article}
-									size={i === 0 ? "lg" : "md"}
-									onDetailView={(articleId) =>
-										navigate(`/articles/${articleId}`)
-									}
+								<span
+									className={styles.loadingSpinner}
+									aria-hidden="true"
 								/>
+								<strong>추천 기사를 불러오고 있어요</strong>
+								<span>잠시만 기다려 주세요.</span>
 							</div>
-						))}
+						) : recommended.length == 0 ? (
+							<p className={styles.emptyState} role="status">
+								추천 기사를 불러오지 못했어요.
+							</p>
+						) : (
+							recommended.map((article, i) => (
+								<div
+									key={article.id}
+									className={styles.recommendItem}
+									data-slot={i === 0 ? "featured" : "normal"}
+								>
+									<ArticleCard
+										article={article}
+										size={i === 0 ? "lg" : "md"}
+										onDetailView={(articleId) =>
+											navigate(`/articles/${articleId}`)
+										}
+									/>
+								</div>
+							))
+						)}
 					</div>
 
 					<div className={styles.recommendFooter}>

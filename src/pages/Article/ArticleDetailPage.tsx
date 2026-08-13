@@ -150,9 +150,22 @@ export default function ArticleDetailPage({
 			<div className={styled.layout}>
 				<article className={styled.articleBox}>
 					{isArticleLoading ? (
-						<p>기사 불러오는 중...</p>
+						<div
+							className={styled.articleLoading}
+							role="status"
+							aria-live="polite"
+						>
+							<span
+								className={styled.loadingSpinner}
+								aria-hidden="true"
+							/>
+							<strong>기사를 불러오고 있어요</strong>
+							<span>내용을 정리해 보여드릴게요.</span>
+						</div>
 					) : !article ? (
-						<p>기사를 찾을 수 없습니다.</p>
+						<p className={styled.articleEmpty} role="status">
+							기사를 불러오지 못했어요.
+						</p>
 					) : (
 						<>
 							<h1 className={styled.title}>{article.title}</h1>
@@ -193,7 +206,25 @@ export default function ArticleDetailPage({
 						<>
 							<h3>💡 이 소식이 나에게 줄 영향은?</h3>
 							{isAnalysisLoading ? (
-								<p>나에게 맞는 해설을 준비하고 있어요...</p>
+								<div
+									className={styled.analysisLoading}
+									role="status"
+								>
+									<span
+										className={styled.loadingSpinner}
+										aria-hidden="true"
+									/>
+									<span>
+										나에게 맞는 해설을 준비하고 있어요.
+									</span>
+								</div>
+							) : !analysis ? (
+								<p
+									className={styled.analysisEmpty}
+									role="status"
+								>
+									해설을 불러오지 못했어요.
+								</p>
 							) : (
 								<ul>
 									{toSentences(analysis?.effect).map(
@@ -205,7 +236,25 @@ export default function ArticleDetailPage({
 							)}
 							<h3>🛡️ 어떻게 대비할까요?</h3>
 							{isAnalysisLoading ? (
-								<p>나에게 맞는 해설을 준비하고 있어요...</p>
+								<div
+									className={styled.analysisLoading}
+									role="status"
+								>
+									<span
+										className={styled.loadingSpinner}
+										aria-hidden="true"
+									/>
+									<span>
+										나에게 맞는 해설을 준비하고 있어요.
+									</span>
+								</div>
+							) : !analysis ? (
+								<p
+									className={styled.analysisEmpty}
+									role="status"
+								>
+									해설을 불러오지 못했어요.
+								</p>
 							) : (
 								analysis?.solution && (
 									<ul>
@@ -303,7 +352,25 @@ export default function ArticleDetailPage({
 							{!experience ? (
 								""
 							) : isAnalysisLoading ? (
-								<p>나에게 맞는 해설을 준비하고 있어요...</p>
+								<div
+									className={styled.analysisLoading}
+									role="status"
+								>
+									<span
+										className={styled.loadingSpinner}
+										aria-hidden="true"
+									/>
+									<span>
+										나에게 맞는 해설을 준비하고 있어요.
+									</span>
+								</div>
+							) : !analysis ? (
+								<p
+									className={styled.analysisEmpty}
+									role="status"
+								>
+									해설을 불러오지 못했어요.
+								</p>
 							) : (
 								<div className={styled.previewWrap}>
 									<ul>

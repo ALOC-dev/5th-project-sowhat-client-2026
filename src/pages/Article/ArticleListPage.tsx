@@ -102,9 +102,20 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 
 			<div className={styles.articleList}>
 				{isLoading ? (
-					<p className={styles.emptyState}>기사 불러오는 중...</p>
+					<div
+						className={styles.loadingState}
+						role="status"
+						aria-live="polite"
+					>
+						<span
+							className={styles.loadingSpinner}
+							aria-hidden="true"
+						/>
+						<strong>기사를 불러오고 있어요</strong>
+						<span>잠시만 기다려 주세요.</span>
+					</div>
 				) : filteredArticles.length === 0 ? (
-					<p className={styles.emptyState}>
+					<p className={styles.emptyState} role="status">
 						해당 카테고리의 기사가 없습니다.
 					</p>
 				) : (

@@ -40,6 +40,7 @@ export default function ArticleDetailPage({
 
 	const [isArticleLoading, setIsArticleLoading] = useState<boolean>(true);
 	const [isAnalysisLoading, setIsAnalysisLoading] = useState<boolean>(true);
+	const [isLinkLoading, setIsLinkLoading] = useState<boolean>(false);
 
 	const [article, setArticle] = useState<ArticleDetail | null>(null);
 	const [analysis, setAnalysis] = useState<PersonalAnalysis | null>(null);
@@ -95,6 +96,7 @@ export default function ArticleDetailPage({
 			onAnalysis: ({ effect, solution, links, similarArticles }) => {
 				setAnalysis({ effect, solution, links, similarArticles });
 				setIsAnalysisLoading(false);
+				setIsLinkLoading(true);
 			},
 			onLinks: (links) => {
 				setAnalysis((prev) =>
@@ -110,6 +112,9 @@ export default function ArticleDetailPage({
 			},
 			onError: (message) => {
 				console.error("개인 해설 생성 중 오류 발생:", message);
+			},
+			onDone: () => {
+				setIsLinkLoading(false);
 			},
 		});
 
@@ -266,30 +271,46 @@ export default function ArticleDetailPage({
 									</ul>
 								)
 							)}
-							{analysis?.links && analysis.links.length > 0 && (
-								<>
-									<h3>참고 링크</h3>
-									<ul className={styled.linkList}>
-										{analysis.links.map((link) => (
-											<li key={link.url}>
-												<a
-													href={link.url}
-													target="_blank"
-													rel="noreferrer"
-												>
-													<span
-														className={
-															styled.linkIcon
-														}
+							{isLinkLoading ? (
+								<div
+									className={styled.analysisLoading}
+									role="status"
+								>
+									<span
+										className={styled.loadingSpinner}
+										aria-hidden="true"
+									/>
+									<span>
+										추가로 방문하면 좋을 링크를 찾고 있어요.
+									</span>
+								</div>
+							) : (
+								analysis?.links &&
+								analysis.links.length > 0 && (
+									<>
+										<h3>참고 링크</h3>
+										<ul className={styled.linkList}>
+											{analysis.links.map((link) => (
+												<li key={link.url}>
+													<a
+														href={link.url}
+														target="_blank"
+														rel="noreferrer"
 													>
-														🔗
-													</span>
-													{link.title}
-												</a>
-											</li>
-										))}
-									</ul>
-								</>
+														<span
+															className={
+																styled.linkIcon
+															}
+														>
+															🔗
+														</span>
+														{link.title}
+													</a>
+												</li>
+											))}
+										</ul>
+									</>
+								)
 							)}
 							{analysis?.similarArticles &&
 								analysis.similarArticles.length > 0 && (

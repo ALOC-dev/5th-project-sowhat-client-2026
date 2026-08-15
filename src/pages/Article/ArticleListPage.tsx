@@ -89,6 +89,7 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 				</div>
 			)}
 
+			{isLogin && (
 			<div className={styles.categoryTabs}>
 				<button
 					className={styles.categoryTab}
@@ -109,6 +110,7 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 					</button>
 				))}
 			</div>
+			)}
 
 			<div className={styles.articleList}>
 				{isLoading ? (
@@ -141,7 +143,7 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 				)}
 			</div>
 
-			{!isLoading && (page > 1 || hasNext) && (
+			{isLogin && !isLoading && (page > 1 || hasNext) && (
 				<div className={styles.articleListFooter}>
 					<button
 						className={styles.moreButton}

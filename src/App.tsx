@@ -146,60 +146,74 @@ export default function App() {
 	}, [isLogin]);
 
 	return (
-		<>
+		<div className={styles.appRoot}>
 			<ToastHost />
 			<Header isLogin={isLogin} user={user} />
 
-			<Routes>
-				<Route
-					path="/"
-					element={<MainPage isLogin={isLogin} user={user} />}
-				/>
+			<main className={styles.main}>
+				<Routes>
+					<Route
+						path="/"
+						element={<MainPage isLogin={isLogin} user={user} />}
+					/>
 
-				<Route
-					path="/login"
-					element={
-						<LoginPage setIsLogin={setIsLogin} setUser={setUser} />
-					}
-				/>
+					<Route
+						path="/login"
+						element={
+							<LoginPage
+								setIsLogin={setIsLogin}
+								setUser={setUser}
+							/>
+						}
+					/>
 
-				<Route
-					path="/signup"
-					element={
-						<SignupPage setIsLogin={setIsLogin} setUser={setUser} />
-					}
-				/>
+					<Route
+						path="/signup"
+						element={
+							<SignupPage
+								setIsLogin={setIsLogin}
+								setUser={setUser}
+							/>
+						}
+					/>
 
-				<Route
-					path="/profile"
-					element={
-						<ProfilePage
-							user={user}
-							setIsLogin={setIsLogin}
-							onBack={requestProfileBackSkip}
-						/>
-					}
-				/>
+					<Route
+						path="/profile"
+						element={
+							<ProfilePage
+								user={user}
+								setIsLogin={setIsLogin}
+								onBack={requestProfileBackSkip}
+							/>
+						}
+					/>
 
-				<Route
-					path="/profile/edit"
-					element={<ProfileEditPage user={user} setUser={setUser} />}
-				/>
+					<Route
+						path="/profile/edit"
+						element={
+							<ProfileEditPage user={user} setUser={setUser} />
+						}
+					/>
 
-				<Route
-					path="/articles"
-					element={<ArticleListPage isLogin={isLogin} />}
-				/>
+					<Route
+						path="/articles"
+						element={<ArticleListPage isLogin={isLogin} />}
+					/>
 
-				<Route path="/preview" element={<PreviewPage />} />
+					<Route path="/preview" element={<PreviewPage />} />
 
-				<Route
-					path="/articles/:article_id"
-					element={
-						<ArticleDetailPage isLogin={isLogin} user={user} />
-					}
-				/>
-			</Routes>
-		</>
+					<Route
+						path="/articles/:article_id"
+						element={
+							<ArticleDetailPage isLogin={isLogin} user={user} />
+						}
+					/>
+				</Routes>
+			</main>
+
+			<footer className={styles.footer}>
+				© 2026 So What? — 나를 위한 뉴스 해설
+			</footer>
+		</div>
 	);
 }

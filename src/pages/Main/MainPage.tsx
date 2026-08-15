@@ -131,9 +131,11 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 
 			{showExperience && (
 				<ExperienceModal
-					onClose={() => {
+					onClose={(profile) => {
 						setShowExperience(false);
-						navigate("/articles");
+						navigate(
+							`/articles${profile ? "?category=" + profile.interest : ""}`,
+						);
 					}}
 				/>
 			)}
@@ -226,10 +228,6 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 					</div>
 				</section>
 			)}
-
-			<footer className={styles.footer}>
-				© 2026 So What? — 나를 위한 뉴스 해설
-			</footer>
 		</div>
 	);
 }

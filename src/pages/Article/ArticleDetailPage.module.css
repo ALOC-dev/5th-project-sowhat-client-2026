@@ -34,7 +34,9 @@
 
   .sideBox {
     min-height: auto;
-    padding: 20px 18px;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 24px 22px;
   }
 }
 
@@ -85,20 +87,60 @@
   color: var(--text-h);
   line-height: 1.8;
   white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .sideBox {
+  position: relative;
   min-height: 300px;
   border-radius: 18px;
-  padding: 28px 26px;
+  padding: 32px 28px;
   box-sizing: border-box;
+  overflow: hidden;
+  isolation: isolate;
 
-  border: 2px solid var(--accent-border);
-  background: linear-gradient(to bottom, var(--accent-soft), #fff);
-  box-shadow: var(--shadow);
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  background: linear-gradient(160deg, #fffdf7 0%, #fef3c7 60%, #fde9b0 100%);
+  box-shadow:
+    0 24px 48px -24px rgba(180, 83, 9, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.aiBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  margin-bottom: 16px;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #fff;
+  background: linear-gradient(100deg, #f59e0b, #ea9c1f);
+  box-shadow: 0 6px 16px -6px rgba(217, 119, 6, 0.5);
+}
+
+.iconChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  box-shadow: 0 1px 2px rgba(180, 83, 9, 0.12);
+  vertical-align: -6px;
 }
 
 .sideBox h3 {
+  display: flex;
+  align-items: center;
   font-family: var(--serif);
   font-size: 17px;
   font-weight: 700;
@@ -114,13 +156,16 @@
 
 .sideBox li {
   margin-bottom: 10px;
-  padding: 16px 18px;
+  padding: 18px 20px;
   border-radius: 12px;
-  background-color: #fff;
-  border: 1px solid var(--accent-border);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.7;
+  background-color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(217, 119, 6, 0.14);
+  box-shadow: 0 2px 10px -4px rgba(180, 83, 9, 0.15);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.85;
+  word-break: keep-all;
+  overflow-wrap: break-word;
   color: var(--text-h);
 }
 
@@ -137,14 +182,17 @@
 
   padding: 14px 16px;
   border-radius: 12px;
-  background-color: #fff;
-  border: 1px solid var(--accent-border);
+  background-color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(217, 119, 6, 0.14);
+  box-shadow: 0 2px 10px -4px rgba(180, 83, 9, 0.15);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 
   font-size: 14px;
   font-weight: 600;
   color: var(--text-h);
   text-decoration: none;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, transform 0.15s ease;
 
   min-width: 0;
   overflow-wrap: break-word;
@@ -152,7 +200,8 @@
 }
 
 .linkList a:hover {
-  background-color: var(--accent-bg);
+  background-color: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
 }
 
 .linkIcon {
@@ -173,15 +222,17 @@
 
   padding: 14px 16px;
   border-radius: 12px;
-  background-color: #fff;
-  border: 1px solid var(--accent-border);
+  background-color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(217, 119, 6, 0.14);
+  box-shadow: 0 2px 10px -4px rgba(180, 83, 9, 0.15);
 
   text-decoration: none;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
 .similarList a:hover {
-  background-color: var(--accent-bg);
+  background-color: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
 }
 
 .similarList strong {
@@ -189,6 +240,8 @@
   font-weight: 600;
   color: var(--text-h);
   line-height: 1.5;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .similarList span {
@@ -203,6 +256,8 @@
   color: var(--text-h);
   text-align: center;
   margin-top: 8px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .previewWrap {
@@ -225,8 +280,8 @@
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #92400e;
-  opacity: 0.7;
+  color: #b45309;
+  opacity: 0.9;
   margin-bottom: 10px;
 }
 
@@ -252,6 +307,8 @@
   color: var(--text);
   text-align: center;
   margin-bottom: 20px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .sideBox button {
@@ -278,7 +335,7 @@
   margin-top: 24px;
   margin-bottom: 10px;
   padding-top: 16px;
-  border-top: 1px solid var(--accent-border);
+  border-top: 1px solid rgba(217, 119, 6, 0.16);
 }
 
 .feedbackRow {
@@ -290,9 +347,9 @@
   display: block;
   flex: 1;
   margin: 0;
-  border: 1px solid var(--accent-border);
+  border: 1px solid rgba(217, 119, 6, 0.18);
   border-radius: 999px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.75);
   color: var(--text-h);
   font-size: 12px;
   padding: 8px 10px;
@@ -329,8 +386,10 @@
   color: var(--text);
   line-height: 1.8;
   margin-bottom: 24px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 
-  padding: 16px;
+  padding: 16px 18px;
   border-radius: 12px;
   background-color: var(--code-bg);
   border: 1px solid var(--border);
@@ -374,6 +433,8 @@
   font-weight: 600;
   color: var(--text);
   margin-bottom: 2px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .keywordList p {
@@ -382,4 +443,6 @@
   color: var(--text);
   opacity: 0.8;
   line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }

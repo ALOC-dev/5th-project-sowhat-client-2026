@@ -74,6 +74,11 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 		}
 	};
 
+	const handleCollapse = () => {
+		setArticles((prev) => prev.slice(0, PAGE_SIZE));
+		setHasMore(true);
+	};
+
 	return (
 		<div>
 			<div className={styles.main}>
@@ -113,6 +118,7 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 						key={category}
 						className={styles.categoryTab}
 						data-active={selectedCategory === category}
+						data-category={category}
 						onClick={() => setSearchParams({ category })}
 					>
 						{category}
@@ -140,15 +146,25 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 				)}
 			</div>
 
-			{!isLoading && hasMore && (
+			{!isLoading && (hasMore || articles.length > PAGE_SIZE) && (
 				<div className={styles.moreRow}>
-					<button
-						className={styles.moreButton}
-						onClick={handleLoadMore}
-						disabled={isLoadingMore}
-					>
-						{isLoadingMore ? "불러오는 중..." : "더보기"}
-					</button>
+					{hasMore && (
+						<button
+							className={styles.moreButton}
+							onClick={handleLoadMore}
+							disabled={isLoadingMore}
+						>
+							{isLoadingMore ? "불러오는 중..." : "더보기"}
+						</button>
+					)}
+					{articles.length > PAGE_SIZE && (
+						<button
+							className={styles.collapseButton}
+							onClick={handleCollapse}
+						>
+							접기
+						</button>
+					)}
 				</div>
 			)}
 		</div>

@@ -200,10 +200,6 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 						))}
 					</div>
 
-					<p className={styles.exampleEyebrow}>
-						가입하면 이런 마이페이지를 갖게 돼요
-					</p>
-
 					<div className={styles.exampleMockup} data-full="true">
 						<div className={styles.mockupChrome}>
 							<span
@@ -280,10 +276,6 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 							</div>
 						</div>
 					</div>
-
-					<p className={styles.exampleEyebrow}>
-						기사를 열면 이렇게 자세한 해설을 볼 수 있어요
-					</p>
 
 					<div className={styles.exampleMockup} data-full="true">
 						<div className={styles.mockupChrome}>

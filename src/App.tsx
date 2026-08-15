@@ -60,7 +60,10 @@ function Header({ isLogin, user }: HeaderProps) {
 									navigate(`/login?redirect=/`);
 								else
 									navigate(
-										`/login?redirect=${location.pathname}`,
+										`/login?redirect=${encodeURIComponent(
+											location.pathname +
+												location.search,
+										)}`,
 									);
 							}}
 						>

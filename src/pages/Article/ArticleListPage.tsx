@@ -52,9 +52,6 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 		if (!profile) return;
 		setExperience(profile);
 
-		if (!searchParams.get("category")) {
-			setSearchParams({ category: profile.interest });
-		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -81,7 +78,11 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 					<button
 						className={styles.experienceCta}
 						onClick={() =>
-							navigate(`/login?redirect=${location.pathname}`)
+							navigate(
+								`/login?redirect=${encodeURIComponent(
+									location.pathname + location.search,
+								)}`,
+							)
 						}
 					>
 						로그인하고 전체 해설 보기
@@ -90,26 +91,26 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 			)}
 
 			{isLogin && (
-			<div className={styles.categoryTabs}>
-				<button
-					className={styles.categoryTab}
-					data-active={!selectedCategory}
-					onClick={() => setSearchParams({})}
-				>
-					전체
-				</button>
-
-				{CATEGORIES.map((category) => (
+				<div className={styles.categoryTabs}>
 					<button
-						key={category}
 						className={styles.categoryTab}
-						data-active={selectedCategory === category}
-						onClick={() => setSearchParams({ category })}
+						data-active={!selectedCategory}
+						onClick={() => setSearchParams({})}
 					>
-						{category}
+						전체
 					</button>
-				))}
-			</div>
+
+					{CATEGORIES.map((category) => (
+						<button
+							key={category}
+							className={styles.categoryTab}
+							data-active={selectedCategory === category}
+							onClick={() => setSearchParams({ category })}
+						>
+							{category}
+						</button>
+					))}
+				</div>
 			)}
 
 			<div className={styles.articleList}>

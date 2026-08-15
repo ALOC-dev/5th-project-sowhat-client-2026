@@ -147,7 +147,14 @@ export default function ArticleDetailPage({
 		<div className={styled.page}>
 			<button
 				className={styled.backButton}
-				onClick={() => navigate("/articles")}
+				onClick={() => {
+					navigate(
+						"/articles" +
+							(!isLogin && experience
+								? `?category=${experience.interest}`
+								: ""),
+					);
+				}}
 			>
 				← 목록으로
 			</button>
@@ -467,7 +474,9 @@ export default function ArticleDetailPage({
 							<button
 								onClick={() =>
 									navigate(
-										`/login?redirect=${location.pathname}`,
+										`/login?redirect=${encodeURIComponent(
+											location.pathname + location.search,
+										)}`,
 									)
 								}
 							>

@@ -68,9 +68,7 @@ export default function LoginPage({ setIsLogin, setUser }: LoginPageProps) {
 			setIsLogin(true);
 			navigate(redirect || "/");
 		} catch (e) {
-			setError(
-				"로그인 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.",
-			);
+			setError("로그인 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.");
 		} finally {
 			setIsSubmitting(false);
 		}

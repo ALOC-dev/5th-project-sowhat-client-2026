@@ -49,6 +49,9 @@
   line-height: 1.35;
   color: var(--text-h);
   margin-bottom: 10px;
+
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .date {

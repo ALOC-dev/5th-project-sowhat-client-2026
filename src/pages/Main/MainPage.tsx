@@ -9,21 +9,21 @@ import styles from "./MainPage.module.css";
 const HOW_IT_WORKS = [
 	{
 		n: "01",
-		title: "공통 해설",
-		desc: "요약·키워드로 기사 핵심을 빠르게 파악",
-		icon: "📋",
+		title: "관심사 기반 추천 뉴스",
+		desc: "내가 고른 관심분야에 맞는 뉴스를 골라드려요",
+		icon: "🎯",
 	},
 	{
 		n: "02",
-		title: "나에게 오는 영향",
-		desc: "AI가 내 상황 기반으로 직접적 영향 분석",
-		icon: "✨",
+		title: "기사 요약 · 핵심 키워드 해설",
+		desc: "어려운 기사도 요약과 키워드 설명으로 쉽게 파악",
+		icon: "📋",
 	},
 	{
 		n: "03",
-		title: "실전 대비 방법",
-		desc: "상황별 구체적인 행동 가이드 제공",
-		icon: "✅",
+		title: "나에게 오는 영향 AI 분석",
+		desc: "내 상황 기반 영향 분석과 참고 링크까지 함께 제공",
+		icon: "✨",
 	},
 ];
 
@@ -136,7 +136,7 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 					<div className={styles.howHeader}>
 						<p className={styles.howEyebrow}>오늘의 추천</p>
 						<h2 className={styles.howTitle}>
-							회원님을 위해 골라봤어요
+							{user?.username ?? "회원"}님을 위해 골라봤어요
 						</h2>
 						<p className={styles.howSubtitle}>
 							관심분야와 최신 이슈를 바탕으로 추천하는 기사예요
@@ -178,7 +178,8 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 							기사 읽기부터 실전 대응까지
 						</h2>
 						<p className={styles.howSubtitle}>
-							왼쪽엔 기사, 오른쪽엔 AI 해설 — 같은 화면에서 한번에
+							관심사 추천부터 기사 요약, 나에게 맞춘 해설까지
+							한 번에
 						</p>
 					</div>
 
@@ -199,43 +200,205 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 						))}
 					</div>
 
-					<div className={styles.exampleBox}>
-						<div className={styles.exampleSide}>
-							<p className={styles.exampleLabel}>
-								이런 정보를 알려주시면
-							</p>
-							<div className={styles.exampleChips}>
-								<span className={styles.exampleChip}>
-									20대
-								</span>
-								<span className={styles.exampleChip}>
-									취업준비생
-								</span>
-								<span className={styles.exampleChip}>
-									경제 관심
-								</span>
-							</div>
+					<p className={styles.exampleEyebrow}>
+						가입하면 이런 마이페이지를 갖게 돼요
+					</p>
+
+					<div className={styles.exampleMockup} data-full="true">
+						<div className={styles.mockupChrome}>
+							<span
+								className={styles.mockupDot}
+								data-color="red"
+							/>
+							<span
+								className={styles.mockupDot}
+								data-color="yellow"
+							/>
+							<span
+								className={styles.mockupDot}
+								data-color="green"
+							/>
+							<span className={styles.mockupUrl}>
+								sowhat.app/profile
+							</span>
 						</div>
 
-						<div className={styles.exampleArrow}>→</div>
+						<div className={styles.mockupScreen}>
+							<div className={styles.mockupProfileHead}>
+								<div className={styles.mockupProfileAvatar}>
+									김
+								</div>
+								<div>
+									<p className={styles.mockupProfileName}>
+										김소원님
+									</p>
+									<p className={styles.mockupProfileMeta}>
+										27세 · 취업준비생 · 서울
+									</p>
+								</div>
+							</div>
 
-						<div className={styles.exampleSide}>
-							<p className={styles.exampleLabel}>
-								이런 해설을 받아볼 수 있어요
+							<div className={styles.mockupInterestRow}>
+								<span className={styles.mockupInterestLabel}>
+									관심분야
+								</span>
+								<span className={styles.mockupCategoryChip}>
+									경제
+								</span>
+								<span className={styles.mockupEditLink}>
+									수정하기 ✏️
+								</span>
+							</div>
+
+							<p className={styles.mockupSectionLabel}>
+								최근 본 기사
 							</p>
-							<p className={styles.exampleArticleTitle}>
-								"한국은행, 기준금리 연 2.25% 동결"
+							<div className={styles.mockupListItem}>
+								<span className={styles.mockupCategoryChip}>
+									경제
+								</span>
+								한국은행, 기준금리 연 2.25% 동결
+							</div>
+							<div className={styles.mockupListItem}>
+								<span
+									className={styles.mockupCategoryChip}
+									data-category="사회"
+								>
+									사회
+								</span>
+								폭염 속 장바구니 물가 비상, 채소값 껑충
+							</div>
+
+							<p className={styles.mockupSectionLabel}>
+								도움이 된 해설
 							</p>
-							<div className={styles.examplePreview}>
-								<p>
-									💡 취업준비생이라면 대출 이자보다 이번
-									동결로 채용 시장 분위기가 어떻게
-									바뀌는지가 더 중요해요.
+							<div className={styles.mockupListItem}>
+								<span className={styles.mockupCategoryChip}>
+									경제
+								</span>
+								한국은행, 기준금리 연 2.25% 동결
+							</div>
+						</div>
+					</div>
+
+					<p className={styles.exampleEyebrow}>
+						기사를 열면 이렇게 자세한 해설을 볼 수 있어요
+					</p>
+
+					<div className={styles.exampleMockup} data-full="true">
+						<div className={styles.mockupChrome}>
+							<span
+								className={styles.mockupDot}
+								data-color="red"
+							/>
+							<span
+								className={styles.mockupDot}
+								data-color="yellow"
+							/>
+							<span
+								className={styles.mockupDot}
+								data-color="green"
+							/>
+							<span className={styles.mockupUrl}>
+								sowhat.app/articles/128
+							</span>
+						</div>
+
+						<div className={styles.mockupScreen}>
+							<div className={styles.mockupArticle}>
+								<span className={styles.mockupCategoryChip}>
+									경제
+								</span>
+								<h3 className={styles.mockupArticleTitle}>
+									한국은행, 기준금리 연 2.25% 동결
+								</h3>
+								<p className={styles.mockupArticleMeta}>
+									연합뉴스 · 2026.08.16
 								</p>
-								<p>
-									🛡️ 금리 발표 이후 공채 계획을 내놓는
-									기업이 늘어나는지 확인해보세요.
+								<p className={styles.mockupArticleContent}>
+									(서울=연합뉴스) 한국은행 금융통화위원회는
+									16일 기준금리를 현 수준인 연 2.25%로
+									동결했다. 가계부채 증가세와 물가 상승
+									압력을 함께 고려한 결정이라고
+									밝혔다...
 								</p>
+							</div>
+
+							<p className={styles.mockupSectionLabel}>
+								기사 내용 요약
+							</p>
+							<p className={styles.mockupSummary}>
+								한국은행이 물가와 가계부채 증가세를 고려해
+								기준금리를 연 2.25%로 유지하기로 했습니다.
+								당분간 대출 금리에는 큰 변화가 없을 전망입니다.
+							</p>
+
+							<div className={styles.mockupKeywordItem}>
+								<span className={styles.mockupKeywordBadge}>
+									1
+								</span>
+								<div>
+									<strong>기준금리</strong>
+									<p>
+										한국은행이 시중 은행에 돈을 빌려줄 때
+										적용하는 기본 금리
+									</p>
+								</div>
+							</div>
+							<div className={styles.mockupKeywordItem}>
+								<span className={styles.mockupKeywordBadge}>
+									2
+								</span>
+								<div>
+									<strong>가계부채</strong>
+									<p>
+										가정에서 은행 등에 진 대출·카드빚 등을
+										합친 금액
+									</p>
+								</div>
+							</div>
+
+							<div className={styles.mockupAnalysis}>
+								<p className={styles.mockupAnalysisTag}>
+									김소원님을 위한 해설
+								</p>
+								<div className={styles.mockupAnalysisCard}>
+									<p
+										className={
+											styles.mockupAnalysisCardTitle
+										}
+									>
+										💡 나에게 줄 영향은?
+									</p>
+									<p>
+										대출 이자보다 이번 동결로 채용 시장
+										분위기가 어떻게 바뀌는지가 더
+										중요해요.
+									</p>
+								</div>
+								<div className={styles.mockupAnalysisCard}>
+									<p
+										className={
+											styles.mockupAnalysisCardTitle
+										}
+									>
+										🛡️ 어떻게 대비할까요?
+									</p>
+									<p>
+										금리 발표 이후 공채 계획을 내놓는
+										기업이 늘어나는지 확인해보세요.
+									</p>
+								</div>
+							</div>
+
+							<p className={styles.mockupSectionLabel}>
+								참고 링크
+							</p>
+							<div className={styles.mockupLinkItem}>
+								🔗 한국은행 기준금리 발표 보도자료
+							</div>
+							<div className={styles.mockupLinkItem}>
+								🔗 청년 전세자금대출 금리 안내 (주택도시기금)
 							</div>
 						</div>
 					</div>

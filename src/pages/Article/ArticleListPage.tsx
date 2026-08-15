@@ -10,10 +10,13 @@ import {
 import styles from "./ArticleListPage.module.css";
 
 const CATEGORIES = Object.values(CategoryEnum);
+const PAGE_SIZE = 15;
 
 export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 	const [articles, setArticles] = useState<Article[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
+	const [hasMore, setHasMore] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -29,15 +32,20 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 		const fetchArticles = async () => {
 			setIsLoading(true);
 			try {
-				const fetched = await getArticles();
-				setArticles((prev) => fetched);
+				const fetched = await getArticles({
+					category: selectedCategory ?? undefined,
+					limit: PAGE_SIZE,
+					offset: 0,
+				});
+				setArticles(fetched);
+				setHasMore(fetched.length === PAGE_SIZE);
 			} finally {
 				setIsLoading(false);
 			}
 		};
 
 		fetchArticles();
-	}, []);
+	}, [selectedCategory]);
 
 	useEffect(() => {
 		const profile = readExperienceProfile();
@@ -50,9 +58,21 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const filteredArticles = selectedCategory
-		? articles.filter((article) => article.category === selectedCategory)
-		: articles;
+	const handleLoadMore = async () => {
+		if (isLoadingMore) return;
+		setIsLoadingMore(true);
+		try {
+			const fetched = await getArticles({
+				category: selectedCategory ?? undefined,
+				limit: PAGE_SIZE,
+				offset: articles.length,
+			});
+			setArticles((prev) => [...prev, ...fetched]);
+			setHasMore(fetched.length === PAGE_SIZE);
+		} finally {
+			setIsLoadingMore(false);
+		}
+	};
 
 	return (
 		<div>
@@ -103,12 +123,12 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 			<div className={styles.articleList}>
 				{isLoading ? (
 					<p className={styles.emptyState}>기사 불러오는 중...</p>
-				) : filteredArticles.length === 0 ? (
+				) : articles.length === 0 ? (
 					<p className={styles.emptyState}>
 						해당 카테고리의 기사가 없습니다.
 					</p>
 				) : (
-					filteredArticles.map((article) => (
+					articles.map((article) => (
 						<ArticleCard
 							key={article.id}
 							article={article}
@@ -119,6 +139,18 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 					))
 				)}
 			</div>
+
+			{!isLoading && hasMore && (
+				<div className={styles.moreRow}>
+					<button
+						className={styles.moreButton}
+						onClick={handleLoadMore}
+						disabled={isLoadingMore}
+					>
+						{isLoadingMore ? "불러오는 중..." : "더보기"}
+					</button>
+				</div>
+			)}
 		</div>
 	);
 }

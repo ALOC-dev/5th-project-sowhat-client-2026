@@ -111,6 +111,9 @@
   color: var(--text-h);
   margin: 0;
 
+  word-break: keep-all;
+  overflow-wrap: break-word;
+
   min-height: 2.8em;
   display: -webkit-box;
   -webkit-line-clamp: 2;

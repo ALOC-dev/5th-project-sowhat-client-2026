@@ -2,6 +2,7 @@ import { ExperienceProfile } from "../pages/Main/ExperienceModal";
 import {
 	Article,
 	ArticleDetail,
+	CategoryEnum,
 	PersonalAnalysis,
 	PersonalAnalysisLink,
 	SimilarArticle,
@@ -30,8 +31,21 @@ export async function submitAnalysisReaction(
 }
 
 // 전체 기사 조회: GET /api/articles
-export async function getArticles(): Promise<Article[]> {
-	const data = (await api<ArticleResponse[]>(`/api/articles`)) ?? [];
+export async function getArticles(params?: {
+	category?: CategoryEnum;
+	limit?: number;
+	offset?: number;
+}): Promise<Article[]> {
+	const query = new URLSearchParams();
+	if (params?.category) query.set("category", params.category);
+	if (params?.limit != null) query.set("limit", String(params.limit));
+	if (params?.offset != null) query.set("offset", String(params.offset));
+	const qs = query.toString();
+
+	const data =
+		(await api<ArticleResponse[]>(
+			`/api/articles${qs ? `?${qs}` : ""}`,
+		)) ?? [];
 	return toArticleList(data);
 }
 

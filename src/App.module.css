@@ -125,10 +125,21 @@
   height: 32px;
   padding: 0;
 
-  background-color: var(--accent-soft);
+  background-color: var(--accent);
   border: 1px solid var(--accent-border);
   border-radius: 999px;
   cursor: pointer;
+
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: #1c1917;
+  text-transform: uppercase;
+  transition: background-color 0.15s ease;
+}
+
+.avatarButton:hover {
+  background-color: #f59e0b;
 }
 
 .signup {

@@ -37,6 +37,10 @@ const CATEGORY_IMAGE_POOL: Record<CategoryEnum, ImagePoolEntry[]> = {
 				"장갑차",
 			],
 		},
+		{
+			url: `https://images.unsplash.com/photo-1633095975779-fd354aa0dc95?${params}`,
+			keywords: ["외교", "정상회담", "국제", "정상", "순방"],
+		},
 	],
 	[CategoryEnum.ECONOMY]: [
 		{
@@ -54,6 +58,14 @@ const CATEGORY_IMAGE_POOL: Record<CategoryEnum, ImagePoolEntry[]> = {
 		{
 			url: `https://images.unsplash.com/photo-1565371768838-2479eb537a78?${params}`,
 			keywords: ["금리", "한국은행", "화폐", "대출", "자금", "은행"],
+		},
+		{
+			url: `https://images.unsplash.com/photo-1517048676732-d65bc937f952?${params}`,
+			keywords: ["기업", "취업", "고용", "일자리", "실적", "경영"],
+		},
+		{
+			url: `https://images.unsplash.com/photo-1606185540834-d6e7483ee1a4?${params}`,
+			keywords: ["무역", "수출", "수입", "물류", "관세"],
 		},
 	],
 	[CategoryEnum.SOCIETY]: [
@@ -73,6 +85,14 @@ const CATEGORY_IMAGE_POOL: Record<CategoryEnum, ImagePoolEntry[]> = {
 			url: `https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?${params}`,
 			keywords: ["복지", "아동", "돌봄", "지원", "노인", "장애"],
 		},
+		{
+			url: `https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?${params}`,
+			keywords: ["병원", "의료", "보건", "질병", "감염"],
+		},
+		{
+			url: `https://images.unsplash.com/photo-1511898634545-c01af8a54dd5?${params}`,
+			keywords: ["시위", "집회", "논란", "갈등"],
+		},
 	],
 	[CategoryEnum.INDUSTRY_IT]: [
 		{
@@ -90,6 +110,14 @@ const CATEGORY_IMAGE_POOL: Record<CategoryEnum, ImagePoolEntry[]> = {
 		{
 			url: `https://images.unsplash.com/photo-1578776349090-de61da00ff1a?${params}`,
 			keywords: ["공장", "에너지", "제조", "발전", "전력"],
+		},
+		{
+			url: `https://images.unsplash.com/photo-1506399309177-3b43e99fead2?${params}`,
+			keywords: ["데이터센터", "서버", "클라우드", "네트워크"],
+		},
+		{
+			url: `https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?${params}`,
+			keywords: ["스마트폰", "모바일", "앱", "플랫폼"],
 		},
 	],
 };

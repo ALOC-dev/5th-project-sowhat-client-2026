@@ -180,6 +180,52 @@ select.input {
   margin: -8px 0 0;
 }
 
+.fieldSuccess {
+  font-size: 12px;
+  color: #059669;
+  margin: -8px 0 0;
+}
+
+.fieldHint {
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.6;
+  margin: -8px 0 0;
+}
+
+.idField {
+  display: flex;
+  gap: 8px;
+}
+
+.idField .input {
+  flex: 1;
+}
+
+.checkIdButton {
+  flex-shrink: 0;
+  padding: 0 16px;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--bg-card);
+  color: var(--text-h);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.checkIdButton:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.checkIdButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .buttonRow {
   display: flex;
   gap: 10px;

@@ -211,6 +211,116 @@
   margin: 0;
 }
 
+.exampleBox {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  max-width: 900px;
+  margin: 40px auto 0;
+  padding: 28px;
+  box-sizing: border-box;
+
+  border-radius: 18px;
+  border: 2px solid var(--accent-border);
+  background: linear-gradient(to bottom, var(--accent-soft), var(--bg-card));
+}
+
+@media (max-width: 700px) {
+  .exampleBox {
+    flex-direction: column;
+  }
+}
+
+.exampleSide {
+  flex: 1;
+  min-width: 0;
+}
+
+.exampleLabel {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: #92400e;
+  opacity: 0.8;
+  margin: 0 0 10px;
+}
+
+.exampleChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.exampleChip {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background-color: #fff;
+  border: 1px solid var(--accent-border);
+  color: var(--text-h);
+}
+
+.exampleArrow {
+  flex-shrink: 0;
+  font-size: 22px;
+  color: var(--accent);
+}
+
+@media (max-width: 700px) {
+  .exampleArrow {
+    transform: rotate(90deg);
+  }
+}
+
+.exampleArticleTitle {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0 0 10px;
+}
+
+.examplePreview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.examplePreview p {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 1px solid var(--accent-border);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-h);
+}
+
+.exampleCta {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.exampleCtaButton {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 26px;
+  background-color: var(--accent);
+  color: #1c1917;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.exampleCtaButton:hover {
+  background-color: #f59e0b;
+}
+
 /* --- Recommend section (logged-in landing) --- */
 .recommendSection {
   padding: 80px 24px;

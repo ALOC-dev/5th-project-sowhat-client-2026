@@ -10,10 +10,12 @@ import {
 import styles from "./ArticleListPage.module.css";
 
 const CATEGORIES = Object.values(CategoryEnum);
+const PAGE_SIZE = 30;
 
 export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 	const [articles, setArticles] = useState<Article[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [hasNext, setHasNext] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -24,20 +26,26 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 	const selectedCategory = searchParams.get(
 		"category",
 	) as CategoryEnum | null;
+	const page = Math.max(1, Number(searchParams.get("page")) || 1);
 
 	useEffect(() => {
-		const fetchArticles = async () => {
+		const fetchPage = async () => {
 			setIsLoading(true);
 			try {
-				const fetched = await getArticles();
-				setArticles((prev) => fetched);
+				const fetched = await getArticles({
+					category: selectedCategory ?? undefined,
+					limit: PAGE_SIZE,
+					offset: (page - 1) * PAGE_SIZE,
+				});
+				setArticles(fetched);
+				setHasNext(fetched.length === PAGE_SIZE);
 			} finally {
 				setIsLoading(false);
 			}
 		};
 
-		fetchArticles();
-	}, []);
+		fetchPage();
+	}, [selectedCategory, page]);
 
 	useEffect(() => {
 		const profile = readExperienceProfile();
@@ -50,9 +58,11 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const filteredArticles = selectedCategory
-		? articles.filter((article) => article.category === selectedCategory)
-		: articles;
+	const goToPage = (nextPage: number) => {
+		const next = new URLSearchParams(searchParams);
+		next.set("page", String(nextPage));
+		setSearchParams(next);
+	};
 
 	return (
 		<div>
@@ -114,12 +124,12 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 						<strong>기사를 불러오고 있어요</strong>
 						<span>잠시만 기다려 주세요.</span>
 					</div>
-				) : filteredArticles.length === 0 ? (
+				) : articles.length === 0 ? (
 					<p className={styles.emptyState} role="status">
 						해당 카테고리의 기사가 없습니다.
 					</p>
 				) : (
-					filteredArticles.map((article) => (
+					articles.map((article) => (
 						<ArticleCard
 							key={article.id}
 							article={article}
@@ -130,6 +140,25 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 					))
 				)}
 			</div>
+
+			{!isLoading && (page > 1 || hasNext) && (
+				<div className={styles.articleListFooter}>
+					<button
+						className={styles.moreButton}
+						onClick={() => goToPage(page - 1)}
+						disabled={page <= 1}
+					>
+						이전
+					</button>
+					<button
+						className={styles.moreButton}
+						onClick={() => goToPage(page + 1)}
+						disabled={!hasNext}
+					>
+						다음
+					</button>
+				</div>
+			)}
 		</div>
 	);
 }

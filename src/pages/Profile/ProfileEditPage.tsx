@@ -111,12 +111,12 @@ export default function ProfileEditPage({
 						<input
 							className={styles.input}
 							type="number"
-							min="0"
+							min="1"
 							max="120"
 							value={form.age}
 							onChange={(e) => {
 								const v = Number(e.target.value);
-								if (v >= 0) setForm({ ...form, age: v });
+								if (v >= 1) setForm({ ...form, age: v });
 							}}
 						/>
 					</div>

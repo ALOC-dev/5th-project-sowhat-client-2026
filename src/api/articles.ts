@@ -17,6 +17,19 @@ import {
 } from "./contracts";
 import { toArticleDetail, toArticleList, toPersonalAnalysis } from "./mappers";
 
+// 해설 반응(도움이 됐어요/별로예요) 제출: POST /api/articles/{article_id}/analysis/reaction
+export async function submitAnalysisReaction(
+	articleId: number,
+	value: "up" | "down",
+): Promise<void> {
+	await api(`/api/articles/${articleId}/analysis/reaction`, {
+		method: "POST",
+		body: JSON.stringify({
+			user_response: value === "up" ? "도움이 됐어요" : "별로예요",
+		}),
+	});
+}
+
 // 전체 기사 조회: GET /api/articles
 export async function getArticles(params?: {
 	category?: CategoryEnum;

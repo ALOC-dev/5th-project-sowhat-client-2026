@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../api/auth";
-import { getViewedArticles } from "../../api/users";
-import {
-	getReadingHistory,
-	ReadingHistoryItem,
-} from "../../lib/readingHistory";
-import { getSavedAnalyses, SavedAnalysisItem } from "../../lib/savedAnalyses";
+import { getHelpfulAnalyses, getViewedArticles } from "../../api/users";
+import { getReadingHistory, ReadingHistoryItem } from "../../lib/readingHistory";
 import { User } from "../../types";
 import styles from "./ProfilePage.module.css";
+
+const PAGE_SIZE = 10;
 
 type ProfilePageProps = {
 	user: User | null;
@@ -23,8 +21,16 @@ export default function ProfilePage({
 	onBack,
 }: ProfilePageProps) {
 	const navigate = useNavigate();
+
 	const [history, setHistory] = useState<ReadingHistoryItem[]>([]);
-	const [saved, setSaved] = useState<SavedAnalysisItem[]>([]);
+	const [hasMoreHistory, setHasMoreHistory] = useState<boolean>(false);
+	const [isLoadingMoreHistory, setIsLoadingMoreHistory] =
+		useState<boolean>(false);
+
+	const [helpful, setHelpful] = useState<ReadingHistoryItem[]>([]);
+	const [hasMoreHelpful, setHasMoreHelpful] = useState<boolean>(false);
+	const [isLoadingMoreHelpful, setIsLoadingMoreHelpful] =
+		useState<boolean>(false);
 
 	const handleLogout = async (): Promise<void> => {
 		try {
@@ -39,18 +45,65 @@ export default function ProfilePage({
 		const loadHistory = async () => {
 			if (user) {
 				try {
-					setHistory(await getViewedArticles());
+					const fetched = await getViewedArticles(PAGE_SIZE, 0);
+					setHistory(fetched);
+					setHasMoreHistory(fetched.length === PAGE_SIZE);
 					return;
 				} catch {
 					// 조회 실패 시 로컬 기록으로 대체
 				}
 			}
 			setHistory(getReadingHistory());
+			setHasMoreHistory(false);
+		};
+
+		const loadHelpful = async () => {
+			if (!user) {
+				setHelpful([]);
+				setHasMoreHelpful(false);
+				return;
+			}
+			try {
+				const fetched = await getHelpfulAnalyses(PAGE_SIZE, 0);
+				setHelpful(fetched);
+				setHasMoreHelpful(fetched.length === PAGE_SIZE);
+			} catch {
+				setHelpful([]);
+				setHasMoreHelpful(false);
+			}
 		};
 
 		loadHistory();
-		setSaved(getSavedAnalyses());
+		loadHelpful();
 	}, [user]);
+
+	const handleLoadMoreHistory = async () => {
+		if (!user || isLoadingMoreHistory) return;
+		setIsLoadingMoreHistory(true);
+		try {
+			const fetched = await getViewedArticles(PAGE_SIZE, history.length);
+			setHistory((prev) => [...prev, ...fetched]);
+			setHasMoreHistory(fetched.length === PAGE_SIZE);
+		} catch {
+			setHasMoreHistory(false);
+		} finally {
+			setIsLoadingMoreHistory(false);
+		}
+	};
+
+	const handleLoadMoreHelpful = async () => {
+		if (!user || isLoadingMoreHelpful) return;
+		setIsLoadingMoreHelpful(true);
+		try {
+			const fetched = await getHelpfulAnalyses(PAGE_SIZE, helpful.length);
+			setHelpful((prev) => [...prev, ...fetched]);
+			setHasMoreHelpful(fetched.length === PAGE_SIZE);
+		} catch {
+			setHasMoreHelpful(false);
+		} finally {
+			setIsLoadingMoreHelpful(false);
+		}
+	};
 
 	return (
 		<div className={styles.page}>
@@ -147,7 +200,8 @@ export default function ProfilePage({
 
 				<div className={styles.rightCol}>
 					<h3 className={styles.historyTitle}>
-						지금까지 본 기사 ({history.length})
+						지금까지 본 기사 ({history.length}
+						{hasMoreHistory ? "+" : ""})
 					</h3>
 
 					{history.length === 0 ? (
@@ -155,57 +209,92 @@ export default function ProfilePage({
 							아직 열람한 기사가 없어요.
 						</p>
 					) : (
-						<ul className={styles.historyList}>
-							{history.map((item) => (
-								<li
-									key={item.id}
-									className={styles.historyItem}
-									onClick={() =>
-										navigate(`/articles/${item.id}`)
-									}
-								>
-									{item.category && (
-										<span className={styles.historyChip}>
-											{item.category}
-										</span>
-									)}
-									<span className={styles.historyItemTitle}>
-										{item.title}
-									</span>
-								</li>
-							))}
-						</ul>
-					)}
-
-					{saved.length > 0 && (
-						<div className={styles.savedBox}>
-							<h3 className={styles.historyTitle}>
-								도움이 된 해설 ({saved.length})
-							</h3>
+						<>
 							<ul className={styles.historyList}>
-								{saved.map((item) => (
+								{history.map((item) => (
 									<li
-										key={item.articleId}
-										className={styles.savedItem}
+										key={item.id}
+										className={styles.historyItem}
 										onClick={() =>
-											navigate(
-												`/articles/${item.articleId}`,
-											)
+											navigate(`/articles/${item.id}`)
 										}
 									>
+										{item.category && (
+											<span
+												className={styles.historyChip}
+												data-category={item.category}
+											>
+												{item.category}
+											</span>
+										)}
 										<span
-											className={styles.historyItemTitle}
+											className={
+												styles.historyItemTitle
+											}
 										>
 											{item.title}
 										</span>
-										{item.effect && (
-											<p className={styles.savedEffect}>
-												{item.effect}
-											</p>
-										)}
 									</li>
 								))}
 							</ul>
+							{hasMoreHistory && (
+								<button
+									className={styles.moreButton}
+									onClick={handleLoadMoreHistory}
+									disabled={isLoadingMoreHistory}
+								>
+									{isLoadingMoreHistory
+										? "불러오는 중..."
+										: "더보기"}
+								</button>
+							)}
+						</>
+					)}
+
+					{helpful.length > 0 && (
+						<div className={styles.savedBox}>
+							<h3 className={styles.historyTitle}>
+								도움이 된 해설 ({helpful.length}
+								{hasMoreHelpful ? "+" : ""})
+							</h3>
+							<ul className={styles.historyList}>
+								{helpful.map((item) => (
+									<li
+										key={item.id}
+										className={styles.savedItem}
+										onClick={() =>
+											navigate(`/articles/${item.id}`)
+										}
+									>
+										{item.category && (
+											<span
+												className={styles.historyChip}
+												data-category={item.category}
+											>
+												{item.category}
+											</span>
+										)}
+										<span
+											className={
+												styles.historyItemTitle
+											}
+										>
+											{item.title}
+										</span>
+									</li>
+								))}
+							</ul>
+							{hasMoreHelpful && (
+								<button
+									className={styles.moreButton}
+									onClick={handleLoadMoreHelpful}
+									disabled={isLoadingMoreHelpful}
+								>
+									{isLoadingMoreHelpful
+										? "불러오는 중..."
+										: "더보기"}
+								</button>
+							)}
 						</div>
 					)}
 				</div>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, signup } from "../../api/auth";
 import { ApiError } from "../../api/client";
-import { getUser } from "../../api/users";
+import { checkDuplicateId, getUser } from "../../api/users";
 import {
 	CategoryEnum,
 	GenderEnum,
@@ -32,6 +32,9 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 
 	// Step 1: 계정 정보
 	const [loginId, setLoginId] = useState<string>("");
+	const [idCheckStatus, setIdCheckStatus] = useState<
+		"idle" | "checking" | "available" | "taken" | "error"
+	>("idle");
 	const [username, setUsername] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [passwordConfirm, setPasswordConfirm] = useState<string>("");
@@ -60,6 +63,7 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 
 	const canGoNext =
 		isIdValid &&
+		idCheckStatus === "available" &&
 		username.trim().length > 0 &&
 		isPasswordValid &&
 		isPasswordConfirmValid;
@@ -69,8 +73,19 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 		setStep(2);
 	};
 
+	const handleCheckDuplicateId = async () => {
+		if (!isIdValid || idCheckStatus === "checking") return;
+		setIdCheckStatus("checking");
+		try {
+			const available = await checkDuplicateId(loginId);
+			setIdCheckStatus(available ? "available" : "taken");
+		} catch {
+			setIdCheckStatus("error");
+		}
+	};
+
 	const canSubmit =
-		age.trim().length > 0 && Number(age) >= 0 && !isSubmitting;
+		age.trim().length > 0 && Number(age) >= 1 && !isSubmitting;
 
 	const handleSubmit = async () => {
 		if (!canSubmit) return;
@@ -133,16 +148,54 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 
 				{step === 1 ? (
 					<div className={styles.fields}>
-						<input
-							className={styles.input}
-							type="text"
-							placeholder="아이디"
-							value={loginId}
-							onChange={(e) => setLoginId(e.target.value)}
-						/>
+						<div className={styles.idField}>
+							<input
+								className={styles.input}
+								type="text"
+								placeholder="아이디"
+								value={loginId}
+								onChange={(e) => {
+									setLoginId(e.target.value);
+									setIdCheckStatus("idle");
+								}}
+							/>
+							<button
+								type="button"
+								className={styles.checkIdButton}
+								disabled={
+									!isIdValid ||
+									idCheckStatus === "checking"
+								}
+								onClick={handleCheckDuplicateId}
+							>
+								{idCheckStatus === "checking"
+									? "확인 중..."
+									: "중복확인"}
+							</button>
+						</div>
 						{loginId.length > 0 && !isIdValid && (
 							<p className={styles.fieldError}>
 								아이디는 4자 이상 입력해주세요.
+							</p>
+						)}
+						{isIdValid && idCheckStatus === "available" && (
+							<p className={styles.fieldSuccess}>
+								사용할 수 있는 아이디예요.
+							</p>
+						)}
+						{isIdValid && idCheckStatus === "taken" && (
+							<p className={styles.fieldError}>
+								이미 사용 중인 아이디예요.
+							</p>
+						)}
+						{isIdValid && idCheckStatus === "error" && (
+							<p className={styles.fieldError}>
+								확인 중 문제가 생겼어요. 다시 시도해주세요.
+							</p>
+						)}
+						{isIdValid && idCheckStatus === "idle" && (
+							<p className={styles.fieldHint}>
+								중복확인을 눌러주세요.
 							</p>
 						)}
 						<input
@@ -224,7 +277,7 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 							<input
 								className={styles.input}
 								type="number"
-								min="0"
+								min="1"
 								max="120"
 								placeholder="나이"
 								value={age}
@@ -234,6 +287,12 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 										setAge(v);
 								}}
 							/>
+							{age.trim().length > 0 &&
+								Number(age) < 1 && (
+									<p className={styles.fieldError}>
+										나이는 1살 이상 입력해주세요.
+									</p>
+								)}
 						</div>
 
 						<div className={styles.grid2}>

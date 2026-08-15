@@ -226,6 +226,59 @@ export default function MainPage({ isLogin, user }: MainPageProps) {
 							</div>
 						))}
 					</div>
+
+					<div className={styles.exampleBox}>
+						<div className={styles.exampleSide}>
+							<p className={styles.exampleLabel}>
+								이런 정보를 알려주시면
+							</p>
+							<div className={styles.exampleChips}>
+								<span className={styles.exampleChip}>
+									20대
+								</span>
+								<span className={styles.exampleChip}>
+									취업준비생
+								</span>
+								<span className={styles.exampleChip}>
+									경제 관심
+								</span>
+							</div>
+						</div>
+
+						<div className={styles.exampleArrow}>→</div>
+
+						<div className={styles.exampleSide}>
+							<p className={styles.exampleLabel}>
+								이런 해설을 받아볼 수 있어요
+							</p>
+							<p className={styles.exampleArticleTitle}>
+								"한국은행, 기준금리 연 2.25% 동결"
+							</p>
+							<div className={styles.examplePreview}>
+								<p>
+									💡 취업준비생이라면 대출 이자보다 이번
+									동결로 채용 시장 분위기가 어떻게
+									바뀌는지가 더 중요해요.
+								</p>
+								<p>
+									🛡️ 금리 발표 이후 공채 계획을 내놓는
+									기업이 늘어나는지 확인해보세요.
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div className={styles.exampleCta}>
+						<button
+							className={styles.exampleCtaButton}
+							onClick={() => {
+								clearExperienceProfile();
+								setShowExperience(true);
+							}}
+						>
+							내 정보로 직접 체험해보기
+						</button>
+					</div>
 				</section>
 			)}
 		</div>

@@ -4,14 +4,10 @@ import {
 	getArticleDetail,
 	getExperienceAnalysis,
 	streamPersonalAnalysis,
+	submitAnalysisReaction,
 } from "../../api/articles";
 import { formatDate } from "../../lib/formatDate";
 import { recordArticleView } from "../../lib/readingHistory";
-import {
-	isAnalysisSaved,
-	removeSavedAnalysis,
-	saveAnalysis,
-} from "../../lib/savedAnalyses";
 import { ArticleDetail, JobEnum, PersonalAnalysis, User } from "../../types";
 import { readExperienceProfile } from "../Main/ExperienceModal";
 import styled from "./ArticleDetailPage.module.css";
@@ -122,24 +118,17 @@ export default function ArticleDetailPage({
 	}, [isLogin, user?.id, article_id]);
 
 	useEffect(() => {
-		if (article_id) {
-			setFeedback(isAnalysisSaved(Number(article_id)) ? "up" : null);
-		}
+		setFeedback(null);
 	}, [article_id]);
 
-	const handleFeedback = (value: "up" | "down") => {
-		setFeedback(value);
+	const handleFeedback = async (value: "up" | "down") => {
 		if (!article) return;
-
-		if (value === "up") {
-			saveAnalysis({
-				articleId: article.id,
-				title: article.title,
-				effect: analysis?.effect ?? "",
-				solution: analysis?.solution ?? "",
-			});
-		} else {
-			removeSavedAnalysis(article.id);
+		const prev = feedback;
+		setFeedback(value);
+		try {
+			await submitAnalysisReaction(article.id, value);
+		} catch {
+			setFeedback(prev);
 		}
 	};
 

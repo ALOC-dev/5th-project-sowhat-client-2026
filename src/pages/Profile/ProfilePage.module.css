@@ -195,7 +195,7 @@
   border-color: #ddd6fe;
 }
 
-.extraInfo {
+.extraInfoList {
   font-size: 13px;
   color: var(--text-h);
   line-height: 1.6;
@@ -203,6 +203,24 @@
   padding: 12px 14px;
   border-radius: 10px;
   background-color: var(--code-bg);
+  list-style: none;
+}
+
+.extraInfoList li {
+  position: relative;
+  padding-left: 14px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.extraInfoList li:not(:last-child) {
+  margin-bottom: 4px;
+}
+
+.extraInfoList li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
 }
 
 .buttonGroup {

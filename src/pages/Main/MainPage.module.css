@@ -36,6 +36,49 @@
   text-align: center;
 }
 
+.scrollCue {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.scrollCue:hover {
+  color: #f59e0b;
+}
+
+.scrollCueArrow {
+  width: 22px;
+  height: 22px;
+  animation: scrollCueBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollCueBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
 .eyebrow {
   font-family: var(--mono);
   font-size: 12px;
@@ -90,6 +133,78 @@
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+.heroExtraInfo {
+  max-width: 600px;
+  margin: 46px auto 0;
+}
+
+.heroExtraInfoField {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 3px 3px 3px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background-color: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 10px 30px -8px rgba(255, 255, 255, 0.35),
+    0 0 22px rgba(255, 255, 255, 0.2);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.heroExtraInfoField:focus-within {
+  border-color: rgba(255, 255, 255, 0.75);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    0 10px 36px -6px rgba(255, 255, 255, 0.5),
+    0 0 30px rgba(255, 255, 255, 0.35);
+}
+
+.heroExtraInfoInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  padding: 7px 0;
+  color: #fff;
+  font-size: 13px;
+}
+
+.heroExtraInfoInput::placeholder {
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.heroExtraInfoInput:focus {
+  outline: none;
+}
+
+.heroExtraInfoButton {
+  flex-shrink: 0;
+  padding: 8px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.32);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.heroExtraInfoButton:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.46);
+}
+
+.heroExtraInfoButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .primaryButton {
@@ -219,6 +334,7 @@
   color: var(--text);
   line-height: 1.5;
   margin: 0;
+  white-space: pre-line;
   word-break: keep-all;
   overflow-wrap: break-word;
 }
@@ -232,6 +348,10 @@
   border: 1px solid var(--border);
   background-color: var(--bg-card);
   box-shadow: 0 24px 48px -20px rgba(28, 25, 23, 0.25);
+}
+
+.exampleMockup[data-wide="true"] {
+  max-width: 860px;
 }
 
 .mockupProfileHead {
@@ -274,21 +394,67 @@
   margin: 2px 0 0;
 }
 
+.mockupInfoBox {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  background-color: var(--bg-card);
+}
+
+.mockupInfoRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.mockupInfoRow:last-of-type {
+  margin-bottom: 0;
+}
+
+.mockupInfoLabel {
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.mockupInfoValue {
+  color: var(--text-h);
+  font-weight: 500;
+}
+
 .mockupInterestRow {
   display: flex;
   align-items: center;
   gap: 8px;
 
   padding: 10px 12px;
-  margin-bottom: 18px;
+  margin-bottom: 8px;
   border-radius: 10px;
   background-color: var(--code-bg);
 }
 
+.mockupInterestRow:last-of-type {
+  margin-bottom: 0;
+}
+
 .mockupInterestLabel {
+  flex-shrink: 0;
+  width: 28px;
   font-size: 11px;
   color: var(--text);
   opacity: 0.7;
+}
+
+.mockupExtraInfo {
+  font-size: 12px;
+  color: var(--text-h);
+  line-height: 1.6;
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background-color: var(--code-bg);
 }
 
 .mockupEditLink {
@@ -296,6 +462,58 @@
   font-size: 11px;
   font-weight: 500;
   color: var(--accent);
+}
+
+.mockupEditButton {
+  display: block;
+  width: 100%;
+  margin-bottom: 24px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--bg-card);
+  color: var(--text-h);
+  font-size: 12px;
+  cursor: default;
+}
+
+.mockupRecommendHeader {
+  text-align: center;
+}
+
+.mockupRecommendEyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 8px;
+}
+
+.mockupRecommendLabel {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0 0 6px;
+}
+
+.mockupRecommendSubtitle {
+  font-size: 12px;
+  color: var(--text);
+  margin: 0 0 18px;
+}
+
+.mockupRecommendGrid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+}
+
+.mockupRecommendItem[data-slot="featured"] {
+  grid-column: 1;
+  grid-row: 1 / 3;
 }
 
 .mockupSectionLabel {
@@ -375,6 +593,7 @@
 .mockupScreen {
   padding: 22px 24px;
   box-sizing: border-box;
+  background-color: var(--bg);
 }
 
 .mockupCategoryChip {
@@ -387,6 +606,12 @@
   border: 1px solid #a7f3d0;
   background-color: #ecfdf5;
   color: #047857;
+}
+
+.mockupCategoryChip[data-purpose="true"] {
+  border-color: var(--accent-border);
+  background-color: var(--accent-bg);
+  color: #92400e;
 }
 
 .mockupArticle > .mockupCategoryChip {
@@ -446,7 +671,7 @@
   font-size: 12px;
   line-height: 1.7;
   color: var(--text);
-  margin: 0 0 12px;
+  margin: 0 0 22px;
   padding: 12px;
   border-radius: 10px;
   background-color: var(--code-bg);
@@ -465,7 +690,7 @@
 
 .mockupKeywordItem:last-of-type {
   border-bottom: none;
-  margin-bottom: 18px;
+  margin-bottom: 28px;
 }
 
 .mockupKeywordBadge {
@@ -496,7 +721,7 @@
 
 .mockupLinkItem {
   padding: 9px 12px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   border-radius: 9px;
   background-color: #fff;
   border: 1px solid var(--accent-border);
@@ -508,6 +733,7 @@
 .mockupAnalysis {
   border-radius: 14px;
   padding: 16px;
+  margin-bottom: 26px;
   box-sizing: border-box;
   border: 1px solid var(--accent-border);
   background: linear-gradient(to bottom, var(--accent-soft), var(--bg-card));

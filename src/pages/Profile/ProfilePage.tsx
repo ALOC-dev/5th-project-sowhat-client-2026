@@ -189,9 +189,17 @@ export default function ProfilePage({ user, setIsLogin }: ProfilePageProps) {
 						{user?.extra_information && (
 							<>
 								<p className={styles.sectionLabel}>추가 정보</p>
-								<p className={styles.extraInfo}>
-									{user.extra_information}
-								</p>
+								<ul className={styles.extraInfoList}>
+									{user.extra_information
+										.split("\n")
+										.map((line) =>
+											line.replace(/^•\s*/, "").trim(),
+										)
+										.filter(Boolean)
+										.map((line, i) => (
+											<li key={i}>{line}</li>
+										))}
+								</ul>
 							</>
 						)}
 					</div>

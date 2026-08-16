@@ -115,7 +115,13 @@ export default function App() {
 			<Routes>
 				<Route
 					path="/"
-					element={<MainPage isLogin={isLogin} user={user} />}
+					element={
+						<MainPage
+							isLogin={isLogin}
+							user={user}
+							setUser={setUser}
+						/>
+					}
 				/>
 
 				<Route

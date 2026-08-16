@@ -341,8 +341,8 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 							기사 읽기부터 실전 대응까지
 						</h2>
 						<p className={styles.howSubtitle}>
-							관심사 추천부터 기사 요약, 나에게 맞춘 해설까지
-							한 번에
+							관심사 추천부터 기사 요약, 나에게 맞춘 해설까지 한
+							번에
 						</p>
 					</div>
 
@@ -381,9 +381,7 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 								className={styles.mockupDot}
 								data-color="green"
 							/>
-							<span className={styles.mockupUrl}>
-								sowhat.app
-							</span>
+							<span className={styles.mockupUrl}>sowhat.app</span>
 						</div>
 
 						<div className={styles.mockupScreen}>
@@ -598,9 +596,8 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 								<p className={styles.mockupArticleContent}>
 									(서울=연합뉴스) 한국은행 금융통화위원회는
 									16일 기준금리를 현 수준인 연 2.25%로
-									동결했다. 가계부채 증가세와 물가 상승
-									압력을 함께 고려한 결정이라고
-									밝혔다...
+									동결했다. 가계부채 증가세와 물가 상승 압력을
+									함께 고려한 결정이라고 밝혔다...
 								</p>
 							</div>
 
@@ -652,8 +649,7 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 									</p>
 									<p>
 										대출 이자보다 이번 동결로 채용 시장
-										분위기가 어떻게 바뀌는지가 더
-										중요해요.
+										분위기가 어떻게 바뀌는지가 더 중요해요.
 									</p>
 								</div>
 								<div className={styles.mockupAnalysisCard}>
@@ -665,8 +661,8 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 										🛡️ 어떻게 대비할까요?
 									</p>
 									<p>
-										금리 발표 이후 공채 계획을 내놓는
-										기업이 늘어나는지 확인해보세요.
+										금리 발표 이후 공채 계획을 내놓는 기업이
+										늘어나는지 확인해보세요.
 									</p>
 								</div>
 							</div>

@@ -207,8 +207,8 @@ export default function ArticleDetailPage({
 					{isLogin ? (
 						<>
 							<h3>
-								<span className={styled.iconChip}>💡</span>
-								이 소식이 나에게 줄 영향은?
+								<span className={styled.iconChip}>💡</span>이
+								소식이 나에게 줄 영향은?
 							</h3>
 							{isAnalysisLoading ? (
 								<div
@@ -291,24 +291,19 @@ export default function ArticleDetailPage({
 								analysis?.links &&
 								analysis.links.length > 0 && (
 									<>
-									<h3>
-										<span className={styled.iconChip}>
-											🔗
-										</span>
-										참고 링크
-									</h3>
-									<ul className={styled.linkList}>
-										{analysis.links.map((link) => (
-											<li key={link.url}>
-												<a
-													href={link.url}
-													target="_blank"
-													rel="noreferrer"
-												>
-													<span
-														className={
-															styled.linkIcon
-														}
+										<h3>
+											<span className={styled.iconChip}>
+												🔗
+											</span>
+											참고 링크
+										</h3>
+										<ul className={styled.linkList}>
+											{analysis.links.map((link) => (
+												<li key={link.url}>
+													<a
+														href={link.url}
+														target="_blank"
+														rel="noreferrer"
 													>
 														<span
 															className={
@@ -329,9 +324,7 @@ export default function ArticleDetailPage({
 								analysis.similarArticles.length > 0 && (
 									<>
 										<h3>
-											<span
-												className={styled.iconChip}
-											>
+											<span className={styled.iconChip}>
 												📰
 											</span>
 											비슷한 기사
@@ -389,8 +382,8 @@ export default function ArticleDetailPage({
 					) : (
 						<>
 							<h3>
-								<span className={styled.iconChip}>💡</span>
-								이 소식이 나에게 줄 영향은?
+								<span className={styled.iconChip}>💡</span>이
+								소식이 나에게 줄 영향은?
 							</h3>
 
 							{!experience ? (
@@ -431,9 +424,7 @@ export default function ArticleDetailPage({
 								""
 							) : (
 								<h3>
-									<span className={styled.iconChip}>
-										🛡️
-									</span>
+									<span className={styled.iconChip}>🛡️</span>
 									어떻게 대비할까요?
 								</h3>
 							)}

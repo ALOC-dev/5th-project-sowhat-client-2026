@@ -61,8 +61,7 @@ function Header({ isLogin, user }: HeaderProps) {
 								else
 									navigate(
 										`/login?redirect=${encodeURIComponent(
-											location.pathname +
-												location.search,
+											location.pathname + location.search,
 										)}`,
 									);
 							}}
@@ -157,7 +156,13 @@ export default function App() {
 				<Routes>
 					<Route
 						path="/"
-						element={<MainPage isLogin={isLogin} user={user} />}
+						element={
+							<MainPage
+								isLogin={isLogin}
+								user={user}
+								setUser={setUser}
+							/>
+						}
 					/>
 
 					<Route

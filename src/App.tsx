@@ -45,7 +45,7 @@ function Header({ isLogin, user }: HeaderProps) {
 							onClick={() => navigate("/profile")}
 							title={user?.username}
 						>
-							👤
+							{user?.username?.[0] ?? "?"}
 						</button>
 					</>
 				) : (

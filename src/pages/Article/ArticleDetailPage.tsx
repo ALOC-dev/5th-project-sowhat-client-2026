@@ -203,9 +203,13 @@ export default function ArticleDetailPage({
 				</article>
 
 				<article className={styled.sideBox}>
+					<span className={styled.aiBadge}>✨ AI 개인화 해설</span>
 					{isLogin ? (
 						<>
-							<h3>💡 이 소식이 나에게 줄 영향은?</h3>
+							<h3>
+								<span className={styled.iconChip}>💡</span>
+								이 소식이 나에게 줄 영향은?
+							</h3>
 							{isAnalysisLoading ? (
 								<div
 									className={styled.analysisLoading}
@@ -235,7 +239,10 @@ export default function ArticleDetailPage({
 									)}
 								</ul>
 							)}
-							<h3>🛡️ 어떻게 대비할까요?</h3>
+							<h3>
+								<span className={styled.iconChip}>🛡️</span>
+								어떻게 대비할까요?
+							</h3>
 							{isAnalysisLoading ? (
 								<div
 									className={styled.analysisLoading}
@@ -284,14 +291,24 @@ export default function ArticleDetailPage({
 								analysis?.links &&
 								analysis.links.length > 0 && (
 									<>
-										<h3>참고 링크</h3>
-										<ul className={styled.linkList}>
-											{analysis.links.map((link) => (
-												<li key={link.url}>
-													<a
-														href={link.url}
-														target="_blank"
-														rel="noreferrer"
+									<h3>
+										<span className={styled.iconChip}>
+											🔗
+										</span>
+										참고 링크
+									</h3>
+									<ul className={styled.linkList}>
+										{analysis.links.map((link) => (
+											<li key={link.url}>
+												<a
+													href={link.url}
+													target="_blank"
+													rel="noreferrer"
+												>
+													<span
+														className={
+															styled.linkIcon
+														}
 													>
 														<span
 															className={
@@ -311,7 +328,14 @@ export default function ArticleDetailPage({
 							{analysis?.similarArticles &&
 								analysis.similarArticles.length > 0 && (
 									<>
-										<h3>비슷한 기사</h3>
+										<h3>
+											<span
+												className={styled.iconChip}
+											>
+												📰
+											</span>
+											비슷한 기사
+										</h3>
 										<ul className={styled.similarList}>
 											{analysis.similarArticles.map(
 												(article) => (
@@ -364,7 +388,10 @@ export default function ArticleDetailPage({
 						</>
 					) : (
 						<>
-							<h3>💡 이 소식이 나에게 줄 영향은?</h3>
+							<h3>
+								<span className={styled.iconChip}>💡</span>
+								이 소식이 나에게 줄 영향은?
+							</h3>
 
 							{!experience ? (
 								""
@@ -400,7 +427,16 @@ export default function ArticleDetailPage({
 								</div>
 							)}
 
-							{!experience ? "" : <h3>🛡️ 어떻게 대비할까요?</h3>}
+							{!experience ? (
+								""
+							) : (
+								<h3>
+									<span className={styled.iconChip}>
+										🛡️
+									</span>
+									어떻게 대비할까요?
+								</h3>
+							)}
 
 							<div className={styled.previewWrap}>
 								<div className={styled.previewBlurWrap}>

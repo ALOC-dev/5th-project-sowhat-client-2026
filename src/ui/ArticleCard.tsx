@@ -21,12 +21,13 @@ export default function ArticleCard({
 			key={article.id}
 			onClick={() => onDetailView(article.id)}
 		>
-			<div
-				className={styled.thumbnail}
-				style={{
-					backgroundImage: `url(${getCategoryImage(article)})`,
-				}}
-			>
+			<div className={styled.thumbnail}>
+				<div
+					className={styled.thumbnailImage}
+					style={{
+						backgroundImage: `url(${getCategoryImage(article)})`,
+					}}
+				/>
 				{article.category && (
 					<span
 						className={styled.categoryChip}

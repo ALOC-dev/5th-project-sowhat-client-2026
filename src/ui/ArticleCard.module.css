@@ -25,15 +25,39 @@
 }
 
 .thumbnail {
+  position: relative;
   height: 140px;
   padding: 10px !important;
   box-sizing: border-box;
 
   display: flex;
   align-items: flex-end;
+  overflow: hidden;
+}
 
+.thumbnailImage {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
+  transition: transform 0.4s ease;
+}
+
+.articleCard:hover .thumbnailImage {
+  transform: scale(1.08);
+}
+
+.thumbnail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0) 55%
+  );
+  pointer-events: none;
 }
 
 .articleCard[data-size="lg"] .thumbnail {
@@ -45,6 +69,8 @@
 }
 
 .categoryChip {
+  position: relative;
+  z-index: 2;
   display: inline-block;
 
   font-size: 10px;
@@ -110,6 +136,9 @@
   line-height: 1.4;
   color: var(--text-h);
   margin: 0;
+
+  word-break: keep-all;
+  overflow-wrap: break-word;
 
   min-height: 2.8em;
   display: -webkit-box;

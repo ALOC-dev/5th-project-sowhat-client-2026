@@ -105,6 +105,16 @@ export default function ProfilePage({
 		}
 	};
 
+	const handleCollapseHistory = () => {
+		setHistory((prev) => prev.slice(0, PAGE_SIZE));
+		setHasMoreHistory(true);
+	};
+
+	const handleCollapseHelpful = () => {
+		setHelpful((prev) => prev.slice(0, PAGE_SIZE));
+		setHasMoreHelpful(true);
+	};
+
 	return (
 		<div className={styles.page}>
 			<button className={styles.backButton} onClick={onBack}>
@@ -158,25 +168,44 @@ export default function ProfilePage({
 
 						<p className={styles.sectionLabel}>관심 정보</p>
 
-						<div className={styles.chipRow}>
-							{user && (
-								<span className={styles.chip}>
+						{user && (
+							<div className={styles.chipRow}>
+								<span className={styles.chipRowLabel}>
+									분야
+								</span>
+								<span
+									className={styles.chip}
+									data-category={user.interest}
+								>
 									{user.interest}
 								</span>
-							)}
-							{user && (
+							</div>
+						)}
+						{user && (
+							<div className={styles.chipRow}>
+								<span className={styles.chipRowLabel}>
+									목적
+								</span>
 								<span className={styles.chip}>
 									{user.purpose}
 								</span>
-							)}
-						</div>
+							</div>
+						)}
 
 						{user?.extra_information && (
 							<>
 								<p className={styles.sectionLabel}>추가 정보</p>
-								<p className={styles.extraInfo}>
-									{user.extra_information}
-								</p>
+								<ul className={styles.extraInfoList}>
+									{user.extra_information
+										.split("\n")
+										.map((line) =>
+											line.replace(/^•\s*/, "").trim(),
+										)
+										.filter(Boolean)
+										.map((line, i) => (
+											<li key={i}>{line}</li>
+										))}
+								</ul>
 							</>
 						)}
 					</div>
@@ -237,16 +266,29 @@ export default function ProfilePage({
 									</li>
 								))}
 							</ul>
-							{hasMoreHistory && (
-								<button
-									className={styles.moreButton}
-									onClick={handleLoadMoreHistory}
-									disabled={isLoadingMoreHistory}
-								>
-									{isLoadingMoreHistory
-										? "불러오는 중..."
-										: "더보기"}
-								</button>
+							{(hasMoreHistory ||
+								history.length > PAGE_SIZE) && (
+								<div className={styles.moreRow}>
+									{hasMoreHistory && (
+										<button
+											className={styles.moreButton}
+											onClick={handleLoadMoreHistory}
+											disabled={isLoadingMoreHistory}
+										>
+											{isLoadingMoreHistory
+												? "불러오는 중..."
+												: "더보기"}
+										</button>
+									)}
+									{history.length > PAGE_SIZE && (
+										<button
+											className={styles.collapseButton}
+											onClick={handleCollapseHistory}
+										>
+											접기
+										</button>
+									)}
+								</div>
 							)}
 						</>
 					)}
@@ -284,16 +326,29 @@ export default function ProfilePage({
 									</li>
 								))}
 							</ul>
-							{hasMoreHelpful && (
-								<button
-									className={styles.moreButton}
-									onClick={handleLoadMoreHelpful}
-									disabled={isLoadingMoreHelpful}
-								>
-									{isLoadingMoreHelpful
-										? "불러오는 중..."
-										: "더보기"}
-								</button>
+							{(hasMoreHelpful ||
+								helpful.length > PAGE_SIZE) && (
+								<div className={styles.moreRow}>
+									{hasMoreHelpful && (
+										<button
+											className={styles.moreButton}
+											onClick={handleLoadMoreHelpful}
+											disabled={isLoadingMoreHelpful}
+										>
+											{isLoadingMoreHelpful
+												? "불러오는 중..."
+												: "더보기"}
+										</button>
+									)}
+									{helpful.length > PAGE_SIZE && (
+										<button
+											className={styles.collapseButton}
+											onClick={handleCollapseHelpful}
+										>
+											접기
+										</button>
+									)}
+								</div>
 							)}
 						</div>
 					)}

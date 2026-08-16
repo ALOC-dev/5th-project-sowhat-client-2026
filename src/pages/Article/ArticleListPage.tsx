@@ -10,11 +10,12 @@ import {
 import styles from "./ArticleListPage.module.css";
 
 const CATEGORIES = Object.values(CategoryEnum);
-const PAGE_SIZE = 30;
+const PAGE_SIZE = 15;
 
 export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 	const [articles, setArticles] = useState<Article[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 	const [hasNext, setHasNext] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const location = useLocation();

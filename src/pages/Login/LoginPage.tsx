@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { login } from "../../api/auth";
 import { getUser } from "../../api/users";
 import { User } from "../../types";
+import { clearExperienceProfile } from "../Main/ExperienceModal";
 import styles from "./LoginPage.module.css";
 
 const REMEMBER_ID_KEY = "sowhat_remember_login_id";
@@ -66,6 +67,7 @@ export default function LoginPage({ setIsLogin, setUser }: LoginPageProps) {
 			const fetched = await getUser();
 			setUser(fetched ?? null);
 			setIsLogin(true);
+			clearExperienceProfile();
 			navigate(redirect || "/");
 		} catch (e) {
 			setError(

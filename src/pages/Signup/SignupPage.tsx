@@ -11,6 +11,7 @@ import {
 	RegionEnum,
 	User,
 } from "../../types";
+import { clearExperienceProfile } from "../Main/ExperienceModal";
 import styles from "./SignupPage.module.css";
 
 type SignupPageProps = {
@@ -117,6 +118,7 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 			const fetched = await getUser();
 			setUser(fetched ?? null);
 			setIsLogin(true);
+			clearExperienceProfile();
 			navigate("/");
 		} catch (e) {
 			if (e instanceof ApiError && e.status === 409) {

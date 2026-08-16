@@ -177,7 +177,21 @@ export default function ArticleDetailPage({
 								)}
 								<span>{formatDate(article.published_at)}</span>
 							</p>
-							<p className={styled.content}>{article.content}</p>
+							<div className={styled.contentFade}>
+								<p className={styled.content}>
+									{article.content}
+								</p>
+							</div>
+							{article.source_url && (
+								<a
+									className={styled.sourceButton}
+									href={article.source_url}
+									target="_blank"
+									rel="noreferrer"
+								>
+									원문 기사 보러 가기 ↗
+								</a>
+							)}
 						</>
 					)}
 					<hr className={styled.divider} />

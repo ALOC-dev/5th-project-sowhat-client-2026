@@ -6,14 +6,14 @@
 }
 
 .pageTitle {
-  display: flex;
-  font-family: var(--serif);
-  font-size: 26px;
-  font-weight: 600;
-  color: var(--text-h);
-  margin: 0;
-  word-break: keep-all;
-  overflow-wrap: break-word;
+	display: flex;
+	font-family: var(--serif);
+	font-size: 26px;
+	font-weight: 600;
+	color: var(--text-h);
+	margin: 0;
+	word-break: keep-all;
+	overflow-wrap: break-word;
 }
 
 .experienceBanner {
@@ -34,14 +34,14 @@
 }
 
 .experienceText {
-  flex: 1;
-  min-width: 220px;
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--text);
-  margin: 0;
-  word-break: keep-all;
-  overflow-wrap: break-word;
+	flex: 1;
+	min-width: 220px;
+	font-size: 13px;
+	line-height: 1.6;
+	color: var(--text);
+	margin: 0;
+	word-break: keep-all;
+	overflow-wrap: break-word;
 }
 
 .experienceText strong {
@@ -101,27 +101,27 @@
 }
 
 .categoryTab[data-active="true"][data-category="정치"] {
-  background-color: #0369a1;
-  border-color: #0369a1;
-  color: #fff;
+	background-color: #0369a1;
+	border-color: #0369a1;
+	color: #fff;
 }
 
 .categoryTab[data-active="true"][data-category="경제"] {
-  background-color: #047857;
-  border-color: #047857;
-  color: #fff;
+	background-color: #047857;
+	border-color: #047857;
+	color: #fff;
 }
 
 .categoryTab[data-active="true"][data-category="사회"] {
-  background-color: #be123c;
-  border-color: #be123c;
-  color: #fff;
+	background-color: #be123c;
+	border-color: #be123c;
+	color: #fff;
 }
 
 .categoryTab[data-active="true"][data-category="산업/IT"] {
-  background-color: #6d28d9;
-  border-color: #6d28d9;
-  color: #fff;
+	background-color: #6d28d9;
+	border-color: #6d28d9;
+	color: #fff;
 }
 
 .emptyState {
@@ -170,13 +170,13 @@
 }
 
 .articleList {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 28px 24px 60px;
-  box-sizing: border-box;
-  gap: 32px 24px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 28px 24px 60px;
+	box-sizing: border-box;
+	gap: 32px 24px;
 }
 
 @media (max-width: 900px) {
@@ -187,9 +187,9 @@
 
 @media (max-width: 600px) {
 	.articleList {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
+		grid-template-columns: 1fr;
+		gap: 24px;
+	}
 }
 
 .articleListFooter {
@@ -203,15 +203,15 @@
 }
 
 .moreButton {
-  padding: 12px 28px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background-color: var(--bg-card);
-  color: var(--text-h);
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
+	padding: 12px 28px;
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	background-color: var(--bg-card);
+	color: var(--text-h);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 0.15s ease;
 }
 
 .moreButton:hover:not(:disabled) {
@@ -222,30 +222,30 @@
 .moreButton:disabled {
 	opacity: 0.4;
 	cursor: not-allowed;
-
-.moreRow {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  max-width: 1100px;
-  margin: -30px auto 60px;
-  padding: 0 24px;
-  box-sizing: border-box;
 }
 
+.moreRow {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	max-width: 1100px;
+	margin: -30px auto 60px;
+	padding: 0 24px;
+	box-sizing: border-box;
+}
 
 .collapseButton {
-  padding: 12px 22px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background-color: transparent;
-  color: var(--text);
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
+	padding: 12px 22px;
+	border: 1px solid transparent;
+	border-radius: 999px;
+	background-color: transparent;
+	color: var(--text);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 0.15s ease;
 }
 
 .collapseButton:hover {
-  background-color: var(--code-bg);
+	background-color: var(--code-bg);
 }

@@ -102,6 +102,7 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 	const [extraInfoInput, setExtraInfoInput] = useState("");
 	const [isSubmittingExtraInfo, setIsSubmittingExtraInfo] = useState(false);
 	const [extraInfoSaved, setExtraInfoSaved] = useState(false);
+	const [isExtraInfoFocused, setIsExtraInfoFocused] = useState(false);
 
 	useEffect(() => {
 		if (!isLogin) return;
@@ -150,10 +151,20 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 									<input
 										type="text"
 										className={styles.heroExtraInfoInput}
-										placeholder="새로 반영할 정보가 있나요?"
+										placeholder={
+											isExtraInfoFocused
+												? ""
+												: "새로 반영할 정보가 있나요?"
+										}
 										value={extraInfoInput}
 										onChange={(e) =>
 											setExtraInfoInput(e.target.value)
+										}
+										onFocus={() =>
+											setIsExtraInfoFocused(true)
+										}
+										onBlur={() =>
+											setIsExtraInfoFocused(false)
 										}
 										onKeyDown={(e) => {
 											if (e.key === "Enter")

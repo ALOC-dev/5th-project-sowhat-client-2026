@@ -86,6 +86,9 @@ function Header({ isLogin, user }: HeaderProps) {
 const isProfilePath = (pathname: string): boolean =>
 	pathname === "/profile" || pathname.startsWith("/profile/");
 
+const isLoginOrSignupPath = (pathname: string): boolean =>
+	pathname.startsWith("/login") || pathname.startsWith("/signup");
+
 export default function App() {
 	const [isLogin, setIsLogin] = useState<boolean>(false);
 	const [user, setUser] = useState<User | null>(null);
@@ -219,47 +222,53 @@ export default function App() {
 				</Routes>
 			</main>
 
-			<footer className={styles.footer}>
-				<div className={styles.footerContent}>
-					<div className={styles.footerGroup}>
-						<h2>So What 개발팀</h2>
-						<ul>
-							<li>
-								Email{" | "}
-								<a href="mailto:sowhat.aloc@gmail.com">
-									sowhat.aloc@gmail.com
-								</a>
-							</li>
-							<li>
-								Instagram{" | "}
-								<a href="">@sowhat.dev (링크 넣기)</a>
-							</li>
-							<li>
-								<a href="">
-									문의사항 및 피드백 (구글폼 주소 넣기)
-								</a>
-							</li>
-						</ul>
+			{isLoginOrSignupPath(location.pathname) ? (
+				<footer className={styles.authFooter}>
+					<span>개인정보처리방침 (페이지 링크 넣기)</span>
+				</footer>
+			) : (
+				<footer className={styles.footer}>
+					<div className={styles.footerContent}>
+						<div className={styles.footerGroup}>
+							<h2>So What 개발팀</h2>
+							<ul>
+								<li>
+									Email{" | "}
+									<a href="mailto:sowhat.aloc@gmail.com">
+										sowhat.aloc@gmail.com
+									</a>
+								</li>
+								<li>
+									Instagram{" | "}
+									<a href="">@sowhat.dev (링크 넣기)</a>
+								</li>
+								<li>
+									<a href="">
+										문의사항 및 피드백 (구글폼 주소 넣기)
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div className={styles.footerGroup}>
+							<h2>서비스 안내</h2>
+							<ul>
+								<li>AI 콘텐츠 안내 (페이지 링크 넣기)</li>
+								<li>
+									저작권 및 콘텐츠 이용정책 (페이지 링크 넣기)
+								</li>
+								<li>개인정보처리방침 (페이지 링크 넣기)</li>
+							</ul>
+						</div>
 					</div>
-					<div className={styles.footerGroup}>
-						<h2>서비스 안내</h2>
-						<ul>
-							<li>AI 콘텐츠 안내 (페이지 링크 넣기)</li>
-							<li>
-								저작권 및 콘텐츠 이용정책 (페이지 링크 넣기)
-							</li>
-							<li>개인정보처리방침 (페이지 링크 넣기)</li>
-						</ul>
-					</div>
-				</div>
-				<p className={styles.footerNotice}>
-					본 서비스는 비상업적 학생 프로젝트로 운영되며, 뉴스 원문을
-					직접 제공하지 않습니다. 기사 내용은 서비스 목적에 맞게 일부
-					가공하여 제공하고, 원문은 출처 링크를 통해 확인할 수
-					있습니다.
-				</p>
-				<p className={styles.copyright}>© 2026 So What</p>
-			</footer>
+					<p className={styles.footerNotice}>
+						본 서비스는 비상업적 학생 프로젝트로 운영되며, 뉴스
+						원문을 직접 제공하지 않습니다. 기사 내용은 서비스 목적에
+						맞게 일부 가공하여 제공하고, 원문은 출처 링크를 통해
+						확인할 수 있습니다.
+					</p>
+					<p className={styles.copyright}>© 2026 So What</p>
+				</footer>
+			)}
 		</div>
 	);
 }

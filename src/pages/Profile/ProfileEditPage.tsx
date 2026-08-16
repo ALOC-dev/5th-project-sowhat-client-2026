@@ -233,7 +233,11 @@ export default function ProfileEditPage({
 					<textarea
 						className={styles.textarea}
 						value={form.extra_information}
-						placeholder="보유 주식, 이사 계획 등 자유롭게 입력해주세요"
+						placeholder={
+							"보유 주식, 이사 계획 등 자유롭게 입력해주세요.\n" +
+							"(전화번호, 주민등록번호, 계좌번호, 상세 주소 등 개인을 직접 식별할 수 있는 정보나 민감한 개인정보는 입력하지 마세요.\n" +
+							"또한 폭력·범죄 등 위험한 내용이나 서비스의 정상적인 작동을 방해하거나 AI 시스템을 조작하려는 내용이 포함된 입력은 제한될 수 있습니다.)"
+						}
 						onChange={(e) =>
 							setForm({
 								...form,

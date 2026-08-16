@@ -165,8 +165,7 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 								type="button"
 								className={styles.checkIdButton}
 								disabled={
-									!isIdValid ||
-									idCheckStatus === "checking"
+									!isIdValid || idCheckStatus === "checking"
 								}
 								onClick={handleCheckDuplicateId}
 							>
@@ -213,16 +212,12 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 								type={showPassword ? "text" : "password"}
 								placeholder="비밀번호"
 								value={password}
-								onChange={(e) =>
-									setPassword(e.target.value)
-								}
+								onChange={(e) => setPassword(e.target.value)}
 							/>
 							<button
 								type="button"
 								className={styles.togglePassword}
-								onClick={() =>
-									setShowPassword((v) => !v)
-								}
+								onClick={() => setShowPassword((v) => !v)}
 								tabIndex={-1}
 							>
 								{showPassword ? "숨기기" : "보기"}
@@ -230,8 +225,8 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 						</div>
 						{password.length > 0 && !isPasswordValid && (
 							<p className={styles.fieldError}>
-								비밀번호는 8자 이상이며 영문·숫자·특수문자
-								중 2가지 이상을 포함해야 해요.
+								비밀번호는 8자 이상이며 영문·숫자·특수문자 중
+								2가지 이상을 포함해야 해요.
 							</p>
 						)}
 						<div className={styles.passwordField}>
@@ -247,9 +242,7 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 							<button
 								type="button"
 								className={styles.togglePassword}
-								onClick={() =>
-									setShowPassword((v) => !v)
-								}
+								onClick={() => setShowPassword((v) => !v)}
 								tabIndex={-1}
 							>
 								{showPassword ? "숨기기" : "보기"}
@@ -285,16 +278,14 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 								value={age}
 								onChange={(e) => {
 									const v = e.target.value;
-									if (v === "" || Number(v) >= 0)
-										setAge(v);
+									if (v === "" || Number(v) >= 0) setAge(v);
 								}}
 							/>
-							{age.trim().length > 0 &&
-								Number(age) < 1 && (
-									<p className={styles.fieldError}>
-										나이는 1살 이상 입력해주세요.
-									</p>
-								)}
+							{age.trim().length > 0 && Number(age) < 1 && (
+								<p className={styles.fieldError}>
+									나이는 1살 이상 입력해주세요.
+								</p>
+							)}
 						</div>
 
 						<div className={styles.grid2}>
@@ -306,9 +297,7 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 									className={styles.input}
 									value={gender}
 									onChange={(e) =>
-										setGender(
-											e.target.value as GenderEnum,
-										)
+										setGender(e.target.value as GenderEnum)
 									}
 								>
 									{GENDERS.map((g) => (
@@ -327,9 +316,7 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 									className={styles.input}
 									value={region}
 									onChange={(e) =>
-										setRegion(
-											e.target.value as RegionEnum,
-										)
+										setRegion(e.target.value as RegionEnum)
 									}
 								>
 									{REGIONS.map((r) => (
@@ -391,9 +378,7 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 								className={styles.input}
 								value={purpose}
 								onChange={(e) =>
-									setPurpose(
-										e.target.value as PurposeEnum,
-									)
+									setPurpose(e.target.value as PurposeEnum)
 								}
 							>
 								{PURPOSES.map((p) => (
@@ -406,7 +391,11 @@ export default function SignupPage({ setIsLogin, setUser }: SignupPageProps) {
 
 						<textarea
 							className={styles.textarea}
-							placeholder="보유 주식, 이사·여행 계획, 대출 현황 등 자유롭게 알려주세요 (선택)"
+							placeholder={
+								"보유 주식, 이사 계획 등 자유롭게 입력해주세요.\n" +
+								"(전화번호, 주민등록번호, 계좌번호, 상세 주소 등 개인을 직접 식별할 수 있는 정보나 민감한 개인정보는 입력하지 마세요.\n" +
+								"또한 폭력·범죄 등 위험한 내용이나 서비스의 정상적인 작동을 방해하거나 AI 시스템을 조작하려는 내용이 포함된 입력은 제한될 수 있습니다.)"
+							}
 							value={extraInformation}
 							onChange={(e) =>
 								setExtraInformation(e.target.value)

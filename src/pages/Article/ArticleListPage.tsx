@@ -106,6 +106,7 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 							key={category}
 							className={styles.categoryTab}
 							data-active={selectedCategory === category}
+							data-category={category}
 							onClick={() => setSearchParams({ category })}
 						>
 							{category}

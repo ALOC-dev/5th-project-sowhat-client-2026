@@ -1,183 +1,182 @@
 .page {
-  min-height: calc(100vh - 56px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 16px;
-  box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 40px 16px;
+	box-sizing: border-box;
 }
 
 .card {
-  width: 100%;
-  max-width: 380px;
-  text-align: center;
+	width: 100%;
+	max-width: 380px;
+	text-align: center;
 }
 
 .eyebrow {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text);
-  opacity: 0.6;
-  margin-bottom: 12px;
+	font-family: var(--mono);
+	font-size: 10px;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--text);
+	opacity: 0.6;
+	margin-bottom: 12px;
 }
 
 .logo {
-  font-family: var(--display);
-  font-size: 36px;
-  font-weight: 400;
-  color: var(--text-h);
-  margin: 0;
+	font-family: var(--display);
+	font-size: 36px;
+	font-weight: 400;
+	color: var(--text-h);
+	margin: 0;
 }
 
 .subtitle {
-  font-size: 14px;
-  color: var(--text);
-  margin-top: 8px;
-  margin-bottom: 20px;
+	font-size: 14px;
+	color: var(--text);
+	margin-top: 8px;
+	margin-bottom: 20px;
 }
 
 .stepIndicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	margin-bottom: 28px;
 
-  font-size: 12px;
-  color: var(--text);
-  opacity: 0.5;
+	font-size: 12px;
+	color: var(--text);
+	opacity: 0.5;
 }
 
 .stepIndicator span[data-active="true"] {
-  color: var(--accent);
-  opacity: 1;
-  font-weight: 600;
+	color: var(--accent);
+	opacity: 1;
+	font-weight: 600;
 }
 
 .stepArrow {
-  opacity: 0.3;
+	opacity: 0.3;
 }
 
 .fields {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
-  text-align: left;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-bottom: 20px;
+	text-align: left;
 }
 
 .input {
-  width: 100%;
-  padding: 12px 16px;
-  box-sizing: border-box;
+	width: 100%;
+	padding: 12px 16px;
+	box-sizing: border-box;
 
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background-color: var(--bg-card);
-  color: var(--text-h);
-  font-size: 14px;
-  cursor: pointer;
+	border-radius: 12px;
+	border: 1px solid var(--border);
+	background-color: var(--bg-card);
+	color: var(--text-h);
+	font-size: 14px;
+	cursor: pointer;
 }
 
 .input::placeholder {
-  color: #c4bfb5;
+	color: #c4bfb5;
 }
 
 .input:focus {
-  outline: none;
-  border-color: var(--accent);
+	outline: none;
+	border-color: var(--accent);
 }
 
 .passwordField {
-  position: relative;
+	position: relative;
 }
 
 .passwordField .input {
-  padding-right: 64px;
+	padding-right: 64px;
 }
 
 .togglePassword {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
+	position: absolute;
+	top: 50%;
+	right: 12px;
+	transform: translateY(-50%);
 
-  border: none;
-  background: none;
-  padding: 4px 6px;
-  color: var(--text);
-  opacity: 0.6;
-  font-size: 12px;
-  cursor: pointer;
+	border: none;
+	background: none;
+	padding: 4px 6px;
+	color: var(--text);
+	opacity: 0.6;
+	font-size: 12px;
+	cursor: pointer;
 }
 
 .togglePassword:hover {
-  opacity: 1;
+	opacity: 1;
 }
 
 select.input {
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2357534e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
+	appearance: none;
+	-webkit-appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2357534e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 14px center;
+	padding-right: 36px;
 }
 
 .grid2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
 }
 
 .fieldGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
 }
 
 .fieldLabel {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text);
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--text);
 }
 
 .textarea {
-  width: 100%;
-  min-height: 70px;
-  padding: 12px 16px;
-  box-sizing: border-box;
+	width: 100%;
+	min-height: 70px;
+	padding: 12px 16px;
+	box-sizing: border-box;
 
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background-color: var(--bg-card);
-  color: var(--text-h);
-  font-size: 13px;
-  font-family: inherit;
-  resize: vertical;
+	border-radius: 12px;
+	border: 1px solid var(--border);
+	background-color: var(--bg-card);
+	color: var(--text-h);
+	font-size: 13px;
+	font-family: inherit;
+	resize: vertical;
 }
 
 .textarea::placeholder {
-  color: #c4bfb5;
+	color: #c4bfb5;
 }
 
 .textarea:focus {
-  outline: none;
-  border-color: var(--accent);
+	outline: none;
+	border-color: var(--accent);
 }
 
 .error {
-  font-size: 13px;
-  color: #dc2626;
-  margin: -4px 0 0;
+	font-size: 13px;
+	color: #dc2626;
+	margin: -4px 0 0;
 }
 
 .fieldError {
-  font-size: 12px;
-  color: #dc2626;
-  margin: -8px 0 0;
+	font-size: 12px;
+	color: #dc2626;
+	margin: -8px 0 0;
 }
 
 .fieldSuccess {
@@ -227,59 +226,61 @@ select.input {
 }
 
 .buttonRow {
-  display: flex;
-  gap: 10px;
+	display: flex;
+	gap: 10px;
 }
 
 .backStepButton {
-  flex: 1;
-  padding: 12px 0;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background-color: var(--bg-card);
-  color: var(--text-h);
-  font-size: 14px;
-  cursor: pointer;
+	flex: 1;
+	padding: 12px 0;
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	background-color: var(--bg-card);
+	color: var(--text-h);
+	font-size: 14px;
+	cursor: pointer;
 }
 
 .submit {
-  flex: 2;
-  width: 100%;
-  padding: 12px 0;
+	flex: 2;
+	width: 100%;
+	padding: 12px 0;
 
-  border: none;
-  border-radius: 12px;
-  background-color: var(--accent);
-  color: #1c1917;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.15s ease, opacity 0.15s ease;
+	border: none;
+	border-radius: 12px;
+	background-color: var(--accent);
+	color: #1c1917;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition:
+		background-color 0.15s ease,
+		opacity 0.15s ease;
 }
 
 .submit:disabled,
 .backStepButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+	opacity: 0.5;
+	cursor: not-allowed;
 }
 
 .submit:not(:disabled):hover {
-  background-color: #f59e0b;
+	background-color: #f59e0b;
 }
 
 .footer {
-  font-size: 14px;
-  color: var(--text);
-  margin-top: 20px;
+	font-size: 14px;
+	color: var(--text);
+	margin-top: 20px;
 }
 
 .link {
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  cursor: pointer;
-  font-size: 14px;
+	background: none;
+	border: none;
+	padding: 0;
+	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	cursor: pointer;
+	font-size: 14px;
 }

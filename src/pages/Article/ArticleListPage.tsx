@@ -14,9 +14,9 @@ const PAGE_SIZE = 15;
 
 export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 	const [articles, setArticles] = useState<Article[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
-	const [hasMore, setHasMore] = useState<boolean>(false);
+	const [hasNext, setHasNext] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -27,56 +27,39 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 	const selectedCategory = searchParams.get(
 		"category",
 	) as CategoryEnum | null;
+	const page = Math.max(1, Number(searchParams.get("page")) || 1);
 
 	useEffect(() => {
-		const fetchArticles = async () => {
+		const fetchPage = async () => {
 			setIsLoading(true);
 			try {
 				const fetched = await getArticles({
 					category: selectedCategory ?? undefined,
 					limit: PAGE_SIZE,
-					offset: 0,
+					offset: (page - 1) * PAGE_SIZE,
 				});
 				setArticles(fetched);
-				setHasMore(fetched.length === PAGE_SIZE);
+				setHasNext(fetched.length === PAGE_SIZE);
 			} finally {
 				setIsLoading(false);
 			}
 		};
 
-		fetchArticles();
-	}, [selectedCategory]);
+		fetchPage();
+	}, [selectedCategory, page]);
 
 	useEffect(() => {
 		const profile = readExperienceProfile();
 		if (!profile) return;
 		setExperience(profile);
 
-		if (!searchParams.get("category")) {
-			setSearchParams({ category: profile.interest });
-		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const handleLoadMore = async () => {
-		if (isLoadingMore) return;
-		setIsLoadingMore(true);
-		try {
-			const fetched = await getArticles({
-				category: selectedCategory ?? undefined,
-				limit: PAGE_SIZE,
-				offset: articles.length,
-			});
-			setArticles((prev) => [...prev, ...fetched]);
-			setHasMore(fetched.length === PAGE_SIZE);
-		} finally {
-			setIsLoadingMore(false);
-		}
-	};
-
-	const handleCollapse = () => {
-		setArticles((prev) => prev.slice(0, PAGE_SIZE));
-		setHasMore(true);
+	const goToPage = (nextPage: number) => {
+		const next = new URLSearchParams(searchParams);
+		next.set("page", String(nextPage));
+		setSearchParams(next);
 	};
 
 	return (
@@ -96,7 +79,11 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 					<button
 						className={styles.experienceCta}
 						onClick={() =>
-							navigate(`/login?redirect=${location.pathname}`)
+							navigate(
+								`/login?redirect=${encodeURIComponent(
+									location.pathname + location.search,
+								)}`,
+							)
 						}
 					>
 						로그인하고 전체 해설 보기
@@ -104,33 +91,45 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 				</div>
 			)}
 
-			<div className={styles.categoryTabs}>
-				<button
-					className={styles.categoryTab}
-					data-active={!selectedCategory}
-					onClick={() => setSearchParams({})}
-				>
-					전체
-				</button>
-
-				{CATEGORIES.map((category) => (
+			{isLogin && (
+				<div className={styles.categoryTabs}>
 					<button
-						key={category}
 						className={styles.categoryTab}
-						data-active={selectedCategory === category}
-						data-category={category}
-						onClick={() => setSearchParams({ category })}
+						data-active={!selectedCategory}
+						onClick={() => setSearchParams({})}
 					>
-						{category}
+						전체
 					</button>
-				))}
-			</div>
+
+					{CATEGORIES.map((category) => (
+						<button
+							key={category}
+							className={styles.categoryTab}
+							data-active={selectedCategory === category}
+							onClick={() => setSearchParams({ category })}
+						>
+							{category}
+						</button>
+					))}
+				</div>
+			)}
 
 			<div className={styles.articleList}>
 				{isLoading ? (
-					<p className={styles.emptyState}>기사 불러오는 중...</p>
+					<div
+						className={styles.loadingState}
+						role="status"
+						aria-live="polite"
+					>
+						<span
+							className={styles.loadingSpinner}
+							aria-hidden="true"
+						/>
+						<strong>기사를 불러오고 있어요</strong>
+						<span>잠시만 기다려 주세요.</span>
+					</div>
 				) : articles.length === 0 ? (
-					<p className={styles.emptyState}>
+					<p className={styles.emptyState} role="status">
 						해당 카테고리의 기사가 없습니다.
 					</p>
 				) : (
@@ -146,25 +145,22 @@ export default function ArticleListPage({ isLogin }: { isLogin: boolean }) {
 				)}
 			</div>
 
-			{!isLoading && (hasMore || articles.length > PAGE_SIZE) && (
-				<div className={styles.moreRow}>
-					{hasMore && (
-						<button
-							className={styles.moreButton}
-							onClick={handleLoadMore}
-							disabled={isLoadingMore}
-						>
-							{isLoadingMore ? "불러오는 중..." : "더보기"}
-						</button>
-					)}
-					{articles.length > PAGE_SIZE && (
-						<button
-							className={styles.collapseButton}
-							onClick={handleCollapse}
-						>
-							접기
-						</button>
-					)}
+			{isLogin && !isLoading && (page > 1 || hasNext) && (
+				<div className={styles.articleListFooter}>
+					<button
+						className={styles.moreButton}
+						onClick={() => goToPage(page - 1)}
+						disabled={page <= 1}
+					>
+						이전
+					</button>
+					<button
+						className={styles.moreButton}
+						onClick={() => goToPage(page + 1)}
+						disabled={!hasNext}
+					>
+						다음
+					</button>
 				</div>
 			)}
 		</div>

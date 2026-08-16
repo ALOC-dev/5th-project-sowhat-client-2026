@@ -36,6 +36,7 @@ export default function ArticleDetailPage({
 
 	const [isArticleLoading, setIsArticleLoading] = useState<boolean>(true);
 	const [isAnalysisLoading, setIsAnalysisLoading] = useState<boolean>(true);
+	const [isLinkLoading, setIsLinkLoading] = useState<boolean>(false);
 
 	const [article, setArticle] = useState<ArticleDetail | null>(null);
 	const [analysis, setAnalysis] = useState<PersonalAnalysis | null>(null);
@@ -91,6 +92,7 @@ export default function ArticleDetailPage({
 			onAnalysis: ({ effect, solution, links, similarArticles }) => {
 				setAnalysis({ effect, solution, links, similarArticles });
 				setIsAnalysisLoading(false);
+				setIsLinkLoading(true);
 			},
 			onLinks: (links) => {
 				setAnalysis((prev) =>
@@ -106,6 +108,9 @@ export default function ArticleDetailPage({
 			},
 			onError: (message) => {
 				console.error("개인 해설 생성 중 오류 발생:", message);
+			},
+			onDone: () => {
+				setIsLinkLoading(false);
 			},
 		});
 
@@ -131,7 +136,14 @@ export default function ArticleDetailPage({
 		<div className={styled.page}>
 			<button
 				className={styled.backButton}
-				onClick={() => navigate("/articles")}
+				onClick={() => {
+					navigate(
+						"/articles" +
+							(!isLogin && experience
+								? `?category=${experience.interest}`
+								: ""),
+					);
+				}}
 			>
 				← 목록으로
 			</button>
@@ -139,9 +151,22 @@ export default function ArticleDetailPage({
 			<div className={styled.layout}>
 				<article className={styled.articleBox}>
 					{isArticleLoading ? (
-						<p>기사 불러오는 중...</p>
+						<div
+							className={styled.articleLoading}
+							role="status"
+							aria-live="polite"
+						>
+							<span
+								className={styled.loadingSpinner}
+								aria-hidden="true"
+							/>
+							<strong>기사를 불러오고 있어요</strong>
+							<span>내용을 정리해 보여드릴게요.</span>
+						</div>
 					) : !article ? (
-						<p>기사를 찾을 수 없습니다.</p>
+						<p className={styled.articleEmpty} role="status">
+							기사를 불러오지 못했어요.
+						</p>
 					) : (
 						<>
 							<h1 className={styled.title}>{article.title}</h1>
@@ -186,7 +211,25 @@ export default function ArticleDetailPage({
 								이 소식이 나에게 줄 영향은?
 							</h3>
 							{isAnalysisLoading ? (
-								<p>나에게 맞는 해설을 준비하고 있어요...</p>
+								<div
+									className={styled.analysisLoading}
+									role="status"
+								>
+									<span
+										className={styled.loadingSpinner}
+										aria-hidden="true"
+									/>
+									<span>
+										나에게 맞는 해설을 준비하고 있어요.
+									</span>
+								</div>
+							) : !analysis ? (
+								<p
+									className={styled.analysisEmpty}
+									role="status"
+								>
+									해설을 불러오지 못했어요.
+								</p>
 							) : (
 								<ul>
 									{toSentences(analysis?.effect).map(
@@ -201,7 +244,25 @@ export default function ArticleDetailPage({
 								어떻게 대비할까요?
 							</h3>
 							{isAnalysisLoading ? (
-								<p>나에게 맞는 해설을 준비하고 있어요...</p>
+								<div
+									className={styled.analysisLoading}
+									role="status"
+								>
+									<span
+										className={styled.loadingSpinner}
+										aria-hidden="true"
+									/>
+									<span>
+										나에게 맞는 해설을 준비하고 있어요.
+									</span>
+								</div>
+							) : !analysis ? (
+								<p
+									className={styled.analysisEmpty}
+									role="status"
+								>
+									해설을 불러오지 못했어요.
+								</p>
 							) : (
 								analysis?.solution && (
 									<ul>
@@ -213,8 +274,23 @@ export default function ArticleDetailPage({
 									</ul>
 								)
 							)}
-							{analysis?.links && analysis.links.length > 0 && (
-								<>
+							{isLinkLoading ? (
+								<div
+									className={styled.analysisLoading}
+									role="status"
+								>
+									<span
+										className={styled.loadingSpinner}
+										aria-hidden="true"
+									/>
+									<span>
+										추가로 방문하면 좋을 링크를 찾고 있어요.
+									</span>
+								</div>
+							) : (
+								analysis?.links &&
+								analysis.links.length > 0 && (
+									<>
 									<h3>
 										<span className={styled.iconChip}>
 											🔗
@@ -234,14 +310,20 @@ export default function ArticleDetailPage({
 															styled.linkIcon
 														}
 													>
-														🔗
-													</span>
-													{link.title}
-												</a>
-											</li>
-										))}
-									</ul>
-								</>
+														<span
+															className={
+																styled.linkIcon
+															}
+														>
+															🔗
+														</span>
+														{link.title}
+													</a>
+												</li>
+											))}
+										</ul>
+									</>
+								)
 							)}
 							{analysis?.similarArticles &&
 								analysis.similarArticles.length > 0 && (
@@ -314,7 +396,25 @@ export default function ArticleDetailPage({
 							{!experience ? (
 								""
 							) : isAnalysisLoading ? (
-								<p>나에게 맞는 해설을 준비하고 있어요...</p>
+								<div
+									className={styled.analysisLoading}
+									role="status"
+								>
+									<span
+										className={styled.loadingSpinner}
+										aria-hidden="true"
+									/>
+									<span>
+										나에게 맞는 해설을 준비하고 있어요.
+									</span>
+								</div>
+							) : !analysis ? (
+								<p
+									className={styled.analysisEmpty}
+									role="status"
+								>
+									해설을 불러오지 못했어요.
+								</p>
 							) : (
 								<div className={styled.previewWrap}>
 									<ul>
@@ -399,7 +499,9 @@ export default function ArticleDetailPage({
 							<button
 								onClick={() =>
 									navigate(
-										`/login?redirect=${location.pathname}`,
+										`/login?redirect=${encodeURIComponent(
+											location.pathname + location.search,
+										)}`,
 									)
 								}
 							>

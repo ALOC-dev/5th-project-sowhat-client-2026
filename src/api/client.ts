@@ -1,3 +1,5 @@
+import { notifyError } from "../lib/toast";
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
 
 export class ApiError extends Error {
@@ -83,7 +85,7 @@ export async function api<T>(
 	// HTTP 자체 실패 (code가 400~500번대)
 	if (!res.ok) {
 		const message = await extractErrorMessage(res);
-		if (!opts?.silent) alert(message);
+		if (!opts?.silent) notifyError(message);
 		throw new ApiError(res.status, message);
 	}
 
@@ -133,7 +135,7 @@ export async function apiStream(
 
 	if (!res.ok || !res.body) {
 		const message = await extractErrorMessage(res);
-		alert(message);
+		notifyError(message);
 		throw new ApiError(res.status, message);
 	}
 

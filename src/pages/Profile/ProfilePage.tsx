@@ -11,9 +11,15 @@ const PAGE_SIZE = 10;
 type ProfilePageProps = {
 	user: User | null;
 	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+	// 프로필 관련 화면(/profile, /profile/edit)을 건너뛰고 뒤로 가도록 App에 요청한다
+	onBack: () => void;
 };
 
-export default function ProfilePage({ user, setIsLogin }: ProfilePageProps) {
+export default function ProfilePage({
+	user,
+	setIsLogin,
+	onBack,
+}: ProfilePageProps) {
 	const navigate = useNavigate();
 
 	const [history, setHistory] = useState<ReadingHistoryItem[]>([]);
@@ -111,7 +117,7 @@ export default function ProfilePage({ user, setIsLogin }: ProfilePageProps) {
 
 	return (
 		<div className={styles.page}>
-			<button className={styles.backButton} onClick={() => navigate(-1)}>
+			<button className={styles.backButton} onClick={onBack}>
 				← 돌아가기
 			</button>
 

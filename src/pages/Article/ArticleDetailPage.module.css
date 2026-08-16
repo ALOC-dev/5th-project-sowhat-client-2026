@@ -1,36 +1,35 @@
 .page {
-  width: 100%;
-  min-height: calc(100vh - 56px);
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 32px 24px 80px;
-  box-sizing: border-box;
+	width: 100%;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 32px 24px 80px;
+	box-sizing: border-box;
 }
 
 .backButton {
-  border: none;
-  border-radius: 999px;
-  padding: 8px 14px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-size: 13px;
-  cursor: pointer;
-  margin-bottom: 24px;
+	border: none;
+	border-radius: 999px;
+	padding: 8px 14px;
+	background-color: var(--bg-card);
+	border: 1px solid var(--border);
+	color: var(--text);
+	font-size: 13px;
+	cursor: pointer;
+	margin-bottom: 24px;
 }
 
 .layout {
-  display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 48px;
-  align-items: start;
+	display: grid;
+	grid-template-columns: 1fr 380px;
+	gap: 48px;
+	align-items: start;
 }
 
 @media (max-width: 860px) {
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
+	.layout {
+		grid-template-columns: 1fr;
+		gap: 28px;
+	}
 
   .sideBox {
     min-height: auto;
@@ -41,7 +40,65 @@
 }
 
 .articleBox {
-  max-width: 620px;
+	max-width: 620px;
+}
+
+.articleLoading,
+.analysisLoading,
+.analysisEmpty {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	color: var(--text);
+	font-size: 13px;
+}
+
+.articleLoading {
+	flex-direction: column;
+	min-height: 280px;
+	gap: 8px;
+}
+
+.articleEmpty {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 280px;
+	margin: 0;
+	color: var(--text-h);
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.articleLoading strong {
+	margin-top: 6px;
+	color: var(--text-h);
+	font-size: 16px;
+}
+
+.analysisLoading,
+.analysisEmpty {
+	min-height: 74px;
+	margin: 0 0 28px;
+	padding: 12px 16px;
+	box-sizing: border-box;
+}
+
+.loadingSpinner {
+	flex-shrink: 0;
+	width: 22px;
+	height: 22px;
+	border: 3px solid var(--accent-border);
+	border-top-color: var(--accent);
+	border-radius: 50%;
+	animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .title {
@@ -57,29 +114,29 @@
 }
 
 .date {
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--text);
-  opacity: 0.7;
-  margin-bottom: 32px;
+	font-family: var(--mono);
+	font-size: 13px;
+	color: var(--text);
+	opacity: 0.7;
+	margin-bottom: 32px;
 }
 
 .meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--text);
-  opacity: 0.7;
-  margin-bottom: 32px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	font-family: var(--mono);
+	font-size: 13px;
+	color: var(--text);
+	opacity: 0.7;
+	margin-bottom: 32px;
 }
 
 .meta span:not(:last-child)::after {
-  content: "·";
-  margin-left: 10px;
-  opacity: 0.6;
+	content: "·";
+	margin-left: 10px;
+	opacity: 0.6;
 }
 
 .content {
@@ -149,9 +206,9 @@
 }
 
 .sideBox ul {
-  margin-bottom: 28px;
-  padding-left: 0;
-  list-style: none;
+	margin-bottom: 28px;
+	padding-left: 0;
+	list-style: none;
 }
 
 .sideBox li {
@@ -170,15 +227,15 @@
 }
 
 .linkList li {
-  padding: 0;
-  background-color: transparent;
-  border: none;
+	padding: 0;
+	background-color: transparent;
+	border: none;
 }
 
 .linkList a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 
   padding: 14px 16px;
   border-radius: 12px;
@@ -194,9 +251,9 @@
   text-decoration: none;
   transition: background-color 0.15s ease, transform 0.15s ease;
 
-  min-width: 0;
-  overflow-wrap: break-word;
-  word-break: break-word;
+	min-width: 0;
+	overflow-wrap: break-word;
+	word-break: break-word;
 }
 
 .linkList a:hover {
@@ -205,20 +262,20 @@
 }
 
 .linkIcon {
-  flex-shrink: 0;
-  font-size: 15px;
+	flex-shrink: 0;
+	font-size: 15px;
 }
 
 .similarList li {
-  padding: 0;
-  background-color: transparent;
-  border: none;
+	padding: 0;
+	background-color: transparent;
+	border: none;
 }
 
 .similarList a {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 
   padding: 14px 16px;
   border-radius: 12px;
@@ -245,9 +302,9 @@
 }
 
 .similarList span {
-  font-size: 12px;
-  color: var(--text);
-  opacity: 0.7;
+	font-size: 12px;
+	color: var(--text);
+	opacity: 0.7;
 }
 
 .p1 {
@@ -261,18 +318,18 @@
 }
 
 .previewWrap {
-  margin: 16px 0 20px;
+	margin: 16px 0 20px;
 }
 
 .previewBlurWrap {
-  position: relative;
+	position: relative;
 }
 
 .previewBlur {
-  filter: blur(6px);
-  opacity: 0.6;
-  pointer-events: none;
-  user-select: none;
+	filter: blur(6px);
+	opacity: 0.6;
+	pointer-events: none;
+	user-select: none;
 }
 
 .previewLabel {
@@ -286,20 +343,20 @@
 }
 
 .previewOverlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 12px;
-  box-sizing: border-box;
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 12px;
+	box-sizing: border-box;
 }
 
 .previewLock {
-  font-size: 20px;
-  margin-bottom: 8px;
+	font-size: 20px;
+	margin-bottom: 8px;
 }
 
 .p2 {
@@ -312,21 +369,21 @@
 }
 
 .sideBox button {
-  display: block;
-  margin: 0 auto;
-  border: none;
-  border-radius: 999px;
-  padding: 10px 22px;
-  background-color: var(--accent);
-  color: #1c1917;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
+	display: block;
+	margin: 0 auto;
+	border: none;
+	border-radius: 999px;
+	padding: 10px 22px;
+	background-color: var(--accent);
+	color: #1c1917;
+	font-size: 13px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 0.15s ease;
 }
 
 .sideBox button:hover {
-  background-color: #f59e0b;
+	background-color: #f59e0b;
 }
 
 .feedbackLabel {
@@ -339,8 +396,8 @@
 }
 
 .feedbackRow {
-  display: flex;
-  gap: 8px;
+	display: flex;
+	gap: 8px;
 }
 
 .feedbackRow .feedbackButton {
@@ -358,27 +415,27 @@
 }
 
 .feedbackRow .feedbackButton[data-active="true"] {
-  background-color: var(--accent);
-  border-color: var(--accent);
-  color: #1c1917;
+	background-color: var(--accent);
+	border-color: var(--accent);
+	color: #1c1917;
 }
 
 .divider {
-  margin: 40px 0 28px;
-  border: none;
-  border-top: 1px solid var(--border);
+	margin: 40px 0 28px;
+	border: none;
+	border-top: 1px solid var(--border);
 }
 
 .summaryBox {
-  margin-top: 24px;
+	margin-top: 24px;
 }
 
 .summaryTitle {
-  font-family: var(--serif);
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-h);
-  margin-bottom: 18px;
+	font-family: var(--serif);
+	font-size: 20px;
+	font-weight: 600;
+	color: var(--text-h);
+	margin-bottom: 18px;
 }
 
 .summaryText {
@@ -396,35 +453,35 @@
 }
 
 .keywordList {
-  padding-left: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+	padding-left: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
 }
 
 .keywordList li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
 
-  padding: 10px 2px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 0;
+	padding: 10px 2px;
+	border-bottom: 1px solid var(--border);
+	margin-bottom: 0;
 }
 
 .keywordList li:last-child {
-  border-bottom: none;
+	border-bottom: none;
 }
 
 .keywordBadge {
-  flex-shrink: 0;
-  margin-top: 1px;
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text);
-  opacity: 0.5;
+	flex-shrink: 0;
+	margin-top: 1px;
+	font-family: var(--mono);
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--text);
+	opacity: 0.5;
 }
 
 .keywordList strong {

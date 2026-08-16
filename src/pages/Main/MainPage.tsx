@@ -95,6 +95,8 @@ type MainPageProps = {
 
 export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 	const navigate = useNavigate();
+	const [isRecommendationsLoading, setIsRecommendationsLoading] =
+		useState(false);
 	const [showExperience, setShowExperience] = useState(false);
 	const [recommended, setRecommended] = useState<Article[]>([]);
 	const recommendSectionRef = useRef<HTMLElement | null>(null);
@@ -107,8 +109,13 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 	useEffect(() => {
 		if (!isLogin) return;
 		const fetchRecommended = async () => {
-			const fetched = await getRecommendedArticles();
-			setRecommended(fetched.slice(0, 5));
+			setIsRecommendationsLoading(true);
+			try {
+				const fetched = await getRecommendedArticles();
+				setRecommended(fetched.slice(0, 5));
+			} finally {
+				setIsRecommendationsLoading(false);
+			}
 		};
 		fetchRecommended();
 	}, [isLogin]);
@@ -256,9 +263,11 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 
 			{showExperience && (
 				<ExperienceModal
-					onClose={() => {
+					onClose={(profile) => {
 						setShowExperience(false);
-						navigate("/articles");
+						navigate(
+							`/articles${profile ? "?category=" + profile.interest : ""}`,
+						);
 					}}
 				/>
 			)}
@@ -279,21 +288,40 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 					</div>
 
 					<div className={styles.recommendGrid}>
-						{recommended.map((article, i) => (
+						{isRecommendationsLoading ? (
 							<div
-								key={article.id}
-								className={styles.recommendItem}
-								data-slot={i === 0 ? "featured" : "normal"}
+								className={styles.loadingState}
+								role="status"
+								aria-live="polite"
 							>
-								<ArticleCard
-									article={article}
-									size={i === 0 ? "lg" : "md"}
-									onDetailView={(articleId) =>
-										navigate(`/articles/${articleId}`)
-									}
+								<span
+									className={styles.loadingSpinner}
+									aria-hidden="true"
 								/>
+								<strong>추천 기사를 불러오고 있어요</strong>
+								<span>잠시만 기다려 주세요.</span>
 							</div>
-						))}
+						) : recommended.length == 0 ? (
+							<p className={styles.emptyState} role="status">
+								추천 기사를 불러오지 못했어요.
+							</p>
+						) : (
+							recommended.map((article, i) => (
+								<div
+									key={article.id}
+									className={styles.recommendItem}
+									data-slot={i === 0 ? "featured" : "normal"}
+								>
+									<ArticleCard
+										article={article}
+										size={i === 0 ? "lg" : "md"}
+										onDetailView={(articleId) =>
+											navigate(`/articles/${articleId}`)
+										}
+									/>
+								</div>
+							))
+						)}
 					</div>
 
 					<div className={styles.recommendFooter}>
@@ -668,10 +696,6 @@ export default function MainPage({ isLogin, user, setUser }: MainPageProps) {
 					</div>
 				</section>
 			)}
-
-			<footer className={styles.footer}>
-				© 2026 So What? — 나를 위한 뉴스 해설
-			</footer>
 		</div>
 	);
 }

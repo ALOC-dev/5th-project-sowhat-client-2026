@@ -211,7 +211,10 @@ export default function App() {
 						element={<ArticleListPage isLogin={isLogin} />}
 					/>
 
-					<Route path="/preview" element={<PreviewPage />} />
+					<Route
+						path="/preview"
+						element={<PreviewPage isLogin={isLogin} />}
+					/>
 
 					<Route
 						path="/articles/:article_id"

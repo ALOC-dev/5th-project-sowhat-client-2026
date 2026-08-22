@@ -43,9 +43,14 @@ export default function CopyrightPolicyPage() {
 
 	return (
 		<div className={styles.page}>
-			<button className={styles.backButton} onClick={() => navigate("/")}>
-				← 돌아가기
-			</button>
+			<div className={styles.backButtonRow}>
+				<button
+					className={styles.backButton}
+					onClick={() => navigate("/")}
+				>
+					← 돌아가기
+				</button>
+			</div>
 
 			<div className={styles.card}>
 				<h1 className={styles.title}>저작권 및 콘텐츠 이용정책</h1>

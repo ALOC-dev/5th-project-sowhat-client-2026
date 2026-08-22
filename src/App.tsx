@@ -234,7 +234,12 @@ export default function App() {
 
 			{isLoginOrSignupPath(location.pathname) ? (
 				<footer className={styles.authFooter}>
-					<span>개인정보처리방침 (페이지 링크 넣기)</span>
+					<span
+						className={styles.footerLink}
+						onClick={() => navigate("/privacypolicy")}
+					>
+						개인정보처리방침
+					</span>
 				</footer>
 			) : (
 				<footer className={styles.footer}>
@@ -262,14 +267,25 @@ export default function App() {
 						<div className={styles.footerGroup}>
 							<h2>서비스 안내</h2>
 							<ul>
-								<li onClick={() => navigate("/aipolicy")}>
-									AI 콘텐츠 안내 (페이지 링크 넣기)
+								<li
+									className={styles.footerLink}
+									onClick={() => navigate("/aipolicy")}
+								>
+									AI 콘텐츠 안내
 								</li>
-								<li onClick={() => navigate("/copyrightpolicy")}>
-									저작권 및 콘텐츠 이용정책 (페이지 링크 넣기)
+								<li
+									className={styles.footerLink}
+									onClick={() =>
+										navigate("/copyrightpolicy")
+									}
+								>
+									저작권 및 콘텐츠 이용정책
 								</li>
-								<li onClick={() => navigate("/privacypolicy")}>
-									개인정보처리방침 (페이지 링크 넣기)
+								<li
+									className={styles.footerLink}
+									onClick={() => navigate("/privacypolicy")}
+								>
+									개인정보처리방침
 								</li>
 							</ul>
 						</div>

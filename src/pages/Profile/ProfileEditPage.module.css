@@ -113,6 +113,41 @@ select.input {
   border-color: var(--accent);
 }
 
+.passwordField {
+  position: relative;
+}
+
+.passwordField .input {
+  padding-right: 60px;
+}
+
+.togglePassword {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  border: none;
+  background: none;
+  color: var(--text);
+  font-size: 12px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.fieldError {
+  margin: -2px 0 0;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+.fieldHint {
+  margin: -2px 0 0;
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.6;
+}
+
 .buttonGroup {
   display: flex;
   gap: 12px;

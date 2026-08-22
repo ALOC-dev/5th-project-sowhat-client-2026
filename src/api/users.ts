@@ -65,3 +65,12 @@ export async function updateUser(
 	});
 	return toUser(data);
 }
+
+// 비밀번호 변경: PATCH /api/users/me/password
+export async function updatePassword(password: string): Promise<boolean> {
+	const data = await api<{ success: boolean }>(`/api/users/me/password`, {
+		method: "PATCH",
+		body: JSON.stringify({ password }),
+	});
+	return data?.success ?? false;
+}

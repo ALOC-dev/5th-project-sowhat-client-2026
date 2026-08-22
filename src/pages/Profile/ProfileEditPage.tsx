@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { updateUser } from "../../api/users";
+import { updatePassword, updateUser } from "../../api/users";
 import {
 	CategoryEnum,
 	GenderEnum,
@@ -30,15 +30,49 @@ export default function ProfileEditPage({
 	const [form, setForm] = useState<User | null>(user);
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 
+	const [newPassword, setNewPassword] = useState<string>("");
+	const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>("");
+	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const [passwordError, setPasswordError] = useState<string>("");
+
 	useEffect(() => {
 		setForm(user);
 	}, [user]);
 
+	const passwordTypeCount = [
+		/[A-Za-z]/.test(newPassword),
+		/[0-9]/.test(newPassword),
+		/[^A-Za-z0-9]/.test(newPassword),
+	].filter(Boolean).length;
+	const isNewPasswordValid =
+		newPassword.length === 0 ||
+		(newPassword.length >= 8 && passwordTypeCount >= 2);
+	const isNewPasswordConfirmValid =
+		newPassword.length === 0 || newPassword === newPasswordConfirm;
+
 	const handleSave = async () => {
 		if (!user || !form) return;
+
+		if (newPassword.length > 0) {
+			if (!isNewPasswordValid) {
+				setPasswordError(
+					"비밀번호는 8자 이상이며 영문·숫자·특수문자 중 2가지 이상을 포함해야 해요.",
+				);
+				return;
+			}
+			if (!isNewPasswordConfirmValid) {
+				setPasswordError("비밀번호가 일치하지 않아요.");
+				return;
+			}
+		}
+		setPasswordError("");
 		setIsSaving(true);
 
 		try {
+			if (newPassword.length > 0) {
+				await updatePassword(newPassword);
+			}
+
 			const updated = await updateUser({
 				username:
 					form.username == user.username ? undefined : form.username,
@@ -227,6 +261,73 @@ export default function ProfileEditPage({
 						</select>
 					</div>
 				</div>
+
+				<p className={styles.sectionLabel}>비밀번호 변경</p>
+
+				<div className={styles.row}>
+					<label className={styles.label}>새 비밀번호</label>
+					<div className={styles.passwordField}>
+						<input
+							className={styles.input}
+							type={showPassword ? "text" : "password"}
+							placeholder="변경하지 않으려면 비워두세요"
+							value={newPassword}
+							onChange={(e) => {
+								setNewPassword(e.target.value);
+								setPasswordError("");
+							}}
+						/>
+						<button
+							type="button"
+							className={styles.togglePassword}
+							onClick={() => setShowPassword((v) => !v)}
+							tabIndex={-1}
+						>
+							{showPassword ? "숨기기" : "보기"}
+						</button>
+					</div>
+					{newPassword.length > 0 && !isNewPasswordValid && (
+						<p className={styles.fieldError}>
+							비밀번호는 8자 이상이며 영문·숫자·특수문자 중 2가지
+							이상을 포함해야 해요.
+						</p>
+					)}
+				</div>
+
+				<div className={styles.row}>
+					<label className={styles.label}>새 비밀번호 확인</label>
+					<div className={styles.passwordField}>
+						<input
+							className={styles.input}
+							type={showPassword ? "text" : "password"}
+							placeholder="새 비밀번호를 다시 입력해주세요"
+							value={newPasswordConfirm}
+							onChange={(e) => {
+								setNewPasswordConfirm(e.target.value);
+								setPasswordError("");
+							}}
+						/>
+						<button
+							type="button"
+							className={styles.togglePassword}
+							onClick={() => setShowPassword((v) => !v)}
+							tabIndex={-1}
+						>
+							{showPassword ? "숨기기" : "보기"}
+						</button>
+					</div>
+					{newPasswordConfirm.length > 0 &&
+						!isNewPasswordConfirmValid && (
+							<p className={styles.fieldError}>
+								비밀번호가 일치하지 않아요.
+							</p>
+						)}
+					{passwordError && (
+						<p className={styles.fieldError}>{passwordError}</p>
+					)}
+				</div>
+
+				<p className={styles.sectionLabel}>기타</p>
 
 				<div className={styles.row}>
 					<label className={styles.label}>추가 정보</label>

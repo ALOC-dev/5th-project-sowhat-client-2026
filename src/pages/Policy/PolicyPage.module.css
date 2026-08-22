@@ -6,9 +6,12 @@
 	padding: 40px 24px 80px;
 }
 
-.backButton {
-	
+.backButtonRow {
+	max-width: 720px;
 	margin: 0 auto 24px;
+}
+
+.backButton {
 	border: none;
 	border-radius: 999px;
 	background: var(--bg-card);

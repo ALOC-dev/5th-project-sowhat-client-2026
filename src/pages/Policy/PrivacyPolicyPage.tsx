@@ -125,9 +125,14 @@ export default function PrivacyPolicyPage() {
 
 	return (
 		<div className={styles.page}>
-			<button className={styles.backButton} onClick={() => navigate("/")}>
-				← 돌아가기
-			</button>
+			<div className={styles.backButtonRow}>
+				<button
+					className={styles.backButton}
+					onClick={() => navigate("/")}
+				>
+					← 돌아가기
+				</button>
+			</div>
 
 			<div className={styles.card}>
 				<h1 className={styles.title}>개인정보처리방침</h1>

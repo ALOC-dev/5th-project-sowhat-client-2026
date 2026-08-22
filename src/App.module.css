@@ -213,6 +213,15 @@
 	line-height: 1.5;
 }
 
+.footerLink {
+	cursor: pointer;
+	transition: color 0.15s ease;
+}
+
+.footerLink:hover {
+	color: var(--text-h);
+}
+
 .footerNotice,
 .copyright {
 	width: min(100%, 720px);

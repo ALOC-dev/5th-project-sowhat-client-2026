@@ -84,7 +84,7 @@
 	font-size: 12px;
 	letter-spacing: 0.25em;
 	text-transform: uppercase;
-	color: #fbbf24;
+	color: var(--accent);
 	margin-bottom: 20px;
 }
 
@@ -100,7 +100,7 @@
 
 .headlineAccent {
 	font-style: normal;
-	color: #fbbf24;
+	color: var(--accent);
 }
 
 .subtitle {

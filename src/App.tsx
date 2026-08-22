@@ -13,6 +13,9 @@ import ProfileEditPage from "./pages/Profile/ProfileEditPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import SignupPage from "./pages/Signup/SignupPage";
 import ToastHost from "./ui/ToastHost";
+import AiPolicyPage from "./pages/Policy/AiPolicyPage";
+import CopyrightPolicyPage from "./pages/Policy/CopyrightPolicyPage";
+import PrivacyPolicyPage from "./pages/Policy/PrivacyPolicyPage";
 
 type HeaderProps = {
 	isLogin: boolean;
@@ -213,6 +216,10 @@ export default function App() {
 
 					<Route path="/preview" element={<PreviewPage />} />
 
+					<Route path="/aipolicy" element={<AiPolicyPage />} />
+					<Route path="/copyrightpolicy" element={<CopyrightPolicyPage />} />
+					<Route path="/privacypolicy" element={<PrivacyPolicyPage />} />
+
 					<Route
 						path="/articles/:article_id"
 						element={
@@ -252,11 +259,15 @@ export default function App() {
 						<div className={styles.footerGroup}>
 							<h2>서비스 안내</h2>
 							<ul>
-								<li>AI 콘텐츠 안내 (페이지 링크 넣기)</li>
-								<li>
+								<li onClick={() => navigate("/aipolicy")}>
+									AI 콘텐츠 안내 (페이지 링크 넣기)
+								</li>
+								<li onClick={() => navigate("/copyrightpolicy")}>
 									저작권 및 콘텐츠 이용정책 (페이지 링크 넣기)
 								</li>
-								<li>개인정보처리방침 (페이지 링크 넣기)</li>
+								<li onClick={() => navigate("/privacypolicy")}>
+									개인정보처리방침 (페이지 링크 넣기)
+								</li>
 							</ul>
 						</div>
 					</div>

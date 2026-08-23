@@ -222,7 +222,7 @@ select.input {
 
 .checkIdButton:disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .buttonRow {
@@ -261,7 +261,7 @@ select.input {
 .submit:disabled,
 .backStepButton:disabled {
 	opacity: 0.5;
-	cursor: not-allowed;
+	cursor: pointer;
 }
 
 .submit:not(:disabled):hover {

@@ -185,5 +185,5 @@ select.input {
 .cancelButton:disabled,
 .saveButton:disabled {
   opacity: 0.5;
-  cursor: not-allowed;
+  cursor: pointer;
 }

@@ -219,9 +219,12 @@ export default function ArticleDetailPage({
 
 				<article className={styled.sideBox}>
 					<span className={styled.aiBadge}>
-					<LogoIcon size={14} variant="light" />
-					So What? AI 개인화 해설
-				</span>
+						So What?
+						<span className={styled.aiBadgeIcon}>
+							<LogoIcon size={14} variant="dark" />
+						</span>
+						AI 개인화 해설
+					</span>
 					{isLogin ? (
 						<>
 							<h3>

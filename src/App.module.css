@@ -78,6 +78,8 @@
 
 .logo {
 	display: flex;
+	align-items: center;
+	gap: 8px;
 	font-family: var(--display);
 	font-weight: 400;
 	font-size: 24px;
@@ -85,6 +87,10 @@
 
 	justify-content: flex-start;
 	cursor: pointer;
+}
+
+.logo svg {
+	flex-shrink: 0;
 }
 
 .nav {

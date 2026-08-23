@@ -12,6 +12,7 @@ import PreviewPage from "./pages/Preview/PreviewPage";
 import ProfileEditPage from "./pages/Profile/ProfileEditPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import SignupPage from "./pages/Signup/SignupPage";
+import LogoIcon from "./ui/LogoIcon";
 import ToastHost from "./ui/ToastHost";
 import AiPolicyPage from "./pages/Policy/AiPolicyPage";
 import CopyrightPolicyPage from "./pages/Policy/CopyrightPolicyPage";
@@ -30,6 +31,7 @@ function Header({ isLogin, user }: HeaderProps) {
 	return (
 		<header className={styles.header} data-landing={isLanding}>
 			<div className={styles.logo} onClick={() => navigate("/")}>
+				<LogoIcon size={28} />
 				So What
 			</div>
 

@@ -31,7 +31,7 @@ function Header({ isLogin, user }: HeaderProps) {
 	return (
 		<header className={styles.header} data-landing={isLanding}>
 			<div className={styles.logo} onClick={() => navigate("/")}>
-				<LogoIcon size={28} />
+				<LogoIcon size={28} variant={isLanding ? "light" : "dark"} />
 				So What
 			</div>
 

@@ -10,6 +10,7 @@ import { formatDate } from "../../lib/formatDate";
 import { recordArticleView } from "../../lib/readingHistory";
 import { ArticleDetail, JobEnum, PersonalAnalysis, User } from "../../types";
 import { readExperienceProfile } from "../Main/ExperienceModal";
+import LogoIcon from "../../ui/LogoIcon";
 import styled from "./ArticleDetailPage.module.css";
 
 // 긴 줄글을 문장 단위로 나눠 하나씩 확인할 수 있는 불릿으로 보여준다
@@ -217,7 +218,10 @@ export default function ArticleDetailPage({
 				</article>
 
 				<article className={styled.sideBox}>
-					<span className={styled.aiBadge}>✨ AI 개인화 해설</span>
+					<span className={styled.aiBadge}>
+					<LogoIcon size={14} variant="light" />
+					So What? AI 개인화 해설
+				</span>
 					{isLogin ? (
 						<>
 							<h3>

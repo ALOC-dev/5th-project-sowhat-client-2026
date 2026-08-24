@@ -1,23 +1,169 @@
 .articleCard {
-  padding: 16px;
-  
-  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  overflow: hidden;
+  border-radius: 12px;
   cursor: pointer;
-  border: 1px solid black;
-  background-color: white;
-  
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  transition: box-shadow 0.15s ease;
+}
+
+.articleCard:hover {
+  box-shadow: var(--shadow);
+}
+
+.articleCard > *:not(.thumbnail) {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.articleCard > *:last-child {
+  padding-bottom: 20px;
+}
+
+.thumbnail {
+  position: relative;
+  height: 140px;
+  padding: 10px !important;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.thumbnailImage {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.4s ease;
+}
+
+.articleCard:hover .thumbnailImage {
+  transform: scale(1.08);
+}
+
+.thumbnail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0) 55%
+  );
+  pointer-events: none;
+}
+
+.articleCard[data-size="lg"] .thumbnail {
+  height: 220px;
+}
+
+.articleCard[data-size="sm"] .thumbnail {
+  height: 96px;
+}
+
+.categoryChip {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 10px;
+
+  border-radius: 999px;
+  border: 1px solid var(--accent-border);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #92400e;
+}
+
+.categoryChip[data-category="경제"] {
+  color: #047857;
+  background-color: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.categoryChip[data-category="정치"] {
+  color: #0369a1;
+  background-color: #f0f9ff;
+  border-color: #bae6fd;
+}
+
+.categoryChip[data-category="사회"] {
+  color: #be123c;
+  background-color: #fff1f2;
+  border-color: #fecdd3;
+}
+
+.categoryChip[data-category="산업/IT"] {
+  color: #6d28d9;
+  background-color: #f5f3ff;
+  border-color: #ddd6fe;
+}
+
+.articleCard[data-size="lg"] {
+  padding: 28px;
+  gap: 12px;
+}
+
+.articleCard[data-size="lg"] .articleTitle {
+  font-size: 24px;
+}
+
+.articleCard[data-size="lg"] .articleContent {
+  font-size: 15px;
+  -webkit-line-clamp: 4;
+}
+
+.articleCard[data-size="sm"] .articleTitle {
+  font-size: 15px;
+}
+
+.articleCard[data-size="sm"] .articleContent {
+  -webkit-line-clamp: 1;
 }
 
 .articleTitle {
-  font-size: 20px;
-  font-weight: bold;
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-h);
+  margin: 0;
+
+  word-break: keep-all;
+  overflow-wrap: break-word;
+
+  min-height: 2.8em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.articleDate {
-  font-size: 14px;
-  color: gray;
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text);
+  opacity: 0.7;
 }
 
 .articleContent {
-  font-size: 16px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

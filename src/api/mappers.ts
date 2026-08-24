@@ -1,74 +1,28 @@
-import {
-	Article,
-	ArticleDetail,
-	CategoryEnum,
-	GenderEnum,
-	JobEnum,
-	PersonalAnalysis,
-	RegionEnum,
-	UserInfo,
-} from "../types";
+import { Article, ArticleDetail, PersonalAnalysis, User } from "../types";
 import {
 	ArticleDetailResponse,
 	ArticleResponse,
-	PersonalAnalysisResponse,
-	ProfileResponse,
+	ExperienceAnalysisResponse,
+	UserResponse,
 } from "./contracts";
-
-const stringToGender = (inputStr: string): GenderEnum => {
-	inputStr = inputStr.trim().toUpperCase();
-	return inputStr == "MALE" ? "MALE" : "FEMALE";
-};
-
-const stringToRegion = (inputStr: string): RegionEnum => {
-	inputStr = inputStr.trim().toUpperCase();
-	return inputStr == "SEOUL"
-		? "SEOUL"
-		: inputStr == "BUSAN"
-			? "BUSAN"
-			: inputStr == "DAEGU"
-				? "DAEGU"
-				: inputStr == "INCHEON"
-					? "INCHEON"
-					: "DAEJEON";
-};
-
-const stringToJob = (inputStr: string): JobEnum => {
-	inputStr = inputStr.trim().toUpperCase();
-	return inputStr == "STUDENT"
-		? "STUDENT"
-		: inputStr == "OFFICE_WORKER"
-			? "OFFICE_WORKER"
-			: inputStr == "DEVELOPER"
-				? "DEVELOPER"
-				: inputStr == "JOB_SEEKER"
-					? "JOB_SEEKER"
-					: "ETC";
-};
-
-const stringToCategory = (inputStr: string): CategoryEnum => {
-	inputStr = inputStr.trim().toUpperCase();
-	return inputStr == "POLITICS"
-		? "POLITICS"
-		: inputStr == "ECONOMY"
-			? "ECONOMY"
-			: "SOCIETY";
-};
 
 export const toArticle = (res: ArticleResponse | void): Article | void => {
 	return res
 		? {
-				article_id: res.article_id,
+				id: res.id,
 				title: res.title,
-				link: res.link,
+				source_url: res.source_url,
+				publisher: res.publisher,
+				published_at: new Date(res.published_at),
+				category: res.category,
 				content: res.content,
-				media: res.media,
 			}
 		: undefined;
 };
 
 export const toArticleList = (res: ArticleResponse[]): Article[] => {
-	return res.map((a) => a ?? toArticle(a));
+	const mapped = res.map((a) => toArticle(a));
+	return mapped.filter((v) => v != undefined);
 };
 
 export const toArticleDetail = (
@@ -76,11 +30,14 @@ export const toArticleDetail = (
 ): ArticleDetail | void => {
 	return res
 		? {
-				article_id: res.article_id,
+				id: res.id,
 				title: res.title,
-				link: res.link,
+				source_url: res.source_url,
+				publisher: res.publisher,
+				published_at: new Date(res.published_at),
+				reporter: res.reporter,
+				category: res.category,
 				content: res.content,
-				media: res.media,
 				summary: res.summary,
 				keyword: res.keyword,
 			}
@@ -88,25 +45,31 @@ export const toArticleDetail = (
 };
 
 export const toPersonalAnalysis = (
-	res: PersonalAnalysisResponse | void,
+	res: ExperienceAnalysisResponse | void,
 ): PersonalAnalysis | void => {
 	return res
 		? {
 				effect: res.effect,
-				solution: res.solution,
+				solution: null,
+				links: null,
+				similarArticles: null,
 			}
 		: undefined;
 };
 
-export const toUserInfo = (res: ProfileResponse | void): UserInfo | void => {
+export const toUser = (res: UserResponse | void): User | void => {
 	return res
 		? {
-				user_id: res.user_id,
+				id: res.id,
+				login_id: res.login_id,
+				username: res.username,
 				age: res.age,
-				gender: stringToGender(res.gender),
-				region: stringToRegion(res.region),
-				job: stringToJob(res.job),
-				interest: stringToCategory(res.interest),
+				gender: res.gender,
+				region: res.region,
+				job: res.job,
+				interest: res.interest,
+				purpose: res.purpose,
+				extra_information: res.extra_information,
 			}
 		: undefined;
 };

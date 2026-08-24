@@ -1,17 +1,251 @@
 .main {
-  
-  width:  90%;
-  padding: 30px 20px;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 40px 24px 12px;
+	box-sizing: border-box;
 }
 
 .pageTitle {
-  display: flex;
+	display: flex;
+	font-family: var(--serif);
+	font-size: 26px;
+	font-weight: 600;
+	color: var(--text-h);
+	margin: 0;
+	word-break: keep-all;
+	overflow-wrap: break-word;
+}
+
+.experienceBanner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
+
+	max-width: 1100px;
+	margin: 0 auto 20px;
+	padding: 16px 24px;
+	box-sizing: border-box;
+
+	background-color: var(--accent-bg);
+	border: 1px solid var(--accent-border);
+	border-radius: 14px;
+}
+
+.experienceText {
+	flex: 1;
+	min-width: 220px;
+	font-size: 13px;
+	line-height: 1.6;
+	color: var(--text);
+	margin: 0;
+	word-break: keep-all;
+	overflow-wrap: break-word;
+}
+
+.experienceText strong {
+	color: var(--text-h);
+}
+
+.experienceCta {
+	flex-shrink: 0;
+	padding: 10px 18px;
+	border: none;
+	border-radius: 999px;
+	background-color: var(--accent);
+	color: #1c1917;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.15s ease;
+}
+
+.experienceCta:hover {
+	background-color: #f59e0b;
+}
+
+.categoryTabs {
+	display: flex;
+	gap: 6px;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 24px 16px;
+	box-sizing: border-box;
+	overflow-x: auto;
+}
+
+.categoryTab {
+	padding: 6px 16px;
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	background-color: var(--bg-card);
+	color: var(--text);
+	font-size: 12px;
+	font-weight: 500;
+	white-space: nowrap;
+	cursor: pointer;
+	transition:
+		background-color 0.15s ease,
+		color 0.15s ease;
+}
+
+.categoryTab:hover {
+	background-color: var(--accent-bg);
+}
+
+.categoryTab[data-active="true"] {
+	background-color: var(--accent);
+	border-color: var(--accent);
+	color: #1c1917;
+}
+
+.categoryTab[data-active="true"][data-category="정치"] {
+	background-color: #0369a1;
+	border-color: #0369a1;
+	color: #fff;
+}
+
+.categoryTab[data-active="true"][data-category="경제"] {
+	background-color: #047857;
+	border-color: #047857;
+	color: #fff;
+}
+
+.categoryTab[data-active="true"][data-category="사회"] {
+	background-color: #be123c;
+	border-color: #be123c;
+	color: #fff;
+}
+
+.categoryTab[data-active="true"][data-category="산업/IT"] {
+	background-color: #6d28d9;
+	border-color: #6d28d9;
+	color: #fff;
+}
+
+.emptyState {
+	grid-column: 1 / -1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 240px;
+	margin: 0;
+	color: var(--text-h);
+	font-size: 15px;
+	font-weight: 700;
+}
+
+.loadingState {
+	grid-column: 1 / -1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 240px;
+	gap: 8px;
+	color: var(--text);
+	font-size: 13px;
+}
+
+.loadingState strong {
+	margin-top: 6px;
+	color: var(--text-h);
+	font-size: 15px;
+}
+
+.loadingSpinner {
+	width: 28px;
+	height: 28px;
+	border: 3px solid var(--accent-border);
+	border-top-color: var(--accent);
+	border-radius: 50%;
+	animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .articleList {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  padding-left: 10px;
-  padding-right: 10px;
-  gap: 20px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 28px 24px 60px;
+	box-sizing: border-box;
+	gap: 32px 24px;
+}
+
+@media (max-width: 900px) {
+	.articleList {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 600px) {
+	.articleList {
+		grid-template-columns: 1fr;
+		gap: 24px;
+	}
+}
+
+.articleListFooter {
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 24px 60px;
+	box-sizing: border-box;
+}
+
+.moreButton {
+	padding: 12px 28px;
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	background-color: var(--bg-card);
+	color: var(--text-h);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 0.15s ease;
+}
+
+.moreButton:hover:not(:disabled) {
+	background-color: var(--accent-bg);
+	border-color: var(--accent-border);
+}
+
+.moreButton:disabled {
+	opacity: 0.4;
+	cursor: pointer;
+}
+
+.moreRow {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	max-width: 1100px;
+	margin: -30px auto 60px;
+	padding: 0 24px;
+	box-sizing: border-box;
+}
+
+.collapseButton {
+	padding: 12px 22px;
+	border: 1px solid transparent;
+	border-radius: 999px;
+	background-color: transparent;
+	color: var(--text);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 0.15s ease;
+}
+
+.collapseButton:hover {
+	background-color: var(--code-bg);
 }

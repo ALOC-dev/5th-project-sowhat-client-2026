@@ -1,0 +1,122 @@
+.page {
+	width: 100%;
+	min-height: calc(100vh - 56px);
+	background-color: var(--bg);
+	box-sizing: border-box;
+	padding: 40px 24px 80px;
+}
+
+.backButtonRow {
+	max-width: 720px;
+	margin: 0 auto 24px;
+}
+
+.backButton {
+	border: none;
+	border-radius: 999px;
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	color: var(--text);
+	padding: 8px 16px;
+	font-size: 13px;
+	cursor: pointer;
+}
+
+.card {
+	max-width: 720px;
+	margin: 0 auto;
+	background-color: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	padding: 40px;
+	box-sizing: border-box;
+}
+
+.title {
+	font-family: var(--serif);
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--text-h);
+	margin: 0 0 24px;
+	word-break: keep-all;
+	overflow-wrap: break-word;
+}
+
+.content {
+	font-size: 14px;
+	line-height: 1.8;
+	color: var(--text);
+	word-break: keep-all;
+	overflow-wrap: break-word;
+}
+
+.content h1,
+.content h2,
+.content h3 {
+	font-family: var(--serif);
+	color: var(--text-h);
+	line-height: 1.4;
+	margin: 28px 0 12px;
+}
+
+.content h1:first-child,
+.content h2:first-child,
+.content h3:first-child {
+	margin-top: 0;
+}
+
+.content h1 {
+	font-size: 20px;
+}
+
+.content h2 {
+	font-size: 17px;
+}
+
+.content h3 {
+	font-size: 15px;
+}
+
+.content p {
+	margin: 0 0 14px;
+}
+
+.content ul,
+.content ol {
+	margin: 0 0 14px;
+	padding-left: 20px;
+}
+
+.content li {
+	margin-bottom: 4px;
+}
+
+.content strong {
+	color: var(--text-h);
+	font-weight: 600;
+}
+
+.content a {
+	color: var(--accent);
+}
+
+.content table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 0 0 18px;
+	font-size: 13px;
+}
+
+.content th,
+.content td {
+	border: 1px solid var(--border);
+	padding: 8px 10px;
+	text-align: left;
+	vertical-align: top;
+}
+
+.content th {
+	background-color: var(--code-bg);
+	color: var(--text-h);
+	font-weight: 600;
+}

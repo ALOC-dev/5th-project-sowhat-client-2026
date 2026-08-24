@@ -1,0 +1,42 @@
+.container {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  z-index: 999;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.toast {
+  max-width: min(90vw, 420px);
+  padding: 12px 20px;
+
+  background-color: rgba(28, 25, 23, 0.92);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  word-break: break-word;
+
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

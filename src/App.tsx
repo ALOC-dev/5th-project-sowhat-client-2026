@@ -257,11 +257,11 @@ export default function App() {
 								</li>
 								<li>
 									Instagram{" | "}
-									<a href="">@sowhat.dev</a>
+									<a href="https://www.instagram.com/sowhat.dev/">@sowhat.dev</a>
 								</li>
 								<li>
 									<a href="">
-										문의사항 및 피드백
+										문의사항 및 피드백 (준비중)
 									</a>
 								</li>
 							</ul>
